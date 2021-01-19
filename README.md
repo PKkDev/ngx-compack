@@ -36,15 +36,51 @@ For generate date using MomenJs
     @NgModule({
       ...
       imports: [
-        CompackDatepickerModule,
-        BrowserAnimationsModule
+        CompackDatepickerModule
       ...
     })
     export class AppModule { }
 
 #### Using:
 
-#### Result:
+    import { Component, OnInit } from '@angular/core';
+    @Component({
+      selector: 'app-root',
+      templateUrl: './app.component.html',
+      styleUrls: ['./app.component.scss']
+    })
+    export class AppComponent implements OnInit {
+    
+     public min = moment().add(-3, 'd');
+     public max = moment().add(5, 'd');
+    
+    constructor( ) { }
+    
+    	ngOnInit() { }
+    	}
+    }
+
+add in app.component.htm:
+
+    <div style="position: absolute; left:50%; top:30%">
+        <compack-date-picker [useTime]="true" [maxChoseDay]="5" [max]="max" [min]="min"></compack-date-picker>
+    </div>
+	
+	 <compack-date-picker [locale]="'en'" [type]="'icon'" [maxChoseDay]="5" [max]="max" [min]="min">
+    </compack-date-picker>
+	
+	  <compack-date-picker [type]="'line'" [maxChoseDay]="5" [max]="max" [min]="min"></compack-date-picker>
+
+#### Example:
+
+<div style="display: flex; flex-direction:row; justify-content: space-between">
+  <img height="400px" width="350px" style="text-align: center;" src="https://raw.githubusercontent.com/PKkDev/ngx-compack/main/examples_icon/date_range_picker_1.png">
+  <img height="400px" width="350px" style="text-align: center;" src="https://raw.githubusercontent.com/PKkDev/ngx-compack/main/examples_icon/date_range_picker_2.png">
+</div>
+
+<div style="display: flex; flex-direction:row; justify-content: space-between">
+  <img height="400px" width="350px" style="text-align: center;" src="https://raw.githubusercontent.com/PKkDev/ngx-compack/main/examples_icon/date_range_picker_3.png">
+</div>
 
 #### Properties:
 
@@ -130,8 +166,6 @@ only 1 time in main -  app.component.html:
 <p align="center">
   <img height="150px" width="400px" style="text-align: center;" src="https://raw.githubusercontent.com/PKkDev/ngx-compack/main/examples_icon/banner_example.png">
 </p>
-
-![banner](https://github.com/PKkDev/ngx-compack/blob/main/examples_icon/banner_example.png "banner")
 
 #### Properties:
 

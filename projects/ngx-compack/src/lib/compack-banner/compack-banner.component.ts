@@ -1,5 +1,5 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { CompackBannerMergeService } from './compack-banner-merge.service';
 import { DisplayMessage } from './model/display-message';
 import { DisplayMessageConfig } from './model/display-message-config';
@@ -33,22 +33,26 @@ export class CompackBannerComponent implements OnInit, OnDestroy {
   private intervalView: any;
   public counterClose = -1;
 
-  constructor(private compackBannerService: CompackBannerMergeService) {
-  }
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private compackBannerService: CompackBannerMergeService) { }
 
   ngOnInit() {
 
     this.compackBannerService.newMessageEvent$.subscribe(
       (data: DisplayMessageConfig) => {
+        this.removeMessage();
         this.displayMessage = this.compackBannerService.mergeMessageConfig(data, this.infoColor, this.errorColor);
         if (this.displayMessage != null) {
           this.positionClass = this.displayMessage.positionClass;
+          this.cdr.detectChanges();
           if (this.displayMessage.intervalView != null) {
             this.counterClose = this.displayMessage.intervalView;
             this.setTimerView(this.displayMessage.intervalView)
             this.setIntervalAutoClose()
           }
         }
+        
       }
     );
 

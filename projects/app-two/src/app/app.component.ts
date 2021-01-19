@@ -21,23 +21,19 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     const config: DisplayMessageConfig = {
-      message: 'данный web сайт предназанчен исключительно для тестирования функций',
+      message: 'this website is intended solely for testing functions',
       position: TypePositionMessage.TopRight,
       typeMessage: TypeMessage.Info
     }
     this.cbs.addNewMessage(config);
 
-    this.cts.emitNewNotif({ title: 'Ошибка', message: 'Тело ошибки', type: TypeToast.Error });
-    this.cts.emitNewNotif({ title: 'Ошибка', message: 'Тело ошибки', type: TypeToast.Error });
-    this.cts.emitNewNotif({ title: 'Ошибка', message: 'Тело ошибки', type: TypeToast.Error });
-    this.cts.emitNewNotif({ title: 'Ошибка', type: TypeToast.Error });
-    this.cts.emitNewNotif({ title: 'Информация', message: 'Тело информации', type: TypeToast.Info });
-    this.cts.emitNewNotif({ title: 'Информация Информация Информация Информация Информация', type: TypeToast.Info })
-    this.cts.emitNewNotif({ title: 'Информация', message: 'Тело информации', type: TypeToast.Info })
-    this.cts.emitNewNotif({ title: 'Информация', message: 'Тело информации', type: TypeToast.Info })
-    this.cts.emitNewNotif({ title: 'Успешно', message: 'Тело операции', type: TypeToast.Success });
-    this.cts.emitNewNotif({ title: 'Успешно', type: TypeToast.Success });
-    this.cts.emitNewNotif({ title: 'Успешно', message: 'Тело операции', type: TypeToast.Success, file: { fileName: 's', file: new Blob() } });
+    this.cts.emitNewNotif({ title: 'Error', message: 'Body Error', type: TypeToast.Error });
+      this.cts.emitNewNotif({ title: 'Error', type: TypeToast.Error });
 
   }
 }
+
+
+
+
+

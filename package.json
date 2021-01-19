@@ -8,6 +8,10 @@
     "url": "https://github.com/PKkDev"
   },
   "homepage": "https://github.com/PKkDev/ngx-compack",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PKkDev/ngx-compack"
+  },
   "scripts": {
     "ng": "ng",
     "build": "ng build",

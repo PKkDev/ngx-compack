@@ -1,0 +1,55 @@
+<!-- <div class="container">
+
+    <div class="line">
+        <compack-range-day-picker [maxChoseDay]="5" [max]="max" [min]="min"></compack-range-day-picker>
+        <compack-range-day-picker [type]="'block'" [maxChoseDay]="5" [max]="max" [min]="min"></compack-range-day-picker>
+        <compack-range-day-picker [type]="'line'" [maxChoseDay]="5" [max]="max" [min]="min"></compack-range-day-picker>
+        <compack-range-day-picker [type]="'icon'" [maxChoseDay]="5" [max]="max" [min]="min"></compack-range-day-picker>
+    </div>
+
+</div> -->
+
+
+<compack-banner [backClassName]="'test'" [errorColor]="'#eee'" [infoColor]="'#909B02'"></compack-banner>
+<compack-toast [messageClassName]="'test'" [errorColor]="'#eee'" [infoColor]="'#909B02'" [successColor]="'#332299'">
+</compack-toast>
+
+<div style="position: absolute; top:0; left: 50%;">
+    <compack-date-picker [type]="'line'" [maxChoseDay]="5" [max]="max" [min]="min"></compack-date-picker>
+</div>
+
+<div style="position: absolute; bottom:0; left: 50%;">
+    <compack-date-picker [locale]="'en'" [type]="'line'" [maxChoseDay]="5" [max]="max" [min]="min">
+    </compack-date-picker>
+</div>
+
+<div style="position: absolute; left:0; top:50%">
+    <compack-date-picker [useTime]="true" [type]="'line'" [maxChoseDay]="5" [max]="max" [min]="min">
+    </compack-date-picker>
+</div>
+
+<div style="position: absolute; right:0; top:50%">
+    <compack-date-picker [type]="'line'" [maxChoseDay]="5" [max]="max" [min]="min"></compack-date-picker>
+</div>
+
+<div style="position: absolute; top:0; left:0;">
+    <compack-date-picker [locale]="'en'" [type]="'icon'" [maxChoseDay]="5" [max]="max" [min]="min">
+    </compack-date-picker>
+</div>
+
+<div style="position: absolute; top:0; right: 0;">
+    <compack-date-picker [useTime]="true" [type]="'icon'" [maxChoseDay]="5" [max]="max" [min]="min">
+    </compack-date-picker>
+</div>
+
+<div style="position: absolute; bottom:0; left:0;">
+    <compack-date-picker [type]="'icon'" [maxChoseDay]="5" [max]="max" [min]="min"></compack-date-picker>
+</div>
+
+<div style="position: absolute; bottom:0; right: 0;">
+    <compack-date-picker [type]="'icon'" [maxChoseDay]="5" [max]="max" [min]="min"></compack-date-picker>
+</div>
+
+<div style="position: absolute; left:50%; top:30%">
+    <compack-date-picker [useTime]="true" [maxChoseDay]="5" [max]="max" [min]="min"></compack-date-picker>
+</div>

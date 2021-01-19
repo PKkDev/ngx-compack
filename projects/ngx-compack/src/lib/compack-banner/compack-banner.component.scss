@@ -1,0 +1,140 @@
+@import "../font/font.scss";
+
+.message_container {
+  font-family: "Roboto";
+  width: 330px;
+  max-height: 500px;
+  position: absolute;
+  z-index: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  border-radius: 6px;
+
+
+  @media (max-width: 410px) {
+    width: 300px;
+  }
+
+  .message {
+    padding: 11px 22px;
+
+    .message_counter {
+      font-size: 18px;
+      position: absolute;
+      top: 0;
+      right: 30px;
+      animation: blink 1s step-start 0s infinite;
+      -webkit-animation: blink 1s step-start 0s infinite;
+    }
+
+    .message_close {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 25px;
+      height: 25px;
+      background-color: transparent;
+      color: #fff;
+      border: thin solid transparent;
+      opacity: 1 !important;
+
+      &:hover {
+        cursor: pointer;
+        background-color: #000;
+        border: thin solid #000;
+
+        svg {
+          fill: white;
+        }
+      }
+
+      svg {
+        width: 60%;
+        height: 60%;
+        fill: black;
+      }
+    }
+
+    .message_title {
+      font-size: 17px;
+      hr {
+        margin: 10px;
+        border-style: none;
+        background-color: black;
+      }
+    }
+
+    .message_body {
+      font-size: 17px;
+    }
+  }
+}
+
+.top {
+  margin-top: 10px;
+  top: 0;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+}
+
+.top_left {
+  margin-top: 10px;
+  margin-left: 10px;
+  top: 0;
+  left: 0;
+}
+
+.top_right {
+  margin-top: 10px;
+  margin-right: 10px;
+  top: 0;
+  right: 0;
+}
+
+.Middle {
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  left: 0;
+  right: 0;
+  height: fit-content;
+}
+
+.bottom_left {
+  margin-bottom: 10px;
+  margin-left: 10px;
+  bottom: 0;
+  left: 0;
+}
+
+.bottom_right {
+  margin-right: 10px;
+  margin-bottom: 10px;
+  bottom: 0;
+  right: 0;
+}
+.bottom {
+  margin-bottom: 10px;
+  bottom: 0;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0.7;
+  }
+}
+@-webkit-keyframes blink {
+  50% {
+    opacity: 0.7;
+  }
+}

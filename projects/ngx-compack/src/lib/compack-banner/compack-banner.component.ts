@@ -1,0 +1,88 @@
+import { animate, style, transition, trigger } from '@angular/animations';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { CompackBannerMergeService } from './compack-banner-merge.service';
+import { DisplayMessage } from './model/display-message';
+import { DisplayMessageConfig } from './model/display-message-config';
+
+@Component({
+  selector: 'compack-banner',
+  templateUrl: './compack-banner.component.html',
+  styleUrls: ['./compack-banner.component.scss'],
+  animations: [
+    trigger('flyInOut', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate(500, style({ opacity: 1, boxShadow: '0px 4px 4px 0px rgba(0, 0, 0, 0.25)' }))
+      ]),
+      transition(':leave', [
+        animate(500, style({ opacity: 0, boxShadow: 'none' }))
+      ])
+    ])
+  ]
+})
+export class CompackBannerComponent implements OnInit, OnDestroy {
+  // config class
+  @Input() backClassName: string = '';
+  // config color
+  @Input() infoColor: string = '#2196f3';
+  @Input() errorColor: string = '#ff5252';
+  // config position
+  public positionClass = 'top';
+  // data
+  public displayMessage: DisplayMessage | null = null;
+  private intervalView: any;
+  public counterClose = -1;
+
+  constructor(private compackBannerService: CompackBannerMergeService) {
+  }
+
+  ngOnInit() {
+
+    this.compackBannerService.newMessageEvent$.subscribe(
+      (data: DisplayMessageConfig) => {
+        this.displayMessage = this.compackBannerService.mergeMessageConfig(data, this.infoColor, this.errorColor);
+        if (this.displayMessage != null) {
+          this.positionClass = this.displayMessage.positionClass;
+          if (this.displayMessage.intervalView != null) {
+            this.counterClose = this.displayMessage.intervalView;
+            this.setTimerView(this.displayMessage.intervalView)
+            this.setIntervalAutoClose()
+          }
+        }
+      }
+    );
+
+    this.compackBannerService.removeMessageEvent$.subscribe(
+      (next: boolean) => {
+        this.removeMessage();
+      }
+    )
+  }
+
+  ngOnDestroy() {
+    this.destroyTimer()
+  }
+
+  public removeMessage() {
+    this.displayMessage = null;
+    this.destroyTimer();
+  }
+
+  private setIntervalAutoClose() {
+    setInterval(() => { this.counterClose--; }, 1000);
+  }
+
+  private setTimerView(interval: number) {
+    this.intervalView = setTimeout(() => {
+      this.displayMessage = null;
+    }, 1000 * interval)
+  }
+
+  private destroyTimer() {
+    if (this.intervalView != null) {
+      clearTimeout(this.intervalView)
+    }
+  }
+
+
+}

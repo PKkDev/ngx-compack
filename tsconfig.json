@@ -1,4 +1,3 @@
-/* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
   "compileOnSave": false,
   "compilerOptions": {
@@ -19,11 +18,26 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "kr-notif-lib": [
+        "dist/kr-notif-lib/kr-notif-lib",
+        "dist/kr-notif-lib"
+      ],
+      "kr-banner-lib": [
+        "dist/kr-banner-lib/kr-banner-lib",
+        "dist/kr-banner-lib"
+      ],
+      "ngx-compack": [
+        "dist/ngx-compack/ngx-compack",
+        "dist/ngx-compack"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
-    "strictTemplates": true
+    "strictTemplates": true,
+    "enableIvy": false
   }
 }

@@ -1,12 +1,23 @@
 {
   "name": "hub",
-  "version": "0.0.0",
+  "version": "0.8.0",
+  "license": "MIT",
+  "author": {
+    "name": "Kirill",
+    "email": "prodevkir@mail.ru",
+    "url": "https://github.com/PKkDev"
+  },
+  "homepage": "https://github.com/PKkDev/ngx-compack",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
     "build": "ng build",
-    "test": "ng test",
-    "lint": "ng lint"
+    "start": "ng serve",
+    "start:app-two": "ng serve app-two",
+    "start:app-two:outside": "ng serve app-two --host 0.0.0.0 --disable-host-check",
+    "lib:compack:build": "ng build ngx-compack",
+    "lib:compack:watch": "ng build ngx-compack --watch",
+    "lib:compack:watch:app": "npm-run-all -p -r lib:compack:watch start:app-two",
+    "lib:compack banner-lib": "npm run lib:compack:build && cd dist/ngx-compack && npm pack npm publish"
   },
   "private": true,
   "dependencies": {
@@ -18,11 +29,13 @@
     "@angular/platform-browser": "~11.0.6",
     "@angular/platform-browser-dynamic": "~11.0.6",
     "@angular/router": "~11.0.6",
+    "moment": "^2.29.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
+    "@angular-devkit/build-angular": "~0.1100.6",
     "@angular/cli": "~11.0.6",
     "@angular/compiler-cli": "~11.0.6",
     "@types/jasmine": "~3.6.0",
@@ -35,6 +48,8 @@
     "karma-coverage": "~2.0.3",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "^1.5.0",
+    "ng-packagr": "^11.0.0",
+    "npm-run-all": "^4.1.5",
     "protractor": "~7.0.0",
     "ts-node": "~8.3.0",
     "tslint": "~6.1.0",

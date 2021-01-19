@@ -1,3 +1,78 @@
+## Introduction
+
+This library is used in the author's personal works, but if someone likes the implementation and wants to use it too, I will only be glad.
+Supported Andular 9+ .
+
+[TOC]
+
+## components
+At the moment there are only 3 different components with their own individual settings.
+
+
+### compack-date-picker
+    import { CompackDatepickerModule } from 'ngx-compack';
+    
+    @NgModule({
+      ...
+      imports: [
+        CompackDatepickerModule,
+        BrowserModule
+      ...
+    })
+    export class AppModule { }
+
+#### Properties
+
+Name | Description
+------------ | -------------
+@Input() <br> type: string | type of picker -'block', 'line' or 'icon'
+@Input() <br> formatOutputDate: string |  exit date format
+@Input() <br> useTime: boolean |  add time field or not
+@Input() <br> maxChoseDay: number | maximum range for selection
+@Input() <br> max: string | date limit from below
+@Input() <br> min: string | date cut from above
+@Input() <br> locale: string | Moment locale
+@Output() <br> selectLastDateEvent: EventEmitter<string[]> |  event select date
+
+### compack-banner
+    import { CompackBannerModule } from 'ngx-compack';
+    
+    @NgModule({
+      ...
+      imports: [
+        CompackBannerModule,
+        BrowserModule
+      ...
+    })
+    export class AppModule { }
+
+#### Properties
+Name | Description
+------------ | -------------
+@Input() <br> backClassName: string | main back class
+@Input() <br> infoColor: string |  hex color info type
+@Input() <br> errorColor: string | hex color error type
+
+### compack-toast
+    import { CompackToastModule } from 'ngx-compack';
+    
+    @NgModule({
+      ...
+      imports: [
+        CompackToastModule,
+        BrowserModule
+      ...
+    })
+    export class AppModule { }
+
+#### Properties
+Name | Description
+------------ | -------------
+@Input() <br> messageClassName: string | main back class message container
+@Input() <br> infoColor: string |  hex color info type
+@Input() <br> errorColor: string | hex color error type
+@Input() <br> successColor: string | hex color success type
+
 # Hub
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.6.

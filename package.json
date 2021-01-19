@@ -1,6 +1,6 @@
 {
   "name": "hub",
-  "version": "0.8.0",
+  "version": "0.0.3",
   "license": "MIT",
   "author": {
     "name": "Kirill",
@@ -11,9 +11,6 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/PKkDev/ngx-compack"
-  },
-  "peerDependencies": {
-    "moment": "^2.29.1"
   },
   "scripts": {
     "ng": "ng",

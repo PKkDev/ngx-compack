@@ -20,7 +20,8 @@ export class DisplayPeriodDatePipe implements PipeTransform {
       formatDate = formatView;
     }
 
-    let str = 'период с/по';
+    //let str = 'период с/по';
+    let str = 'from/to';
     if (value.length == 0) {
       return str;
     }

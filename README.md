@@ -2,14 +2,32 @@
 
 This library is used in the author's personal works, but if someone likes the implementation and wants to use it too, I will only be glad.
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.6.
+Supported 9/10/11.
 
-[TOC]
+[![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat-square)]()
 
-## components
+## Table of contents
+
+- [Introduction](#Introduction)
+- [Table of contents](#table-of-contents)
+- [Dependency](#dependency)
+- [Components](#components)
+	- [compack-date-picker](#compack-date-picke)
+	- [compack-banner](#compack-banner)
+	- [compack-toast](#compack-toast)
+
+## Dependency
+
+[BrowserAnimationsModule](https://angular.io/api/platform-browser/animations/BrowserAnimationsModule "BrowserAnimationsModule")
+[MomentJs](https://momentjs.com/docs/ "MomentJs")
+
+## Components
 At the moment there are only 3 different components with their own individual settings.
 
 
 ### compack-date-picker
+
+For generate date using MomenJs
 
 #### Import in project:
 
@@ -109,6 +127,12 @@ only 1 time in main -  app.component.html:
 
 #### Result:
 
+<p align="center">
+  <img height="150px" width="400px" style="text-align: center;" src="https://raw.githubusercontent.com/PKkDev/ngx-compack/main/examples_icon/banner_example.png">
+</p>
+
+![banner](https://github.com/PKkDev/ngx-compack/blob/main/examples_icon/banner_example.png "banner")
+
 #### Properties:
 
 Name | Description
@@ -156,7 +180,7 @@ Name | Description
     
     ngOnInit() {
          this.cts.emitNewNotif({ title: 'Error', message: 'Body Error', type: TypeToast.Error });
-		  this.cts.emitNewNotif({ title: 'Error', type: TypeToast.Error });
+		 this.cts.emitNewNotif({ title: 'Error', type: TypeToast.Error });
     }
     }
 
@@ -166,6 +190,12 @@ only 1 time in main -  app.component.html:
 </compack-toast>
 
 #### Result:
+
+<p align="center">
+  <img height="200px" width="400px" style="text-align: center;" src="https://raw.githubusercontent.com/PKkDev/ngx-compack/main/examples_icon/toast_example.png">
+</p>
+
+
 
 #### Properties:
 

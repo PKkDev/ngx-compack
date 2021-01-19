@@ -12,16 +12,20 @@
     "type": "git",
     "url": "https://github.com/PKkDev/ngx-compack"
   },
+  "peerDependencies": {
+    "moment": "^2.29.1"
+  },
   "scripts": {
     "ng": "ng",
     "build": "ng build",
     "start": "ng serve",
-    "start:app-two": "ng serve app-two",
-    "start:app-two:outside": "ng serve app-two --host 0.0.0.0 --disable-host-check",
+    "start:test-app": "ng serve test-app",
+    "start:test-app:outside": "ng serve test-app --host 0.0.0.0 --disable-host-check",
     "lib:compack:build": "ng build ngx-compack",
     "lib:compack:watch": "ng build ngx-compack --watch",
-    "lib:compack:watch:app": "npm-run-all -p -r lib:compack:watch start:app-two",
-    "lib:compack banner-lib": "npm run lib:compack:build && cd dist/ngx-compack && npm pack npm publish"
+    "lib:compack:watch:app": "npm-run-all -p -r lib:compack:watch start:test-app",
+    "lib:compack banner-lib": "npm run lib:compack:build && cd dist/ngx-compack && npm pack npm publish",
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {

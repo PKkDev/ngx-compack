@@ -32,10 +32,12 @@ For generate date using MomenJs
 #### Import in project:
 
     import { CompackDatepickerModule } from 'ngx-compack';
+	import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     
     @NgModule({
       ...
       imports: [
+	  BrowserAnimationsModule,
         CompackDatepickerModule
       ...
     })

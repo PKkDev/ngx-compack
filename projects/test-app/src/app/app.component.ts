@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
-import { CompackBannerService, CompackToastService, DisplayMessageConfig, TypeToast } from 'ngx-compack';
-import { TypeMessage, TypePositionMessage } from 'ngx-compack';
+import { CompackBannerService, CompackToastService, DisplayMessageConfig, TypeMessage, TypePositionMessage, TypeToast } from 'ngx-compack';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-
 
   public min = moment().add(-3, 'd');
   public max = moment().add(5, 'd');
@@ -28,12 +27,7 @@ export class AppComponent implements OnInit {
     this.cbs.addNewMessage(config);
 
     this.cts.emitNewNotif({ title: 'Error', message: 'Body Error', type: TypeToast.Error });
-      this.cts.emitNewNotif({ title: 'Error', type: TypeToast.Error });
+    this.cts.emitNewNotif({ title: 'Error', type: TypeToast.Error });
 
   }
 }
-
-
-
-
-

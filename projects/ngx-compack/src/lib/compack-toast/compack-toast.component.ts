@@ -27,7 +27,7 @@ export class CompackToastComponent implements OnInit, OnDestroy {
   // config color
   @Input() infoColor: string = '#2196f3';
   @Input() errorColor: string = '#ff5252';
-  @Input() successColor: string = '#ff5252';
+  @Input() successColor: string = '#4caf50';
   // data
   private index = 0;
   public listMessages: Toast[] = [];
@@ -59,10 +59,10 @@ export class CompackToastComponent implements OnInit, OnDestroy {
                 container.scrollTop = container.scrollHeight - container.clientHeight;
             }, 1000);
           }
-           this.cdr.detectChanges();
+          this.cdr.detectChanges();
         }
       });
-   
+
   }
 
   ngOnDestroy() {

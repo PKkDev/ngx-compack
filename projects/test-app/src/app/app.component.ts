@@ -20,7 +20,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     const config: DisplayMessageConfig = {
-      message: 'this website is intended solely for testing functions',
+      message: 'this website is ' + '\n' + ' intended solely \n for testing functions',
       position: TypePositionMessage.BottomRight,
       typeMessage: TypeMessage.Info
     }
@@ -32,10 +32,10 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.cbs.addNewMessage({ message: 'new test', position: TypePositionMessage.TopLeft, typeMessage: TypeMessage.Info });
+    // this.cbs.addNewMessage({ message: 'new test', position: TypePositionMessage.TopLeft, typeMessage: TypeMessage.Info });
 
-    setTimeout(() => {
-      this.cbs.addNewMessage({ message: 'new new test', position: TypePositionMessage.BottomRight, typeMessage: TypeMessage.Info });
-    }, 5000)
+    // setTimeout(() => {
+    //   this.cbs.addNewMessage({ message: 'new new test', position: TypePositionMessage.BottomRight, typeMessage: TypeMessage.Info });
+    // }, 5000)
   }
 }

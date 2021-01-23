@@ -56,7 +56,6 @@ export class CompackDatePickerComponent implements OnInit, AfterViewInit {
   // select;
   selectStartDate: CalendarDayPicker | undefined;
   selectLastDate: CalendarDayPicker | undefined;
-  selectedPeriod: string[] = ['reset', 'reset'];
 
   constructor(
     private el: ElementRef,
@@ -106,11 +105,9 @@ export class CompackDatePickerComponent implements OnInit, AfterViewInit {
 
     if (this.selectLastDate !== undefined && this.selectLastDate.fulDate != undefined) {
       this.selectLastDate.fulDate.hour(this.selectedHour);
-      this.selectedPeriod[1] = moment(this.selectLastDate.fulDate).format('DD.MM.YYYY HH:mm');
     } else {
       if (this.selectStartDate !== undefined && this.selectStartDate.fulDate != undefined) {
         this.selectStartDate.fulDate.hour(this.selectedHour);
-        this.selectedPeriod[0] = moment(this.selectStartDate.fulDate).format('DD.MM.YYYY HH:mm');
       }
     }
   }
@@ -124,11 +121,9 @@ export class CompackDatePickerComponent implements OnInit, AfterViewInit {
 
     if (this.selectLastDate !== undefined && this.selectLastDate.fulDate != undefined) {
       this.selectLastDate.fulDate.minute(this.selectedMin);
-      this.selectedPeriod[1] = moment(this.selectLastDate.fulDate).format('DD.MM.YYYY HH:mm');
     } else {
       if (this.selectStartDate !== undefined && this.selectStartDate.fulDate != undefined) {
         this.selectStartDate.fulDate.minute(this.selectedMin);
-        this.selectedPeriod[0] = moment(this.selectStartDate.fulDate).format('DD.MM.YYYY HH:mm');
       }
     }
   }
@@ -243,27 +238,42 @@ export class CompackDatePickerComponent implements OnInit, AfterViewInit {
       } else {
         if (this.selectStartDate === undefined) {
           day.isSelected = true;
-          this.selectStartDate = day;
-          this.selectedPeriod[0] = moment(this.selectStartDate.fulDate).format('DD.MM.YYYY');
+          this.selectStartDate = JSON.parse(JSON.stringify(day));
+          if (this.selectStartDate)
+            if (this.useTime) {
+              this.selectedMin = 0;
+              this.selectedHour = 0;
+              this.selectStartDate.fulDate = moment(day.fulDate).minute(0).hour(0);
+            } else {
+              this.selectStartDate.fulDate = moment(day.fulDate);
+            }
         } else {
           if (this.selectLastDate === undefined) {
             day.isSelected = true;
-            this.selectLastDate = day;
-            this.selectedPeriod[1] = moment(this.selectLastDate.fulDate).format('DD.MM.YYYY');
-            if (this.selectLastDate.fulDate != undefined) {
-              if (this.selectLastDate.fulDate.isBefore(this.selectStartDate.fulDate)) {
-                this.clearAllSelectDay();
-                this.selectDay(day);
+            this.selectLastDate = JSON.parse(JSON.stringify(day));
+            if (this.selectLastDate) {
+              if (this.useTime) {
+                this.selectedMin = 59;
+                this.selectedHour = 23;
+                this.selectLastDate.fulDate = moment(day.fulDate).minute(59).hour(23);
               } else {
-                if (this.maxChoseDay != undefined && this.selectLastDate.fulDate != undefined) {
-                  const duration = moment.duration(this.selectLastDate.fulDate.diff(this.selectStartDate.fulDate));
-                  if (duration.days() > this.maxChoseDay - 1) {
-                    this.clearAllSelectDay();
+                this.selectLastDate.fulDate = moment(day.fulDate);
+              }
+              if (this.selectLastDate.fulDate != undefined) {
+                if (this.selectLastDate.fulDate.isBefore(this.selectStartDate.fulDate)) {
+                  this.clearAllSelectDay();
+                  this.selectDay(day);
+                } else {
+                  if (this.maxChoseDay != undefined && this.selectLastDate.fulDate != undefined) {
+                    const duration = moment.duration(this.selectLastDate.fulDate.diff(this.selectStartDate.fulDate));
+                    if (duration.days() > this.maxChoseDay - 1) {
+                      this.clearAllSelectDay();
+                    } else {
+                      this.selectRowIncludeInRange();
+                    }
                   } else {
                     this.selectRowIncludeInRange();
                   }
-                } else {
-                  this.selectRowIncludeInRange();
                 }
               }
             }
@@ -279,7 +289,6 @@ export class CompackDatePickerComponent implements OnInit, AfterViewInit {
   }
 
   private clearAllSelectDay() {
-    this.selectedPeriod = [];
     for (const cal of this.calendar) {
       for (const day of cal.week) {
         day.isSelected = false;

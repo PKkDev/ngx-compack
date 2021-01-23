@@ -6,7 +6,7 @@
   <div class="calendar_container">
 
     <input class="input" (click)="openMenuPicker(menu)" readonly
-      [value]="selectedPeriod | displayPeriodDate: formatViewDateInPicker: formatViewDateInPicker">
+      [value]="[selectStartDate, selectLastDate] | displayPeriodDate: formatViewDateInPicker">
 
     <label class="mark" for="dropdownForm3"></label>
 
@@ -116,7 +116,7 @@
       <div class="view" *ngIf="isNeedViewFieldDate">
 
         <span>
-          {{selectedPeriod | displayPeriodDate: formatViewDateInPicker: formatViewDateInPicker}}
+          {{[selectStartDate, selectLastDate] | displayPeriodDate: formatViewDateInPicker}}
         </span>
 
       </div>

@@ -1,5 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import * as moment_ from 'moment';
+import { CalendarDayPicker } from '../model/calendar-day';
 
 const moment = moment_;
 
@@ -9,10 +10,13 @@ const moment = moment_;
 })
 export class DisplayPeriodDatePipe implements PipeTransform {
 
-  transform(value: string[], formatInputDate: string, formatView?: string): string {
+  transform(value: CalendarDayPicker[], formatView: string): string {
 
-    if (value === null) {
-      return '';
+    //let str = 'период с/по';
+    let str = 'from/to';
+
+    if (value === null || value.length == 0 || (value.length > 0 && value[0] == undefined)) {
+      return str;
     }
 
     let formatDate = 'DD.MM.YYYY';
@@ -20,26 +24,14 @@ export class DisplayPeriodDatePipe implements PipeTransform {
       formatDate = formatView;
     }
 
-    //let str = 'период с/по';
-    let str = 'from/to';
-    if (value.length == 0) {
-      return str;
-    }
+    const strDateStart = moment(value[0].fulDate).format(formatDate);
 
-    if (value.length > 0) {
-      if (value[0] === 'reset') {
-        return str;
-      }
-    }
-
-    const strDateStart = moment(value[0], formatInputDate).format(formatDate);
-
-    if (value[1] === 'reset' || value.length == 1) {
+    if (value[1] === undefined) {
       str = strDateStart + ' - '
       return str;
     }
 
-    const strDateEnd = moment(value[1], formatInputDate).format(formatDate);
+    const strDateEnd =  moment(value[1].fulDate).format(formatDate);
     str = strDateStart + ' - ' + strDateEnd;
 
     return str;

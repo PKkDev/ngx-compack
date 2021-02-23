@@ -4,6 +4,11 @@ import { Toast } from './model/toast';
 import { ToastConfig } from './model/toast-config';
 import { TypeToast } from './model/type-toast';
 
+const mapColor: Map<string, string> = new Map<string, string>()
+  .set('info', '#2196f3')
+  .set('error', '#ff5252')
+  .set('success', '#4caf50');
+
 @Injectable({
   providedIn: 'root'
 })
@@ -13,7 +18,25 @@ export class CompackToastMergeService {
 
   constructor() { }
 
-  public mergeToastConfig(toastConfig: ToastConfig, newIndex: number, infoColor: string, errorColor: string, succesColor: string): Toast | null {
+  public setInfoColor(newInfoColor: string) {
+    if (mapColor.has('info')) {
+      mapColor.set('info', newInfoColor);
+    }
+  }
+
+  public setErrorColor(newErrorColor: string) {
+    if (mapColor.has('error')) {
+      mapColor.set('error', newErrorColor);
+    }
+  }
+
+  public setSuccessColor(newSuccessColor: string) {
+    if (mapColor.has('success')) {
+      mapColor.set('success', newSuccessColor);
+    }
+  }
+
+  public mergeToastConfig(toastConfig: ToastConfig, newIndex: number): Toast | null {
     // console.log('messageConfig', messageConfig);
 
     if (toastConfig == null)
@@ -29,19 +52,31 @@ export class CompackToastMergeService {
 
     switch (toastConfig.type) {
       case TypeToast.Error: {
-        result.color = errorColor;
+        if (mapColor.has('error')) {
+          const color = mapColor.get('error');
+          result.color = color ? color : '#fff';
+        }
         break;
       }
       case TypeToast.Info: {
-        result.color = infoColor;
+        if (mapColor.has('info')) {
+          const color = mapColor.get('info');
+          result.color = color ? color : '#fff';
+        }
         break;
       }
       case TypeToast.Success: {
-        result.color = succesColor;
+        if (mapColor.has('success')) {
+          const color = mapColor.get('success');
+          result.color = color ? color : '#fff';
+        }
         break;
       }
       default: {
-        result.color = errorColor;
+        if (mapColor.has('error')) {
+          const color = mapColor.get('error');
+          result.color = color ? color : '#fff';
+        }
         break;
       }
     }

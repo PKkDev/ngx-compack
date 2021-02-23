@@ -101,6 +101,23 @@ Name | Description
 
 is the message hanging in the foreground.
 
+#### DisplayMessageConfig
+    export class DisplayMessageConfig {
+        public title?: string;
+        public message: string;
+        public intervalView?: number;
+        public typeMessage: TypeMessage;
+        public position: TypePositionMessage;
+    
+        constructor() {
+            this.title = undefined;
+            this.message = '';
+            this.intervalView = undefined;
+            this.typeMessage = 0;
+            this.position = 0;
+        }
+    }
+
 #### Type positions:
 
     export enum TypePositionMessage {
@@ -150,6 +167,10 @@ is the message hanging in the foreground.
     constructor(private cbs: CompackBannerService ) { }
     
     ngOnInit() {
+	
+		this.cbs.setInfoColor('#000');
+    	this.cbs.setErrorColor('#fff');
+		
         const config: DisplayMessageConfig = {
           message: 'this website is intended solely for testing functions',
           position: TypePositionMessage.TopRight,
@@ -159,9 +180,7 @@ is the message hanging in the foreground.
     }
     }
 
-only 1 time in main -  app.component.html:
 
-    <compack-banner [backClassName]="'test'" [errorColor]="'#eee'" [infoColor]="'#909B02'"></compack-banner>
 
 #### Result:
 
@@ -169,15 +188,29 @@ only 1 time in main -  app.component.html:
   <img height="150px" width="400px" style="text-align: center;" src="https://raw.githubusercontent.com/PKkDev/ngx-compack/main/examples_icon/banner_example.png">
 </p>
 
-#### Properties:
+#### Using api:
+add CompackBannerService from DI in constructor.
 
-Name | Description
+Method | Description
 ------------ | -------------
-@Input() <br> backClassName: string | main back class
-@Input() <br> infoColor: string |  hex color info type
-@Input() <br> errorColor: string | hex color error type
+ addNewMessage(config: DisplayMessageConfig) | add new banner
+removeMessage() |  remove last banner
+setInfoColor(color: string) | set back color for info type banner
+setErrorColor(color: string) | set back color for error type banner
 
 ### compack-toast
+
+#### ToastConfig
+    export class ToastConfig {
+        public title: string;
+        public type: TypeToast;
+        public message?: string;
+    
+        constructor() {
+            this.title = '';
+            this.type = TypeToast.Error
+        }
+    }
 
 #### type toast:
     export declare enum TypeToast {
@@ -220,10 +253,6 @@ Name | Description
     }
     }
 
-only 1 time in main -  app.component.html:
-
-    <compack-toast [messageClassName]="'test'" [errorColor]="'#eee'" [infoColor]="'#909B02'" [successColor]="'#332299'">
-</compack-toast>
 
 #### Result:
 
@@ -232,13 +261,13 @@ only 1 time in main -  app.component.html:
 </p>
 
 
+#### Using api:
+add CompackToastService from DI in constructor.
 
-#### Properties:
-
-Name | Description
+Method | Description
 ------------ | -------------
-@Input() <br> messageClassName: string | main back class message container
-@Input() <br> infoColor: string |  hex color info type
-@Input() <br> errorColor: string | hex color error type
-@Input() <br> successColor: string | hex color success type
+ emitNewNotif(message: ToastConfig) | add new message
+setInfoColor(color: string) | set back color for info type message
+setErrorColor(color: string) | set back color for error type message
+setSuccessColor(color: string) | set back color for success type message
 

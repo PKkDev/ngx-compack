@@ -9,6 +9,9 @@ import { CompackToastComponent } from './compack-toast.component';
   declarations: [
     CompackToastComponent
   ],
+  entryComponents: [
+    CompackToastComponent
+  ],
   exports: [
     CompackToastComponent
   ]

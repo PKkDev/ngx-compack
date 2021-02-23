@@ -4,10 +4,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CompackBannerModule, CompackToastModule, CompackDatepickerModule } from 'ngx-compack';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TestCreatedComponent } from './test-created/test-created.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    TestCreatedComponent
   ],
   imports: [
     BrowserAnimationsModule,

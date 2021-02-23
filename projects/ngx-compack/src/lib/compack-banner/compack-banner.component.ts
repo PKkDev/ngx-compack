@@ -21,11 +21,6 @@ import { DisplayMessageConfig } from './model/display-message-config';
   ]
 })
 export class CompackBannerComponent implements OnInit, OnDestroy {
-  // config class
-  @Input() backClassName: string = '';
-  // config color
-  @Input() infoColor: string = '#2196f3';
-  @Input() errorColor: string = '#ff5252';
   // config position
   public positionClass = 'top';
   // data
@@ -42,7 +37,7 @@ export class CompackBannerComponent implements OnInit, OnDestroy {
     this.compackBannerService.newMessageEvent$.subscribe(
       (data: DisplayMessageConfig) => {
         this.removeMessage();
-        this.displayMessage = this.compackBannerService.mergeMessageConfig(data, this.infoColor, this.errorColor);
+        this.displayMessage = this.compackBannerService.mergeMessageConfig(data);
         if (this.displayMessage != null) {
           this.positionClass = this.displayMessage.positionClass;
           this.cdr.detectChanges();
@@ -52,7 +47,6 @@ export class CompackBannerComponent implements OnInit, OnDestroy {
             this.setIntervalAutoClose()
           }
         }
-        
       }
     );
 

@@ -77,19 +77,19 @@ export class CompackDatePickerService {
   private checkSelectedDate(
     fulDateView: string, nowMonth: boolean,
     selectStartDate?: CalendarDayPicker, selectLastDate?: CalendarDayPicker): boolean {
-    if (selectStartDate != undefined && selectLastDate != undefined) {
-      let selectedStart = false;
-      let selectedEnd = false;
-      if (selectStartDate != null) {
-        const fulDateStartSelected = moment(selectStartDate.fulDate, 'D.M.YY').format('D.M.YY');
-        selectedStart = (fulDateStartSelected === fulDateView && nowMonth);
-      }
-      if (selectLastDate != null) {
-        const fulDateEndSelected = moment(selectLastDate.fulDate, 'D.M.YY').format('D.M.YY');
-        selectedEnd = (fulDateEndSelected === fulDateView && nowMonth);
-      }
-      return selectedStart || selectedEnd;
+    // if (selectStartDate != undefined && selectLastDate != undefined) {
+    let selectedStart = false;
+    let selectedEnd = false;
+    if (selectStartDate != null) {
+      const fulDateStartSelected = moment(selectStartDate.fulDate, 'D.M.YY').format('D.M.YY');
+      selectedStart = (fulDateStartSelected === fulDateView && nowMonth);
     }
+    if (selectLastDate != null) {
+      const fulDateEndSelected = moment(selectLastDate.fulDate, 'D.M.YY').format('D.M.YY');
+      selectedEnd = (fulDateEndSelected === fulDateView && nowMonth);
+    }
+    return selectedStart || selectedEnd;
+    // }
     return false;
   }
 
@@ -118,7 +118,7 @@ export class CompackDatePickerService {
           const checkDate = day.fulDate;
           const checkAfter = moment(checkDate).isAfter(checkStartDate);
           const checkBefore = moment(checkDate).isBefore(checkLastDate, 'day');
-          if (checkAfter && checkBefore) {
+          if (checkAfter && checkBefore && day.isDayThisMonth) {
             day.isIncludeRage = true;
           }
         }

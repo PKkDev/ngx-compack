@@ -7,10 +7,12 @@
     </div>
 </div> -->
 
+<app-test-created></app-test-created>
 
-<compack-banner [backClassName]="'test'" [errorColor]="'#eee'" [infoColor]="'#909B02'"></compack-banner>
-<compack-toast [messageClassName]="'test'" [errorColor]="'#eee'" [infoColor]="'#909B02'" [successColor]="'#332299'">
-</compack-toast>
+
+<!-- <compack-banner [backClassName]="'test'" [errorColor]="'#eee'" [infoColor]="'#909B02'"></compack-banner> -->
+<!-- <compack-toast [messageClassName]="'test'" [errorColor]="'#eee'" [infoColor]="'#909B02'" [successColor]="'#332299'">
+</compack-toast> -->
 
 <!-- <div style="position: absolute; top:0; left: 50%;">
     <compack-date-picker [type]="'line'" [maxChoseDay]="5" [max]="max" [min]="min"></compack-date-picker>
@@ -48,6 +50,20 @@
     <compack-date-picker [type]="'icon'" [maxChoseDay]="5" [max]="max" [min]="min"></compack-date-picker>
 </div> -->
 
-<div style="position: absolute; left:50%; top:30%">
-    <compack-date-picker [useTime]="false" [maxChoseDay]="5" [max]="max" [min]="min" [formatOutputDate]="'DD.MM.YYYYTHH:mm'"></compack-date-picker>
+<div class="pickecr_test">
+
+    <compack-date-picker [type]="'block'" [useTime]="false" [maxChoseDay]="5" [max]="max" [min]="min"
+        [formatOutputDate]="'DD.MM.YYYYTHH:mm'"></compack-date-picker>
+
+    <compack-date-picker [useTime]="true" [type]="'line'" [useTime]="false" [maxChoseDay]="5" [max]="max" [min]="min"
+        [formatOutputDate]="'DD.MM.YYYYTHH:mm'"></compack-date-picker>
+
+    <compack-date-picker [type]="'icon'" [useTime]="false" [maxChoseDay]="5" [max]="max" [min]="min"
+        [formatOutputDate]="'DD.MM.YYYYTHH:mm'"></compack-date-picker>
+
+    <compack-date-picker [useTime]="false" [type]="'line'" [useTime]="false" [maxChoseDay]="15"
+        [formatOutputDate]="'DD.MM.YYYYTHH:mm'"></compack-date-picker>
+
+    <compack-date-picker [useTime]="true" [formatOutputDate]="'DD.MM.YYYYTHH:mm'"></compack-date-picker>
+
 </div>

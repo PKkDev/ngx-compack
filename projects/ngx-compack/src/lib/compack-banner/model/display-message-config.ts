@@ -15,6 +15,4 @@ export class DisplayMessageConfig {
         this.typeMessage = 0;
         this.position = 0;
     }
-
-
 }

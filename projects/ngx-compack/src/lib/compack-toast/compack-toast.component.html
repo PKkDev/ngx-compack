@@ -65,7 +65,7 @@
 
 <ng-template #messageOnlyTextTemplate let-mess>
 
-  <div class="message" [ngClass]="[messageClassName]" [ngStyle]=" {'background-color': mess.color}">
+  <div class="message" [ngStyle]=" {'background-color': mess.color}">
 
     <span class="close" (click)="removeMessage(mess.index)">
       <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">

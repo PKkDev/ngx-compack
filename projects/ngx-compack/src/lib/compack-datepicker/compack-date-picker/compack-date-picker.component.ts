@@ -6,12 +6,7 @@ import { CompackDatePickerService } from './compack-date-picker.service';
 
 const moment = moment_;
 
-/* 
-type:
-block
-line
-icon
- */
+/* type: block line icon */
 
 @Component({
   selector: 'compack-date-picker',

@@ -1,4 +1,4 @@
-<div class="message_container" [ngClass]="[positionClass, backClassName]">
+<div class="message_container" [ngClass]="[positionClass]">
 
   <div class="message" [@flyInOut] *ngIf="displayMessage != null" [ngStyle]=" {'background-color': displayMessage.color}">
 

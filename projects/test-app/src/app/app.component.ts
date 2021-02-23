@@ -15,19 +15,24 @@ export class AppComponent implements OnInit, AfterViewInit {
   constructor(
     private cts: CompackToastService,
     private cbs: CompackBannerService
-  ) {
-  }
+  ) { }
 
   ngOnInit() {
+    this.cbs.setInfoColor('#000');
+    this.cbs.setErrorColor('#fff');
+
     const config: DisplayMessageConfig = {
       message: 'this website is ' + '\n' + ' intended solely \n for testing functions',
       position: TypePositionMessage.BottomRight,
       typeMessage: TypeMessage.Info
     }
-    this.cbs.addNewMessage(config);
+    setTimeout(() => { this.cbs.addNewMessage(config); }, 0);
+
+    this.cts.setInfoColor('#fff')
 
     this.cts.emitNewNotif({ title: 'Error', message: 'Body Error', type: TypeToast.Error });
     this.cts.emitNewNotif({ title: 'Error', type: TypeToast.Error });
+    this.cts.emitNewNotif({ title: 'Info', type: TypeToast.Info });
 
   }
 

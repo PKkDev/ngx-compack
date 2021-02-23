@@ -9,7 +9,10 @@ import { CompackBannerComponent } from './compack-banner.component';
   declarations: [
     CompackBannerComponent
   ],
-  exports :[
+  entryComponents: [
+    CompackBannerComponent
+  ],
+  exports: [
     CompackBannerComponent
   ]
 })

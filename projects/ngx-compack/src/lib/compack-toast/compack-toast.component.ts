@@ -3,7 +3,6 @@ import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit, TemplateRef, Vi
 import { CompackToastMergeService } from './compack-toast-merge.service';
 import { Toast } from './model/toast';
 import { ToastConfig } from './model/toast-config';
-import { TypeToast } from './model/type-toast';
 
 @Component({
   selector: 'compack-toast',
@@ -22,12 +21,6 @@ import { TypeToast } from './model/type-toast';
   ]
 })
 export class CompackToastComponent implements OnInit, OnDestroy {
-  // config class
-  @Input() messageClassName: string = '';
-  // config color
-  @Input() infoColor: string = '#2196f3';
-  @Input() errorColor: string = '#ff5252';
-  @Input() successColor: string = '#4caf50';
   // data
   private index = 0;
   public listMessages: Toast[] = [];
@@ -49,7 +42,7 @@ export class CompackToastComponent implements OnInit, OnDestroy {
       .subscribe((next: ToastConfig) => {
         if (next !== null) {
           const newIndex = this.index++;
-          const newToast = this.ctms.mergeToastConfig(next, newIndex, this.infoColor, this.errorColor, this.successColor)
+          const newToast = this.ctms.mergeToastConfig(next, newIndex)
           if (newToast != null) {
             this.listMessages.push(newToast);
             this.setTimerToDel(newIndex);

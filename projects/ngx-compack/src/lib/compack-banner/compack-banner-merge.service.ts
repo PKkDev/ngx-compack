@@ -6,6 +6,10 @@ import { DisplayMessageConfig } from './model/display-message-config';
 import { TypeMessage } from './model/type-message';
 import { TypePositionMessage } from './model/type-position-message';
 
+const mapColor: Map<string, string> = new Map<string, string>()
+  .set('info', '#2196f3')
+  .set('error', '#ff5252');
+
 @Injectable({
   providedIn: 'root'
 })
@@ -17,7 +21,19 @@ export class CompackBannerMergeService {
 
   constructor() { }
 
-  public mergeMessageConfig(messageConfig: DisplayMessageConfig, infoColor: string, errorColor: string): DisplayMessage | null {
+  public setInfoColor(newInfoColor: string) {
+    if (mapColor.has('info')) {
+      mapColor.set('info', newInfoColor);
+    }
+  }
+
+  public setErrorColor(newErrorColor: string) {
+    if (mapColor.has('error')) {
+      mapColor.set('error', newErrorColor);
+    }
+  }
+
+  public mergeMessageConfig(messageConfig: DisplayMessageConfig): DisplayMessage | null {
     // console.log('messageConfig', messageConfig);
 
     if (messageConfig == null)
@@ -31,15 +47,24 @@ export class CompackBannerMergeService {
 
     switch (messageConfig.typeMessage) {
       case TypeMessage.Error: {
-        result.color = errorColor;
+        if (mapColor.has('error')) {
+          const color = mapColor.get('error');
+          result.color = color ? color : '#fff';
+        }
         break;
       }
       case TypeMessage.Info: {
-        result.color = infoColor;
+        if (mapColor.has('info')) {
+          const color = mapColor.get('info');
+          result.color = color ? color : '#fff';
+        }
         break;
       }
       default: {
-        result.color = errorColor;
+        if (mapColor.has('error')) {
+          const color = mapColor.get('error');
+          result.color = color ? color : '#fff';
+        }
         break;
       }
     }

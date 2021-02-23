@@ -5,7 +5,7 @@
 
   <div class="calendar_container">
 
-    <input class="input" (click)="openMenuPicker(menu)" readonly
+    <input class="input" [ngClass]="{'short':!useTime, 'long':useTime }" (click)="openMenuPicker(menu)" readonly
       [value]="[selectStartDate, selectLastDate] | displayPeriodDate: formatViewDateInPicker">
 
     <label class="mark" for="dropdownForm3"></label>

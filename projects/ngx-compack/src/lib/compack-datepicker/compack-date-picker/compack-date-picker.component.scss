@@ -2,19 +2,26 @@
 
 .calendar_container {
     position: relative;
+    height: 100%;
+    width: 100%;
 
     svg {
         cursor: pointer;
-        width: 40px;
-        height: 40px;
+        width: 45px;
+        height: 100%;
+
+        &:hover {
+            fill: #e9041e;
+        }
     }
 
     .input {
-        width: 18em;
-        // min-width: 10em;
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
+
+        height: 100%;
+        box-sizing: border-box;
 
         font-family: "Roboto";
         text-align: left;
@@ -37,11 +44,19 @@
         }
     }
 
+    .short {
+        min-width: 10em;
+    }
+
+    .long {
+        min-width: 20em;
+    }
+
     .mark {
         border: 5px solid transparent;
         border-top-color: #000;
         position: absolute;
-        right: 13px;
+        right: 10px;
         top: 45%;
         background-color: transparent;
     }
@@ -55,6 +70,10 @@
         background-color: #fff;
 
         .calendar {
+            box-shadow: 0px 4px 4px 4px rgba(0, 0, 0, 0.25);
+            background-color: #fff;
+            border-radius: 6px;
+            border-color: #fff;
             margin: 5px;
             border-radius: none;
             box-shadow: none;
@@ -85,11 +104,15 @@
 } */
 
 .calendar {
+    margin: 5px;
     width: 19.5em;
-    box-shadow: 0px 4px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 6px;
+    // box-shadow: 0px 4px 4px 4px rgba(0, 0, 0, 0.25);
+    // background-color: #fff;
+    // border-radius: 6px;
     font-family: "Roboto";
-    background-color: #fff;
+
+    border-radius: 7px;
+    border: thin solid darkgray;
 
     .title {
         color: #737576;
@@ -129,7 +152,7 @@
     .body {
         width: 99%;
         margin: 0 auto;
-        
+
         .my-table {
             border-collapse: collapse;
             border-spacing: 0 0.1vh;

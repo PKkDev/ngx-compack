@@ -9,9 +9,7 @@ const mapColor: Map<string, string> = new Map<string, string>()
   .set('error', '#ff5252')
   .set('success', '#4caf50');
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class CompackToastMergeService {
 
   public notifEmite$: ReplaySubject<ToastConfig> = new ReplaySubject<ToastConfig>(3);

@@ -3,9 +3,7 @@ import { CompackToastMergeService } from './compack-toast-merge.service';
 import { CompackToastComponent } from './compack-toast.component';
 import { ToastConfig } from './model/toast-config';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class CompackToastService {
 
   constructor(

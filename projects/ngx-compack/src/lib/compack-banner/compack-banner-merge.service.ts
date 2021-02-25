@@ -10,9 +10,7 @@ const mapColor: Map<string, string> = new Map<string, string>()
   .set('info', '#2196f3')
   .set('error', '#ff5252');
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class CompackBannerMergeService {
 
   public newMessageEvent$: ReplaySubject<DisplayMessageConfig> = new ReplaySubject<DisplayMessageConfig>(1);

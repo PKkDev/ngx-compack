@@ -12,7 +12,7 @@ const mapColor: Map<string, string> = new Map<string, string>()
 @Injectable()
 export class CompackToastMergeService {
 
-  public notifEmite$: ReplaySubject<ToastConfig> = new ReplaySubject<ToastConfig>(3);
+  public notifEmite$: ReplaySubject<ToastConfig> = new ReplaySubject<ToastConfig>(30);
 
   constructor() { }
 

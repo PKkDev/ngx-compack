@@ -33,6 +33,13 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.cts.emitNewNotif({ title: 'Error', message: 'Body Error', type: TypeToast.Error });
     this.cts.emitNewNotif({ title: 'Error', type: TypeToast.Error });
     this.cts.emitNewNotif({ title: 'Info', type: TypeToast.Info });
+    this.cts.emitNewNotif({ title: 'Info', type: TypeToast.Info });
+    this.cts.emitNewNotif({ title: 'Info', type: TypeToast.Info });
+    this.cts.emitNewNotif({ title: 'Info', type: TypeToast.Info });
+    this.cts.emitNewNotif({ title: 'Info', type: TypeToast.Info });
+    this.cts.emitNewNotif({ title: 'Info', type: TypeToast.Info });
+    this.cts.emitNewNotif({ title: 'Info', type: TypeToast.Info });
+    
 
   }
 

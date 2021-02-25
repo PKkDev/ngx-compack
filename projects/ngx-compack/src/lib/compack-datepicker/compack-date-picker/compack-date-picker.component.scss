@@ -1,4 +1,4 @@
-@import "../../font/font.scss";
+@import "../../font/font-two-level.scss";
 
 .calendar_container {
     position: relative;
@@ -62,7 +62,7 @@
     }
 
     .menu_calendar {
-        z-index: 2;
+        z-index: 3;
         position: absolute;
         margin: 5px;
         box-shadow: 0px 4px 4px 4px rgba(0, 0, 0, 0.25);
@@ -70,6 +70,7 @@
         background-color: #fff;
 
         .calendar {
+            z-index: 3;
             box-shadow: 0px 4px 4px 4px rgba(0, 0, 0, 0.25);
             background-color: #fff;
             border-radius: 6px;
@@ -104,6 +105,7 @@
 } */
 
 .calendar {
+    font-size: 15px;
     margin: 5px;
     width: 19.5em;
     // box-shadow: 0px 4px 4px 4px rgba(0, 0, 0, 0.25);
@@ -214,7 +216,7 @@
             justify-content: center;
             align-items: center;
             flex-direction: row;
-            height: 6em;
+            // height: 6em;
 
             .time_block {
                 width: 40%;

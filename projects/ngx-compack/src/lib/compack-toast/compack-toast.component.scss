@@ -1,4 +1,4 @@
-@import "../font/font.scss";
+@import "../font/font-one-level.scss";
 
 .empty-container {
     visibility: hidden;
@@ -9,7 +9,7 @@
     width: 330px;
     max-height: 500px;
     position: absolute;
-    bottom: 0;
+    bottom: 5px;
     left: 0;
     z-index: 3;
     padding: 15px;

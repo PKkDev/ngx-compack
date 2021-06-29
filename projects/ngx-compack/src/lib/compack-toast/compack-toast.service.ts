@@ -1,7 +1,7 @@
 import { ApplicationRef, ComponentFactoryResolver, Injectable, Injector } from '@angular/core';
 import { CompackToastMergeService } from './compack-toast-merge.service';
 import { CompackToastComponent } from './compack-toast.component';
-import { ToastConfig } from './model/toast-config';
+import { TypeToast } from './model/type-toast';
 
 @Injectable()
 export class CompackToastService {
@@ -14,8 +14,11 @@ export class CompackToastService {
     setTimeout(() => this.createdContainer(), 0);
   }
 
-  public emitNewNotif(message: ToastConfig) {
-    this.ctms.notifEmite$.next(message);
+  public emitNotife(type: TypeToast, title: string, message?: string) {
+    if (message)
+      this.ctms.notifEmite$.next({ title, type, message });
+    else
+      this.ctms.notifEmite$.next({ title, type });
   }
 
   public setInfoColor(newInfoColor: string) {

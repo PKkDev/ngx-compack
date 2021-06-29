@@ -2,6 +2,8 @@ import { ApplicationRef, ComponentFactoryResolver, Injectable, Injector } from '
 import { CompackBannerMergeService } from './compack-banner-merge.service';
 import { CompackBannerComponent } from './compack-banner.component';
 import { DisplayMessageConfig } from './model/display-message-config';
+import { TypeMessage } from './model/type-message';
+import { TypePositionMessage } from './model/type-position-message';
 
 @Injectable()
 export class CompackBannerService {
@@ -14,11 +16,18 @@ export class CompackBannerService {
     setTimeout(() => this.createdContainer(), 0);
   }
 
-  public addNewMessage(messConfig: DisplayMessageConfig) {
+  public viewBanner(typeMessage: TypeMessage, position: TypePositionMessage, message: string, title?: string, intervalView?: number) {
+    const messConfig: DisplayMessageConfig = {
+      typeMessage,
+      position,
+      message,
+      title,
+      intervalView
+    }
     this.cbms.newMessageEvent$.next(messConfig);
   }
 
-  public removeMessage() {
+  public removeBanner() {
     this.cbms.removeMessageEvent$.emit(true);
   }
 

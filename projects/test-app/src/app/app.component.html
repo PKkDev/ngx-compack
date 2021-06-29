@@ -1,71 +1,78 @@
-<!-- <div class="container">
-    <div class="line">
-        <compack-range-day-picker [maxChoseDay]="5" [max]="max" [min]="min"></compack-range-day-picker>
-        <compack-range-day-picker [type]="'block'" [maxChoseDay]="5" [max]="max" [min]="min"></compack-range-day-picker>
-        <compack-range-day-picker [type]="'line'" [maxChoseDay]="5" [max]="max" [min]="min"></compack-range-day-picker>
-        <compack-range-day-picker [type]="'icon'" [maxChoseDay]="5" [max]="max" [min]="min"></compack-range-day-picker>
+<div class="container">
+
+    <div class="col">
+
+        <div class="title"> test datapicker</div>
+
+        <hr>
+
+        <compack-date-picker [rangeMode]="rangeMode" [type]="type" [viewFieldSelectedDate]="viewFieldSelectedDate"
+            [formatOutputDate]="formatOutputDate" [useTime]="useTime" [maxChoseDay]="maxChoseDay" [locale]="locale"
+            [max]="max" [min]="min" (selectLastDateEvent)="selectLastDateEvent($event)">
+        </compack-date-picker>
+
     </div>
-</div> -->
 
-<app-test-created></app-test-created>
+    <div class="col">
 
+        <div class="title">params</div>
 
-<!-- <compack-banner [backClassName]="'test'" [errorColor]="'#eee'" [infoColor]="'#909B02'"></compack-banner> -->
-<!-- <compack-toast [messageClassName]="'test'" [errorColor]="'#eee'" [infoColor]="'#909B02'" [successColor]="'#332299'">
-</compack-toast> -->
+        <hr>
 
-<!-- <div style="position: absolute; top:0; left: 50%;">
-    <compack-date-picker [type]="'line'" [maxChoseDay]="5" [max]="max" [min]="min"></compack-date-picker>
-</div> -->
+        <div class="field_group">
+            <p>locale <input type="text" [(ngModel)]="locale" /></p>
+        </div>
 
-<!-- <div style="position: absolute; bottom:0; left: 50%;">
-    <compack-date-picker [locale]="'en'" [type]="'line'" [maxChoseDay]="5" [max]="max" [min]="min">
-    </compack-date-picker>
-</div>
+        <div class="field_group">
+            <p>use time <input type="checkbox" [(ngModel)]="useTime"></p>
+        </div>
 
-<div style="position: absolute; left:0; top:50%">
-    <compack-date-picker [useTime]="true" [type]="'line'" [maxChoseDay]="5" [max]="max" [min]="min">
-    </compack-date-picker>
-</div>
+        <div class="field_group">
+            <p>rangeMode <input type="checkbox" [(ngModel)]="rangeMode"></p>
+        </div>
 
-<div style="position: absolute; right:0; top:50%">
-    <compack-date-picker [type]="'line'" [maxChoseDay]="5" [max]="max" [min]="min"></compack-date-picker>
-</div>
+        <div class="field_group">
+            <p>viewFieldSelectedDate <input type="checkbox" [(ngModel)]="viewFieldSelectedDate"></p>
+        </div>
 
-<div style="position: absolute; top:0; left:0;">
-    <compack-date-picker [locale]="'en'" [type]="'icon'" [maxChoseDay]="5" [max]="max" [min]="min">
-    </compack-date-picker>
-</div> -->
+        <div class="field_group">
+            <p>maxChoseDay <input type="number" [(ngModel)]="maxChoseDay" /></p>
+        </div>
 
-<!-- <div style="position: absolute; top:0; right: 0;">
-    <compack-date-picker [useTime]="true" [type]="'icon'" [maxChoseDay]="5" [max]="max" [min]="min">
-    </compack-date-picker>
-</div> -->
+        <div class="field_group">
+            <p>formatOutputDate <input type="text" [(ngModel)]="formatOutputDate" /></p>
+        </div>
 
-<!-- <div style="position: absolute; bottom:0; left:0;">
-    <compack-date-picker [type]="'icon'" [maxChoseDay]="5" [max]="max" [min]="min"></compack-date-picker>
-</div> -->
+        <div class="field_group">
+            <p>type <select [(ngModel)]="type">
+                    <option>block</option>
+                    <option>line</option>
+                    <option>icon</option>
+                </select>
+            </p>
+        </div>
 
-<!-- <div style="position: absolute; bottom:0; right: 0;">
-    <compack-date-picker [type]="'icon'" [maxChoseDay]="5" [max]="max" [min]="min"></compack-date-picker>
-</div> -->
+        <div class="field_group">
+            <p>min</p>
+            <div class="max_container">
+                <compack-date-picker [type]="'line'" (selectLastDateEvent)="selectMinDateEvent($event)">
+                </compack-date-picker>
+            </div>
+        </div>
 
-<div class="pickecr_test">
+        <div class="field_group">
+            <p>max</p>
+            <div class="max_container">
+                <compack-date-picker [type]="'line'" (selectLastDateEvent)="selectMaxDateEvent($event)">
+                </compack-date-picker>
+            </div>
+        </div>
 
-    adasdasdasd
+        <div class="field_group">
+            <p>selected</p>
+            {{selectedDatesStr}}
+        </div>
 
-    <compack-date-picker [type]="'block'" [useTime]="false" [maxChoseDay]="5" [max]="max" [min]="min"
-        [formatOutputDate]="'DD.MM.YYYYTHH:mm'"></compack-date-picker>
-
-    <compack-date-picker [useTime]="true" [type]="'line'" [useTime]="false" [maxChoseDay]="5" [max]="max" [min]="min"
-        [formatOutputDate]="'DD.MM.YYYYTHH:mm'"></compack-date-picker>
-
-    <compack-date-picker [type]="'icon'" [useTime]="false" [maxChoseDay]="5" [max]="max" [min]="min"
-        [formatOutputDate]="'DD.MM.YYYYTHH:mm'"></compack-date-picker>
-
-    <compack-date-picker [useTime]="false" [type]="'line'" [useTime]="false" [maxChoseDay]="15"
-        [formatOutputDate]="'DD.MM.YYYYTHH:mm'"></compack-date-picker>
-
-    <compack-date-picker [useTime]="true" [formatOutputDate]="'DD.MM.YYYYTHH:mm'"></compack-date-picker>
+    </div>
 
 </div>

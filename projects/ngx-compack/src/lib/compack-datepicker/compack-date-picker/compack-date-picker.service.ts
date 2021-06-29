@@ -4,6 +4,7 @@ import { Moment } from 'moment';
 import { CalendarDayBuildService } from '../calendar-day-build.service';
 import { CalendarPicker } from '../model/calendar';
 import { CalendarDayPicker } from '../model/calendar-day';
+import { MonthSelect } from '../model/month-select';
 
 const moment = moment_;
 
@@ -20,6 +21,16 @@ export class CompackDatePickerService {
     return moment(month, 'M').format('MMMM');
   }
 
+  // получение названия всех месяцов
+  getMonths(locale: string): MonthSelect[] {
+    moment.locale(locale);
+    const result: MonthSelect[] = [];
+    for (let i = 1; i <= 12; i++) {
+      result.push(new MonthSelect(i, moment(i, 'M').format('MMM')))
+    }
+    return result;
+  }
+
   // получение списка названий дней недели
   getNameDayOfWeek(locale: string): string[] {
     moment.locale(locale);
@@ -33,7 +44,7 @@ export class CompackDatePickerService {
   }
 
   getWeeksForCalendar(month: number, year: number, locale: string,
-    selectStartDate?: CalendarDayPicker, selectLastDate?: CalendarDayPicker, max?: string, min?: string): CalendarPicker[] {
+    selectStartDate?: CalendarDayPicker, selectLastDate?: CalendarDayPicker, max?: Moment, min?: Moment): CalendarPicker[] {
     moment.locale(locale);
 
     let listDay: Moment[] = CalendarDayBuildService.getAllDayMonth(month, year, locale);
@@ -77,7 +88,6 @@ export class CompackDatePickerService {
   private checkSelectedDate(
     fulDateView: string, nowMonth: boolean,
     selectStartDate?: CalendarDayPicker, selectLastDate?: CalendarDayPicker): boolean {
-    // if (selectStartDate != undefined && selectLastDate != undefined) {
     let selectedStart = false;
     let selectedEnd = false;
     if (selectStartDate != null) {
@@ -89,11 +99,9 @@ export class CompackDatePickerService {
       selectedEnd = (fulDateEndSelected === fulDateView && nowMonth);
     }
     return selectedStart || selectedEnd;
-    // }
-    return false;
   }
 
-  private checkOutMaxMin(fulDateView: string, max?: string, min?: string): boolean {
+  private checkOutMaxMin(fulDateView: string, max?: Moment, min?: Moment): boolean {
     let outMax = false;
     let outMin = false;
     if (max != undefined) {

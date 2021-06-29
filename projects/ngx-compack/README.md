@@ -88,7 +88,9 @@ add in app.component.htm:
 
 Name | Description
 ------------ | -------------
+@Input() <br> rangeMode: boolean |  select one date or range
 @Input() <br> type: string | type of picker -'block', 'line' or 'icon'
+@Input() <br> viewFieldSelectedDate: boolean |  display field with selected date
 @Input() <br> formatOutputDate: string |  exit date format
 @Input() <br> useTime: boolean |  add time field or not
 @Input() <br> maxChoseDay: number | maximum range for selection
@@ -176,7 +178,7 @@ is the message hanging in the foreground.
           position: TypePositionMessage.TopRight,
           typeMessage: TypeMessage.Info
         }
-        this.cbs.addNewMessage(config);
+        setTimeout(() => { this.cbs.viewBanner(config.typeMessage, config.position, config.message); }, 0);
     }
     }
 
@@ -193,8 +195,8 @@ add CompackBannerService from DI in constructor.
 
 Method | Description
 ------------ | -------------
- addNewMessage(config: DisplayMessageConfig) | add new banner
-removeMessage() |  remove last banner
+ viewBanner(typeMessage: TypeMessage, position: TypePositionMessage, message: string, title?: string, intervalView?: number) | add new banner
+removeBanner() |  remove last banner
 setInfoColor(color: string) | set back color for info type banner
 setErrorColor(color: string) | set back color for error type banner
 
@@ -248,8 +250,8 @@ setErrorColor(color: string) | set back color for error type banner
     constructor(private cts: CompackToastService) { }
     
     ngOnInit() {
-         this.cts.emitNewNotif({ title: 'Error', message: 'Body Error', type: TypeToast.Error });
-		 this.cts.emitNewNotif({ title: 'Error', type: TypeToast.Error });
+    	this.cts.emitNotife(TypeToast.Error, 'Error Error ErrorError ErrorErrorErrorErrorError vErrorError Error Error');
+    	this.cts.emitNotife(TypeToast.Info, 'Info');
     }
     }
 
@@ -266,7 +268,7 @@ add CompackToastService from DI in constructor.
 
 Method | Description
 ------------ | -------------
- emitNewNotif(message: ToastConfig) | add new message
+ emitNotife(type: TypeToast, title: string, message?: string) | add new message
 setInfoColor(color: string) | set back color for info type message
 setErrorColor(color: string) | set back color for error type message
 setSuccessColor(color: string) | set back color for success type message

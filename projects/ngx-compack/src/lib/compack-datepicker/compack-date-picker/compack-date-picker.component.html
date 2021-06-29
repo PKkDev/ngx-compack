@@ -6,10 +6,9 @@
   <div class="calendar_container">
 
     <input class="input" [ngClass]="{'short':!useTime, 'long':useTime }" (click)="openMenuPicker(menu)" readonly
-      [value]="[selectStartDate, selectLastDate] | displayPeriodDate: formatViewDateInPicker">
+      [value]="[selectStartDate, selectLastDate] | displayPeriodDate: rangeMode : fieldPlaceHolder: useTime">
 
     <label class="mark" for="dropdownForm3"></label>
-
 
     <div #menu class="menu_calendar" [ngClass]="{'visible_menu': menuIsVisiblr, 'hidden_menu': !menuIsVisiblr}">
       <ng-container *ngTemplateOutlet="picker"></ng-container>
@@ -50,7 +49,7 @@
 
     <div class="title">
 
-      <div class="titile_name">
+      <div class="titile_name" (click)="openMonthSelector()">
         {{nameMonth}} {{selectedYear}}
       </div>
 
@@ -58,6 +57,13 @@
         <button (click)="previewMonth()">&lt;</button>
         <button (click)="nextMonth()">&gt;</button>
       </div>
+
+      <div class="month_selector" [ngClass]="{'visible':menuMonthIsVisible}">
+        <div class="month" *ngFor="let month of allMonth" (click)="selectMonth(month.order)">
+          {{month.name}}
+        </div>
+      </div>
+
     </div>
 
     <div class="body">
@@ -113,19 +119,17 @@
       </div>
 
 
-      <div class="view" *ngIf="isNeedViewFieldDate">
+      <div class="field_selected_date" *ngIf="viewFieldSelectedDate">
 
         <span>
-          {{[selectStartDate, selectLastDate] | displayPeriodDate: formatViewDateInPicker}}
+          {{[selectStartDate, selectLastDate] | displayPeriodDate: rangeMode: fieldPlaceHolder : useTime}}
         </span>
 
       </div>
 
       <div class="footer">
-        <!-- <button class="btn" (click)="setNewDate()">Показать</button>
-        <button class="btn" (click)="clearCalendar()">Сбросить</button> -->
-        <button class="btn" (click)="setNewDate()">View</button>
-        <button class="btn" (click)="clearCalendar()">Reset</button>
+        <button class="btn" (click)="setNewDate()">{{acceptBtn}}</button>
+        <button class="btn" (click)="clearCalendar()">{{cancelBtn}}</button>
       </div>
 
     </div>

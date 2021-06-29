@@ -1,25 +1,40 @@
 .container {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     height: 100%;
     width: 100%;
-    flex-direction: column;
+    flex-direction: row;
 
-    .line {
-        height: 33%;
-        margin: 0 auto;
-        width: 100%;
+    .col {
+        height: 100%;
+        width: 50%;
+        padding: 15px;
         display: flex;
-        flex-direction: row;
-        justify-content: space-around;
+        flex-direction: column;
+        align-items: center;
+
+        .title {
+            font-size: 25px;
+        }
+
+        hr {
+            background-color: #000;
+            width: 100%;
+        }
+
+        .field_group {
+            font-size: 20px;
+            width: 100%;
+            text-align: left;
+
+            p {
+                margin: 5px 0;
+            }
+
+            .max_container {
+                display: flex;
+                justify-content: flex-start;
+            }
+        }
     }
-}
-
-.pickecr_test {
-    width: 100%;
-    height: 60px;
-    margin: auto 0;
-    display: flex;
-
-    font-size: 25px;
 }

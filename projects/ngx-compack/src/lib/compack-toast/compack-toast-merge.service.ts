@@ -17,21 +17,18 @@ export class CompackToastMergeService {
   constructor() { }
 
   public setInfoColor(newInfoColor: string) {
-    if (mapColor.has('info')) {
+    if (mapColor.has('info'))
       mapColor.set('info', newInfoColor);
-    }
   }
 
   public setErrorColor(newErrorColor: string) {
-    if (mapColor.has('error')) {
+    if (mapColor.has('error'))
       mapColor.set('error', newErrorColor);
-    }
   }
 
   public setSuccessColor(newSuccessColor: string) {
-    if (mapColor.has('success')) {
+    if (mapColor.has('success'))
       mapColor.set('success', newSuccessColor);
-    }
   }
 
   public mergeToastConfig(toastConfig: ToastConfig, newIndex: number): Toast | null {

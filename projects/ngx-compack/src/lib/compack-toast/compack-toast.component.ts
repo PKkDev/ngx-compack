@@ -11,11 +11,11 @@ import { ToastConfig } from './model/toast-config';
   animations: [
     trigger('flyInOut', [
       transition(':enter', [
-        style({ transform: 'translateX(-100%)', opacity: '0' }),
+        style({ opacity: '0' }),
         animate(1000)
       ]),
       transition(':leave', [
-        animate(1000, style({ transform: 'translateX(100%)', opacity: '0' }))
+        animate(1000, style({ opacity: '0' }))
       ])
     ])
   ]

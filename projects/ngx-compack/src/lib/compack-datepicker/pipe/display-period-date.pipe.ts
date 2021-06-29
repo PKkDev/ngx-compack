@@ -6,33 +6,33 @@ const moment = moment_;
 
 @Pipe({
   name: 'displayPeriodDate',
-  pure: false
+  pure: false,
 })
 export class DisplayPeriodDatePipe implements PipeTransform {
 
-  transform(value: CalendarDayPicker[], formatView: string): string {
+  transform(value: (CalendarDayPicker | undefined)[], rangeMode: boolean, placeHolder: string, useTime: boolean): string {
 
-    //let str = 'период с/по';
-    let str = 'from/to';
+    let str = placeHolder;
 
     if (value === null || value.length == 0 || (value.length > 0 && value[0] == undefined)) {
       return str;
     }
 
-    let formatDate = 'DD.MM.YYYY';
-    if (formatView !== undefined) {
-      formatDate = formatView;
-    }
+    let formatDate = useTime ? 'DD.MM.YYYY HH:mm' : 'DD.MM.YYYY';
 
-    const strDateStart = moment(value[0].fulDate).format(formatDate);
+    if (rangeMode) {
 
-    if (value[1] === undefined) {
+      const strDateStart = moment(value[0]?.fulDate).format(formatDate);
       str = strDateStart + ' - '
-      return str;
-    }
 
-    const strDateEnd =  moment(value[1].fulDate).format(formatDate);
-    str = strDateStart + ' - ' + strDateEnd;
+      if (value[1] !== undefined) {
+        const strDateEnd = moment(value[1].fulDate).format(formatDate);
+        str = strDateStart + ' - ' + strDateEnd;
+      }
+
+    } else {
+      str = moment(value[0]?.fulDate).format(formatDate);
+    }
 
     return str;
   }

@@ -43,11 +43,10 @@
 
       &:hover {
         cursor: pointer;
-        background-color: #000;
-        border: thin solid #000;
+        transform: scale(1.2);
 
         svg {
-          fill: white;
+          fill: black;
         }
       }
 
@@ -68,7 +67,9 @@
     }
 
     .message_body {
-      white-space: pre;
+      white-space: pre-line;
+      padding-right: 20px;
+      text-align: left;
       font-size: 17px;
     }
   }

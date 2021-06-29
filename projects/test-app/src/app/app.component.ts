@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
+import { Moment } from 'moment';
 import { CompackBannerService, CompackToastService, DisplayMessageConfig, TypeMessage, TypePositionMessage, TypeToast } from 'ngx-compack';
 
 @Component({
@@ -9,8 +10,18 @@ import { CompackBannerService, CompackToastService, DisplayMessageConfig, TypeMe
 })
 export class AppComponent implements OnInit, AfterViewInit {
 
-  public min = moment().add(-3, 'd');
-  public max = moment().add(5, 'd');
+  public type = 'block';
+  public formatOutputDate = 'DD.MM.YYYYTHH:mm';
+  public locale = 'ru';
+  public useTime = false;
+  public rangeMode = false;
+  public viewFieldSelectedDate = false;
+  public maxChoseDay = 5;
+
+  public min: Moment | undefined = undefined;
+  public max: Moment | undefined = undefined;
+
+  public selectedDatesStr: string = 'none';
 
   constructor(
     private cts: CompackToastService,
@@ -18,28 +29,29 @@ export class AppComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit() {
-    this.cbs.setInfoColor('#000');
+
+    this.cbs.setInfoColor('#fff');
     this.cbs.setErrorColor('#fff');
 
     const config: DisplayMessageConfig = {
-      message: 'this website is ' + '\n' + ' intended solely \n for testing functions',
+      message: 'this website is sdsd sdsd sdfsdf sdfsd ' + '\n' + ' intended solely \n for testing functions',
       position: TypePositionMessage.BottomRight,
       typeMessage: TypeMessage.Info
     }
-    setTimeout(() => { this.cbs.addNewMessage(config); }, 0);
+    setTimeout(() => { this.cbs.viewBanner(config.typeMessage, config.position, config.message); }, 0);
 
     this.cts.setInfoColor('#fff')
 
-    this.cts.emitNewNotif({ title: 'Error', message: 'Body Error', type: TypeToast.Error });
-    this.cts.emitNewNotif({ title: 'Error', type: TypeToast.Error });
-    this.cts.emitNewNotif({ title: 'Info', type: TypeToast.Info });
-    this.cts.emitNewNotif({ title: 'Info', type: TypeToast.Info });
-    this.cts.emitNewNotif({ title: 'Info', type: TypeToast.Info });
-    this.cts.emitNewNotif({ title: 'Info', type: TypeToast.Info });
-    this.cts.emitNewNotif({ title: 'Info', type: TypeToast.Info });
-    this.cts.emitNewNotif({ title: 'Info', type: TypeToast.Info });
-    this.cts.emitNewNotif({ title: 'Info', type: TypeToast.Info });
-    
+    this.cts.emitNotife(TypeToast.Error, 'ErrorError Error Error Error Errorv Error Error Error', 'Body Error Body Error Body Error Body ErrorBody ErrorBody Error vBody Error');
+    this.cts.emitNotife(TypeToast.Error, 'Error Error ErrorError ErrorErrorErrorErrorError vErrorError Error Error');
+    this.cts.emitNotife(TypeToast.Info, 'Info');
+    this.cts.emitNotife(TypeToast.Info, 'Info');
+    this.cts.emitNotife(TypeToast.Info, 'Info');
+    this.cts.emitNotife(TypeToast.Info, 'Info');
+    this.cts.emitNotife(TypeToast.Info, 'Info');
+    this.cts.emitNotife(TypeToast.Info, 'Info');
+    this.cts.emitNotife(TypeToast.Info, 'Info');
+
 
   }
 
@@ -50,4 +62,27 @@ export class AppComponent implements OnInit, AfterViewInit {
     //   this.cbs.addNewMessage({ message: 'new new test', position: TypePositionMessage.BottomRight, typeMessage: TypeMessage.Info });
     // }, 5000)
   }
+
+  public selectLastDateEvent(selected: string[]) {
+    console.log('selected', selected);
+
+    if (selected.length == 1) {
+      this.selectedDatesStr = selected[0];
+      return;
+    }
+    if (selected.length == 2) {
+      this.selectedDatesStr = selected[0] + '-' + selected[1];
+      return;
+    }
+    this.selectedDatesStr = 'none';
+  }
+
+  public selectMinDateEvent(selected: string[]) {
+    this.min = moment(selected[0], 'DD.MM.YYYY');
+  }
+
+  public selectMaxDateEvent(selected: string[]) {
+    this.max = moment(selected[0], 'DD.MM.YYYY');
+  }
+
 }

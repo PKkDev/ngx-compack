@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import * as moment_ from 'moment';
+import * as moment from 'moment';
+//import * as moment_ from 'moment';
 import { Moment } from 'moment';
 
-const moment = moment_;
+//const moment = moment_;
+//const moment = require('moment');
 
 @Injectable({
   providedIn: 'root'

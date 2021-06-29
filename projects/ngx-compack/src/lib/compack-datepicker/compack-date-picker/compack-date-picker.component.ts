@@ -1,12 +1,15 @@
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, SimpleChange, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
-import * as moment_ from 'moment';
+import * as moment from 'moment';
+// import * as moment_ from 'moment';
+// import moment from 'moment'
 import { Moment } from 'moment';
 import { CalendarPicker } from '../model/calendar';
 import { CalendarDayPicker } from '../model/calendar-day';
 import { MonthSelect } from '../model/month-select';
 import { CompackDatePickerService } from './compack-date-picker.service';
 
-const moment = moment_;
+//const moment = moment_;
+// const moment = require('moment');
 
 @Component({
   selector: 'compack-date-picker',

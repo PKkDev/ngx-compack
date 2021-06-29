@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
-import * as moment_ from 'moment';
+import * as moment from 'moment';
+// import * as moment_ from 'moment';
 import { Moment } from 'moment';
 import { CalendarDayBuildService } from '../calendar-day-build.service';
 import { CalendarPicker } from '../model/calendar';
 import { CalendarDayPicker } from '../model/calendar-day';
 import { MonthSelect } from '../model/month-select';
 
-const moment = moment_;
+// const moment = moment_;
+//const moment = require('moment');
 
 @Injectable({
   providedIn: 'root'

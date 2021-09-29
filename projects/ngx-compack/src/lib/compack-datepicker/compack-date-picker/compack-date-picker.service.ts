@@ -45,6 +45,19 @@ export class CompackDatePickerService {
     return arrName;
   }
 
+  getDayByDate(mDate: Moment, calendar: CalendarPicker[]): CalendarDayPicker | null {
+
+    const numberDay = +mDate.format('D');
+    for (let row of calendar) {
+      for (let cell of row.week) {
+        if (cell.numberDay == numberDay && cell.isDayThisMonth)
+          return cell;
+      }
+    }
+
+    return null;
+  }
+
   getWeeksForCalendar(month: number, year: number, locale: string,
     selectStartDate?: CalendarDayPicker, selectLastDate?: CalendarDayPicker, max?: Moment, min?: Moment): CalendarPicker[] {
     moment.locale(locale);
@@ -118,19 +131,17 @@ export class CompackDatePickerService {
   }
 
   selectAllRowIncludeInRange(
-    calendar: CalendarPicker[],
-    selectStartDate?: CalendarDayPicker, selectLastDate?: CalendarDayPicker): CalendarPicker[] {
-    if (selectLastDate !== undefined && selectStartDate !== undefined) {
-      const checkStartDate = moment(selectStartDate.fulDate);
-      const checkLastDate = moment(selectLastDate.fulDate);
-      for (const cal of calendar) {
-        for (const day of cal.week) {
-          const checkDate = day.fulDate;
-          const checkAfter = moment(checkDate).isAfter(checkStartDate);
-          const checkBefore = moment(checkDate).isBefore(checkLastDate, 'day');
-          if (checkAfter && checkBefore && day.isDayThisMonth) {
-            day.isIncludeRage = true;
-          }
+    calendar: CalendarPicker[], selectStartDate: CalendarDayPicker, selectLastDate: CalendarDayPicker): CalendarPicker[] {
+    // console.log('range from/to:', selectStartDate, selectLastDate);
+    const checkStartDate = moment(selectStartDate.fulDate);
+    const checkLastDate = moment(selectLastDate.fulDate);
+    for (const cal of calendar) {
+      for (const day of cal.week) {
+        const checkDate = day.fulDate;
+        const checkAfter = moment(checkDate).isAfter(checkStartDate);
+        const checkBefore = moment(checkDate).isBefore(checkLastDate, 'day');
+        if (checkAfter && checkBefore && day.isDayThisMonth) {
+          day.isIncludeRage = true;
         }
       }
     }

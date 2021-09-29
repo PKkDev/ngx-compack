@@ -33,8 +33,7 @@ export class CompackToastComponent implements OnInit, OnDestroy {
 
   constructor(
     private cdr: ChangeDetectorRef,
-    private ctms: CompackToastMergeService) {
-  }
+    private ctms: CompackToastMergeService) { }
 
   ngOnInit() {
 

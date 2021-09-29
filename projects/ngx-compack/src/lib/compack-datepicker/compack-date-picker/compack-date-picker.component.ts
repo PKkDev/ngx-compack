@@ -11,12 +11,23 @@ import { CompackDatePickerService } from './compack-date-picker.service';
 //const moment = moment_;
 // const moment = require('moment');
 
+export enum TypeError {
+  None,
+  OutOfMaxMin,
+  StartAfterEnd,
+  MaxChooseDay
+}
+
 @Component({
   selector: 'compack-date-picker',
   templateUrl: './compack-date-picker.component.html',
   styleUrls: ['./compack-date-picker.component.scss']
 })
 export class CompackDatePickerComponent implements OnInit, AfterViewInit {
+  // inner configs
+  public isError = false;
+  public error = '';
+  private baseFormat = 'DD.MM.YYYY';
   // events
   @Output() selectLastDateEvent = new EventEmitter<string[]>();
   // input config
@@ -53,19 +64,67 @@ export class CompackDatePickerComponent implements OnInit, AfterViewInit {
   calendarWeekName: string[] = [];
   // select;
   selectStartDate: CalendarDayPicker | undefined;
+  selectStartDateStr: string | undefined;
+
   selectLastDate: CalendarDayPicker | undefined;
+  selectLastDateStr: string | undefined;
 
   constructor(
     private el: ElementRef,
     private cdr: ChangeDetectorRef,
-    private crdp: CompackDatePickerService
-  ) { }
+    private crdp: CompackDatePickerService) { }
+
+  public onChangeSelectedStartDate() {
+    if (this.selectStartDateStr) {
+
+      const mDate = moment(this.selectStartDateStr, this.baseFormat);
+      const year = mDate.year();
+      const month = mDate.month() + 1;
+
+      if (year && month) {
+        this.selectedMonth = month;
+        this.selectedYear = year;
+        this.loadMonthData();
+        const day = this.crdp.getDayByDate(mDate, this.calendar);
+        if (day != null) {
+          // if (!day.isOutOfMaxMin) {
+
+          if (this.rangeMode)
+            this.selectStartDayInRange(day, false);
+          else
+            this.selectSingleDay(day, false);
+          // }
+        }
+      }
+    }
+  }
+
+  public onChangeSelectedLastDate() {
+    if (this.selectLastDateStr) {
+
+      const mDate = moment(this.selectLastDateStr, this.baseFormat);
+      const year = mDate.year();
+      const month = mDate.month() + 1;
+
+      if (year && month) {
+        this.selectedMonth = month;
+        this.selectedYear = year;
+        this.loadMonthData();
+        const day = this.crdp.getDayByDate(mDate, this.calendar);
+        if (day != null) {
+          //if (!day.isOutOfMaxMin)
+          this.selectLastDayInRange(day, false);
+        }
+      }
+    }
+  }
 
   ngAfterViewInit() {
     this.loadCalendarTemplate(this.type);
   }
 
   ngOnInit() {
+    this.clearCalendarSelected();
     this.calendarWeekName = this.crdp.getNameDayOfWeek(this.locale);
     this.setViewFormat();
     this.loadMonthData();
@@ -90,6 +149,10 @@ export class CompackDatePickerComponent implements OnInit, AfterViewInit {
     }
     if (changes.formatOutputDate != undefined) {
       this.setViewFormat();
+    }
+    if (changes.useTime != undefined) {
+      this.baseFormat = this.useTime ? 'DD.MM.YYYY HH:mm' : 'DD.MM.YYYY';
+      console.log(this.baseFormat);
     }
   }
 
@@ -243,7 +306,7 @@ export class CompackDatePickerComponent implements OnInit, AfterViewInit {
     this.loadMonthData();
   }
 
-  setNewDate() {
+  acceptNewDate() {
     if (this.rangeMode) {
       if (this.selectStartDate !== undefined && this.selectLastDate !== undefined)
         this.selectLastDateEvent.emit([
@@ -258,80 +321,87 @@ export class CompackDatePickerComponent implements OnInit, AfterViewInit {
   }
 
   clearCalendar() {
-    this.clearAllSelectDay();
     this.ngOnInit();
     this.selectLastDateEvent.emit(['reset', 'reset']);
   }
 
-  selectDay(day: CalendarDayPicker) {
+  selectDay(day: CalendarDayPicker, setStr: boolean) {
     if (this.rangeMode)
-      this.selectRangeDay(day)
+      this.selectRangeDay(day, setStr);
     else
-      this.selectSingleDay(day)
+      this.selectSingleDay(day, setStr);
   }
 
-  private selectRangeDay(day: CalendarDayPicker) {
-    if (day.isDayThisMonth && !day.isOutOfMaxMin) {
-      if (this.selectStartDate !== undefined && this.selectLastDate !== undefined) {
-        this.clearAllSelectDay();
-        this.selectDay(day);
-      } else {
-        if (this.selectStartDate === undefined) {
-          day.isSelected = true;
-          this.selectStartDate = JSON.parse(JSON.stringify(day));
-          if (this.selectStartDate)
-            if (this.useTime) {
-              this.selectedMin = 0;
-              this.selectedHour = 0;
-              this.selectStartDate.fulDate = moment(day.fulDate).minute(0).hour(0);
-            } else {
-              this.selectStartDate.fulDate = moment(day.fulDate);
-            }
-        } else {
-          if (this.selectLastDate === undefined) {
-            day.isSelected = true;
-            this.selectLastDate = JSON.parse(JSON.stringify(day));
-            if (this.selectLastDate) {
-              if (this.useTime) {
-                this.selectedMin = 59;
-                this.selectedHour = 23;
-                this.selectLastDate.fulDate = moment(day.fulDate).minute(59).hour(23);
-              } else {
-                this.selectLastDate.fulDate = moment(day.fulDate);
-              }
-              if (this.selectLastDate.fulDate != undefined) {
-                if (this.selectLastDate.fulDate.isBefore(this.selectStartDate.fulDate)) {
-                  this.clearAllSelectDay();
-                  this.selectDay(day);
-                } else {
-                  if (this.maxChoseDay != undefined && this.selectLastDate.fulDate != undefined) {
-                    const duration = moment.duration(this.selectLastDate.fulDate.diff(this.selectStartDate.fulDate));
-                    if (duration.days() > this.maxChoseDay - 1) {
-                      this.clearAllSelectDay();
-                    } else {
-                      this.selectRowIncludeInRange();
-                    }
-                  } else {
-                    this.selectRowIncludeInRange();
-                  }
-                }
-              }
-            }
-          }
-        }
+  private selectStartDayInRange(day: CalendarDayPicker, fromCalendar: boolean) {
+    this.cleareStartDay();
+    this.cleareRange();
+    day.isSelected = true;
+    this.selectStartDate = JSON.parse(JSON.stringify(day));
+    if (this.selectStartDate) {
+      if (this.useTime) {
+        this.selectedMin = 0;
+        this.selectedHour = 0;
+        this.selectStartDate.fulDate = moment(day.fulDate).minute(0).hour(0);
       }
+      else
+        this.selectStartDate.fulDate = moment(day.fulDate);
+
+      if (fromCalendar)
+        this.selectStartDateStr = this.selectStartDate.fulDate.format(this.baseFormat);
+
+      this.selectRowIncludeInRange();
+
     }
   }
 
-  private selectSingleDay(day: CalendarDayPicker) {
+  private selectLastDayInRange(day: CalendarDayPicker, fromCalendar: boolean) {
+    this.cleareEndDay();
+    this.cleareRange();
+    day.isSelected = true;
+    this.selectLastDate = JSON.parse(JSON.stringify(day));
+    if (this.selectLastDate) {
+      if (this.useTime) {
+        this.selectedMin = 59;
+        this.selectedHour = 23;
+        this.selectLastDate.fulDate = moment(day.fulDate).minute(59).hour(23);
+      }
+      else
+        this.selectLastDate.fulDate = moment(day.fulDate);
+
+      if (fromCalendar)
+        this.selectLastDateStr = this.selectLastDate.fulDate.format(this.baseFormat);
+
+      this.selectRowIncludeInRange();
+
+    }
+  }
+
+
+
+  private selectRangeDay(day: CalendarDayPicker, fromCalendar: boolean) {
+    if (day.isDayThisMonth && !day.isOutOfMaxMin) {
+      if (this.selectStartDate !== undefined && this.selectLastDate !== undefined) {
+        this.cleareEndDayStr();
+        this.clearCalendarSelected();
+        this.selectStartDayInRange(day, fromCalendar);
+      }
+      else
+        if (this.selectStartDate === undefined)
+          this.selectStartDayInRange(day, fromCalendar);
+        else
+          this.selectLastDayInRange(day, fromCalendar);
+    }
+  }
+
+  private selectSingleDay(day: CalendarDayPicker, fromCalendar: boolean) {
     if (day.isDayThisMonth && !day.isOutOfMaxMin) {
       if (this.selectStartDate !== undefined) {
-        this.clearAllSelectDay();
-        this.selectDay(day);
+        this.cleareStartDay();
+        this.selectSingleDay(day, fromCalendar);
       } else {
         day.isSelected = true;
         this.selectStartDate = JSON.parse(JSON.stringify(day));
-        if (this.selectStartDate)
+        if (this.selectStartDate) {
           if (this.useTime) {
             this.selectedMin = 0;
             this.selectedHour = 0;
@@ -339,24 +409,133 @@ export class CompackDatePickerComponent implements OnInit, AfterViewInit {
           } else {
             this.selectStartDate.fulDate = moment(day.fulDate);
           }
+          if (fromCalendar)
+            this.selectStartDateStr = this.selectStartDate.fulDate.format(this.baseFormat);
+        }
       }
     }
   }
 
-
-  private selectRowIncludeInRange() {
-    this.calendar = this.crdp.selectAllRowIncludeInRange(this.calendar, this.selectStartDate, this.selectLastDate);
+  private selectRowIncludeInTempoRange(day: CalendarDayPicker) {
+    if (this.selectStartDate)
+      this.calendar = this.crdp.selectAllRowIncludeInRange(this.calendar, this.selectStartDate, day);
   }
 
-  private clearAllSelectDay() {
-    for (const cal of this.calendar) {
-      for (const day of cal.week) {
-        day.isSelected = false;
-        day.isIncludeRage = false;
+  private selectRowIncludeInRange() {
+    if (this.selectStartDate && this.selectLastDate) {
+
+      if (this.selectLastDate.fulDate?.isBefore(this.selectStartDate.fulDate)) {
+        this.serErrorByType(TypeError.StartAfterEnd)
+        this.isError = true;
+        this.cleareRange();
+        return;
+      }
+
+      if (this.selectStartDate.isOutOfMaxMin || this.selectLastDate.isOutOfMaxMin) {
+        this.serErrorByType(TypeError.OutOfMaxMin);
+        this.isError = true;
+        this.cleareRange();
+        return;
+      }
+
+      if (this.maxChoseDay) {
+        const duration = moment.duration(this.selectLastDate.fulDate?.diff(this.selectStartDate.fulDate));
+        if (duration.days() > this.maxChoseDay - 1) {
+          this.serErrorByType(TypeError.MaxChooseDay)
+          this.isError = true;
+          this.cleareRange();
+          return;
+        }
+      }
+
+      this.serErrorByType(TypeError.None)
+      this.isError = false;
+      this.calendar = this.crdp.selectAllRowIncludeInRange(this.calendar, this.selectStartDate, this.selectLastDate);
+    }
+  }
+
+  public selectTest(day: CalendarDayPicker, fromCalendar: boolean) {
+    if (this.selectStartDate && !this.selectLastDate)
+      if (this.selectStartDate.numberDay != day.numberDay)
+        if (day.isDayThisMonth && !day.isOutOfMaxMin) {
+          this.cleareRange();
+          this.selectRowIncludeInTempoRange(day);
+        }
+  }
+
+  private serErrorByType(type: TypeError) {
+    switch (type) {
+      case TypeError.None: {
+        this.error = '';
+        break;
+      }
+      case TypeError.OutOfMaxMin: {
+        if (this.locale.includes('ru'))
+          this.error = 'выход за макс/мин';
+        else
+          this.error = 'out of max/min';
+        break;
+      }
+      case TypeError.MaxChooseDay: {
+        if (this.locale.includes('ru'))
+          this.error = 'вне диапазона';
+        else
+          this.error = 'out of range';
+        break;
+      }
+      case TypeError.StartAfterEnd: {
+        if (this.locale.includes('ru'))
+          this.error = 'старт > конец';
+        else
+          this.error = 'start > end';
+        break;
+      }
+    }
+  }
+
+  private cleareStartDayStr() {
+    this.selectStartDateStr = undefined;
+  }
+  private cleareStartDay() {
+    if (this.selectStartDate) {
+      const numberDay = this.selectStartDate.fulDate?.format('D');
+      for (let row of this.calendar) {
+        for (let cell of row.week) {
+          if (cell.numberDay == +(numberDay as string) && cell.isDayThisMonth)
+            cell.isSelected = false;
+        }
       }
     }
     this.selectStartDate = undefined;
+  }
+
+  private cleareEndDayStr() {
+    this.selectLastDateStr = undefined;
+  }
+  private cleareEndDay() {
+    if (this.selectLastDate) {
+      const numberDay = this.selectLastDate.fulDate?.format('D');
+      for (let row of this.calendar) {
+        for (let cell of row.week) {
+          if (cell.numberDay == +(numberDay as string) && cell.isDayThisMonth)
+            cell.isSelected = false;
+        }
+      }
+    }
+
     this.selectLastDate = undefined;
+  }
+
+  private cleareRange() {
+    for (const cal of this.calendar)
+      for (const day of cal.week)
+        day.isIncludeRage = false;
+  }
+
+  private clearCalendarSelected() {
+    this.cleareStartDay();
+    this.cleareEndDay();
+    this.cleareRange();
   }
 
 

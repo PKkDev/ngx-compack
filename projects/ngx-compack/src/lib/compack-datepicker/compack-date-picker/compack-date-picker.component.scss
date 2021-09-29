@@ -4,6 +4,7 @@
     position: relative;
     height: 100%;
     width: fit-content;
+    width: 100%;
 
     svg {
         cursor: pointer;
@@ -16,6 +17,8 @@
     }
 
     .input {
+        width: 100%;
+
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
@@ -272,6 +275,7 @@
                     background-color: transparent;
                     border: none;
                     outline: none;
+                    overflow: hidden;
 
                     &:hover {
                         color: #e9041e;
@@ -297,6 +301,7 @@
                 }
 
                 .field {
+                    margin: 5px 0;
                     outline-color: #e9041e;
                     text-align: center;
                     max-width: 100%;
@@ -317,15 +322,45 @@
         }
 
         .field_selected_date {
-            border: thin solid #d3d3d3;
-            border-radius: 5px;
-            display: flex;
+            //border: thin solid #d3d3d3;
+            // border-radius: 5px;
+            // display: flex;
             margin: 0.5em 0.5em;
-            flex-direction: column;
 
-            span {
-                font-size: 1em;
-                margin: 0.5em 0.5em;
+            // span {
+            //     font-size: 1em;
+            //     margin: 0.5em 0.5em;
+            // }
+
+            .field_container {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                .field {
+                    outline: none;
+                    box-shadow: none;
+                    border: none;
+                    font-size: .97em;
+                    padding: 0;
+                    //width: 8em;
+                    max-width: 42%;
+                    font-family: "Roboto";
+                    text-align: center;
+                    border: thin solid #d3d3d3;
+                    border-radius: 5px;
+                    // display: flex;
+                    padding: 0.5em 0.5em;
+                    // flex-direction: column;
+                }
+
+                .tresh {
+                    margin: 0 0.5em;
+                }
+            }
+
+            .error_message {
+                color: #e74c3c;
             }
         }
 

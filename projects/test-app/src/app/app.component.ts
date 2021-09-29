@@ -13,9 +13,9 @@ export class AppComponent implements OnInit, AfterViewInit {
   public type = 'block';
   public formatOutputDate = 'DD.MM.YYYYTHH:mm';
   public locale = 'ru';
-  public useTime = false;
-  public rangeMode = false;
-  public viewFieldSelectedDate = false;
+  public useTime = true;
+  public rangeMode = true;
+  public viewFieldSelectedDate = true;
   public maxChoseDay = 5;
 
   public min: Moment | undefined = undefined;

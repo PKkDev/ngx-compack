@@ -86,7 +86,7 @@
               'select_day': day.isSelected,
               'out_max_mim': day.isOutOfMaxMin,
               'day_in_range': day.isIncludeRage
-              }" (click)="selectDay(day)">
+              }" (click)="selectDay(day, true)" (mouseover)="selectTest(day,true)">
               <div class="cell">
                 <div class="dot" *ngIf="!day.isDayThisMonth; else DigitalBlock"></div>
                 <ng-template #DigitalBlock>
@@ -121,14 +121,24 @@
 
       <div class="field_selected_date" *ngIf="viewFieldSelectedDate">
 
-        <span>
+        <!-- <span>
           {{[selectStartDate, selectLastDate] | displayPeriodDate: rangeMode: fieldPlaceHolder : useTime}}
+        </span> -->
+
+        <span class="field_container">
+          <input class="field" [(ngModel)]="selectStartDateStr" (ngModelChange)="onChangeSelectedStartDate()">
+          <!-- <span class="tresh" *ngIf="selectStartDateStr">-</span> -->
+          <input class="field" [(ngModel)]="selectLastDateStr" (ngModelChange)="onChangeSelectedLastDate()">
+        </span>
+
+        <span class="error_message" *ngIf="isError">
+          {{error}}
         </span>
 
       </div>
 
       <div class="footer">
-        <button class="btn" (click)="setNewDate()">{{acceptBtn}}</button>
+        <button class="btn" [disabled]='isError' (click)="acceptNewDate()">{{acceptBtn}}</button>
         <button class="btn" (click)="clearCalendar()">{{cancelBtn}}</button>
       </div>
 

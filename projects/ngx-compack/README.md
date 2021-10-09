@@ -84,10 +84,10 @@ add in app.component.htm:
 
 #### Properties:
 
-Name | Defult | Description
+Name | Defult | Description<br>
 ------------ | -------------
 @Input() <br> rangeMode: boolean | false |  select one date or range
-@Input() <br> type: string | 'block' | type of picker -'block', 'line' or 'icon'
+@Input() <br> type: string |  'block' | type of picker -'block', 'line' or 'icon'
 @Input() <br> viewFieldSelectedDate: boolean | false |  display field with selected date
 @Input() <br> formatOutputDate: string | undefined |  exit date format
 @Input() <br> useTime: boolean | false | add time field or not

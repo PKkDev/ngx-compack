@@ -4,6 +4,8 @@ This library is used in the author's personal works, but if someone likes the im
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.6.
 Supported 9/10/11.
 
+~~You can view live example on [**in development**]~~
+
 [![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat-square)]()
 
 ## Table of contents
@@ -24,7 +26,6 @@ Supported 9/10/11.
 ## Components
 At the moment there are only 3 different components with their own individual settings.
 
-
 ### compack-date-picker
 
 For generate date using MomenJs
@@ -38,7 +39,7 @@ For generate date using MomenJs
       ...
       imports: [
 	  BrowserAnimationsModule,
-        CompackDatepickerModule
+      CompackDatepickerModule
       ...
     })
     export class AppModule { }
@@ -64,42 +65,59 @@ For generate date using MomenJs
 
 add in app.component.htm:
 
-    <div style="position: absolute; left:50%; top:30%">
-        <compack-date-picker [useTime]="true" [maxChoseDay]="5" [max]="max" [min]="min"></compack-date-picker>
-    </div>
+     <compack-date-picker [useTime]="true" [maxChoseDay]="5" [max]="max" [min]="min"></compack-date-picker>
 	
-	 <compack-date-picker [locale]="'en'" [type]="'icon'" [maxChoseDay]="5" [max]="max" [min]="min">
-    </compack-date-picker>
+	 <compack-date-picker [locale]="'en'" [type]="'icon'" [maxChoseDay]="5" [max]="max" [min]="min"></compack-date-picker>
 	
 	  <compack-date-picker [type]="'line'" [maxChoseDay]="5" [max]="max" [min]="min"></compack-date-picker>
 
 #### Example:
 
 <div style="display: flex; flex-direction:row; justify-content: space-between">
-  <img height="400px" width="350px" style="text-align: center;" src="https://raw.githubusercontent.com/PKkDev/ngx-compack/main/examples_icon/date_range_picker_1.png">
-  <img height="400px" width="350px" style="text-align: center;" src="https://raw.githubusercontent.com/PKkDev/ngx-compack/main/examples_icon/date_range_picker_2.png">
+  <img height="500px" width="340px" style="text-align: center;" src="https://raw.githubusercontent.com/PKkDev/ngx-compack/main/examples_icon/date_range_picker_1.png">
+  <img height="500px" width="340px" style="text-align: center;" src="https://raw.githubusercontent.com/PKkDev/ngx-compack/main/examples_icon/date_range_picker_2.png">
 </div>
 
 <div style="display: flex; flex-direction:row; justify-content: space-between">
-  <img height="400px" width="350px" style="text-align: center;" src="https://raw.githubusercontent.com/PKkDev/ngx-compack/main/examples_icon/date_range_picker_3.png">
+  <img height="500px" width="340px" style="text-align: center;" src="https://raw.githubusercontent.com/PKkDev/ngx-compack/main/examples_icon/date_range_picker_3.png">
 </div>
 
 #### Properties:
 
-Name | Description
+Name | Defult | Description
 ------------ | -------------
-@Input() <br> type: string | type of picker -'block', 'line' or 'icon'
-@Input() <br> formatOutputDate: string |  exit date format
-@Input() <br> useTime: boolean |  add time field or not
-@Input() <br> maxChoseDay: number | maximum range for selection
-@Input() <br> max: string | date limit from below
-@Input() <br> min: string | date cut from above
-@Input() <br> locale: string | Moment locale
-@Output() <br> selectLastDateEvent: EventEmitter<string[]> |  event select date
+@Input() <br> rangeMode: boolean | false |  select one date or range
+@Input() <br> type: string | 'block' | type of picker -'block', 'line' or 'icon'
+@Input() <br> viewFieldSelectedDate: boolean | false |  display field with selected date
+@Input() <br> formatOutputDate: string | undefined |  exit date format
+@Input() <br> useTime: boolean | false | add time field or not
+@Input() <br> autoSelect: boolean | false|  auto select date after choose
+@Input() <br> maxChoseDay: number | undefined | maximum range for selection
+@Input() <br> max: string | undefined | date limit from below
+@Input() <br> min: string | undefined | date cut from above
+@Input() <br> locale: string | 'en' | Moment locale
+@Output() <br> selectLastDateEvent: EventEmitter<string[]> | EventEmitter | event select date
 
 ### compack-banner
 
 is the message hanging in the foreground.
+
+#### DisplayMessageConfig
+    export class DisplayMessageConfig {
+        public title?: string;
+        public message: string;
+        public intervalView?: number;
+        public typeMessage: TypeMessage;
+        public position: TypePositionMessage;
+    
+        constructor() {
+            this.title = undefined;
+            this.message = '';
+            this.intervalView = undefined;
+            this.typeMessage = 0;
+            this.position = 0;
+        }
+    }
 
 #### Type positions:
 
@@ -136,6 +154,12 @@ is the message hanging in the foreground.
 
 #### Using:
 
+For view banner need call method **viewBanner() **in Injected service **Compackbannerservice**
+
+    public viewBanner(typeMessage: TypeMessage, position: TypePositionMessage, message: string, title?: string, intervalView?: number)
+
+#### Example:
+
     import { Component, OnInit } from '@angular/core';
     import { TypeMessage, TypePositionMessage } from 'ngx-compack';
     import { CompackBannerService, DisplayMessageConfig } from 'ngx-compack';
@@ -146,22 +170,17 @@ is the message hanging in the foreground.
       styleUrls: ['./app.component.scss']
     })
     export class AppComponent implements OnInit {
-    
+	
     constructor(private cbs: CompackBannerService ) { }
     
     ngOnInit() {
-        const config: DisplayMessageConfig = {
-          message: 'this website is intended solely for testing functions',
-          position: TypePositionMessage.TopRight,
-          typeMessage: TypeMessage.Info
-        }
-        this.cbs.addNewMessage(config);
-    }
+		this.cbs.setInfoColor('#000');
+    	this.cbs.setErrorColor('#fff');
+       setTimeout(() => this.cbs.viewBanner(TypeMessage.Info, TypePositionMessage.TopRight, 'asdas'), 0);
+    	}
     }
 
-only 1 time in main -  app.component.html:
 
-    <compack-banner [backClassName]="'test'" [errorColor]="'#eee'" [infoColor]="'#909B02'"></compack-banner>
 
 #### Result:
 
@@ -169,15 +188,29 @@ only 1 time in main -  app.component.html:
   <img height="150px" width="400px" style="text-align: center;" src="https://raw.githubusercontent.com/PKkDev/ngx-compack/main/examples_icon/banner_example.png">
 </p>
 
-#### Properties:
+#### Using api:
+add CompackBannerService from DI in constructor.
 
-Name | Description
+Method | Description
 ------------ | -------------
-@Input() <br> backClassName: string | main back class
-@Input() <br> infoColor: string |  hex color info type
-@Input() <br> errorColor: string | hex color error type
+ viewBanner(typeMessage: TypeMessage, position: TypePositionMessage, message: string, title?: string, intervalView?: number) | add new banner
+removeBanner() |  remove last banner
+setInfoColor(color: string) | set back color for info type banner
+setErrorColor(color: string) | set back color for error type banner
 
 ### compack-toast
+
+#### ToastConfig
+    export class ToastConfig {
+        public title: string;
+        public type: TypeToast;
+        public message?: string;
+    
+        constructor() {
+            this.title = '';
+            this.type = TypeToast.Error
+        }
+    }
 
 #### type toast:
     export declare enum TypeToast {
@@ -202,6 +235,11 @@ Name | Description
 
 #### Using:
 
+For view toast message need call method **emitNotife() **in Injected service **CompackToastService**
+
+    public emitNotife(type: TypeToast, title: string, message?: string);
+
+#### Example:
 	import { Component, OnInit } from '@angular/core';
     import { CompackToastService, TypeToast } from 'ngx-compack';
 	
@@ -215,15 +253,11 @@ Name | Description
     constructor(private cts: CompackToastService) { }
     
     ngOnInit() {
-         this.cts.emitNewNotif({ title: 'Error', message: 'Body Error', type: TypeToast.Error });
-		 this.cts.emitNewNotif({ title: 'Error', type: TypeToast.Error });
+    	this.cts.emitNotife(TypeToast.Error, 'Error Error ErrorError ErrorErrorErrorErrorError vErrorError Error Error');
+    	this.cts.emitNotife(TypeToast.Info, 'Info');
     }
     }
 
-only 1 time in main -  app.component.html:
-
-    <compack-toast [messageClassName]="'test'" [errorColor]="'#eee'" [infoColor]="'#909B02'" [successColor]="'#332299'">
-</compack-toast>
 
 #### Result:
 
@@ -232,13 +266,13 @@ only 1 time in main -  app.component.html:
 </p>
 
 
+#### Using api:
+add CompackToastService from DI in constructor.
 
-#### Properties:
-
-Name | Description
+Method | Description
 ------------ | -------------
-@Input() <br> messageClassName: string | main back class message container
-@Input() <br> infoColor: string |  hex color info type
-@Input() <br> errorColor: string | hex color error type
-@Input() <br> successColor: string | hex color success type
-
+ emitNotife(type: TypeToast, title: string, message?: string) | add new message
+setInfoColor(color: string) | set back color for info type message
+setErrorColor(color: string) | set back color for error type message
+setSuccessColor(color: string) | set back color for success type message
+setTimeToAutoRemove(time: number) | set time to auto remove message

@@ -86,8 +86,8 @@ add in app.component.htm:
 
 parameters with which there is changed data-picker behavior
 
-Name | Defult | Description
------------- | -------------
+Name | Default | Description
+------------ | -------------| -------------
 @Input() <br> rangeMode: boolean | false |  select one date or range
 @Input() <br> type: string |  'block' | type of picker -'block', 'line' or 'icon'
 @Input() <br> viewFieldSelectedDate: boolean | false |  display field with selected date
@@ -103,9 +103,9 @@ Name | Defult | Description
 
 Events generated from date picker
 
-Name | Description
------------- | -------------
-@Output() <br> selectLastDateEvent: EventEmitter<string[]> | event select date
+Name | Default | Description
+------------ | -------------| -------------
+@Output() <br> selectLastDateEvent: EventEmitter<string[]> | EventEmitter | event select date
 
 ### compack-banner
 

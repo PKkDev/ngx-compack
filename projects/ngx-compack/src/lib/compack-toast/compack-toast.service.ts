@@ -14,9 +14,7 @@ export class CompackToastService {
     setTimeout(() => this.createdContainer(), 0);
   }
 
-  public emitNotife(type: TypeToast, title: string, message?: string) {
-    console.log('d');
-    
+  public emitNotife(type: TypeToast, title: string, message?: string) {    
     if (message || title)
       if (message)
         this.ctms.notifEmite$.next({ title, type, message });

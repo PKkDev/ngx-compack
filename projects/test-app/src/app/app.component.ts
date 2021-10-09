@@ -28,7 +28,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
-    //setTimeout(()=> this.cbs.viewBanner(this.bannerType, this.bannerPosition, 'asdas', this.bannerTitle, this.bannerViewTime),0)
+    // setTimeout(() => this.cbs.viewBanner(TypeMessage.Info, TypePositionMessage.TopRight, 'asdas'), 0)
   }
 
   ngAfterViewInit() {

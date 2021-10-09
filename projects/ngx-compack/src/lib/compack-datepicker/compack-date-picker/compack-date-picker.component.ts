@@ -1,22 +1,11 @@
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, SimpleChange, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import * as moment from 'moment';
-// import * as moment_ from 'moment';
-// import moment from 'moment'
 import { Moment } from 'moment';
 import { CalendarPicker } from '../model/calendar';
 import { CalendarDayPicker } from '../model/calendar-day';
 import { MonthSelect } from '../model/month-select';
+import { CalendareError } from '../model/type-picker-error';
 import { CompackDatePickerService } from './compack-date-picker.service';
-
-//const moment = moment_;
-// const moment = require('moment');
-
-export enum TypeError {
-  None,
-  OutOfMaxMin,
-  StartAfterEnd,
-  MaxChooseDay
-}
 
 @Component({
   selector: 'compack-date-picker',
@@ -25,9 +14,9 @@ export enum TypeError {
 })
 export class CompackDatePickerComponent implements OnInit, AfterViewInit {
   // inner configs
-  public isError = false;
-  public error = '';
-  private baseFormat = 'DD.MM.YYYY';
+  public error = new CalendareError();
+  private baseDateInputFormat = 'DD.MM.YYYY';
+  private baseTimeInputFormat = 'HH:mm';
   // events
   @Output() selectLastDateEvent = new EventEmitter<string[]>();
   // input config
@@ -36,10 +25,13 @@ export class CompackDatePickerComponent implements OnInit, AfterViewInit {
   @Input() viewFieldSelectedDate = false;
   @Input() formatOutputDate: string | undefined;
   @Input() useTime = false;
+  @Input() autoSelect = false;
+  public canAutoSelect = false;
   @Input() maxChoseDay: number | undefined;
   @Input() max: Moment | undefined;
   @Input() min: Moment | undefined;
   @Input() locale = 'en';
+  // @Input() initialSelectedDate: string[] | undefined;
   // type template
   @ViewChild('lineTemplate', { static: false }) lineTemplate!: TemplateRef<any>;
   @ViewChild('blockTemplate', { static: false }) blockTemplate!: TemplateRef<any>;
@@ -55,9 +47,6 @@ export class CompackDatePickerComponent implements OnInit, AfterViewInit {
   public choseTemplate = this.blockTemplate;
   public menuIsVisiblr = false;
   public menuMonthIsVisible = false;
-  // time
-  public selectedHour = 0;
-  public selectedMin = 0;
   // data
   public allMonth: MonthSelect[] = [];
   calendar: CalendarPicker[] = [];
@@ -65,30 +54,111 @@ export class CompackDatePickerComponent implements OnInit, AfterViewInit {
   // select;
   selectStartDate: CalendarDayPicker | undefined;
   selectStartDateStr: string | undefined;
+  selectStartTimeStr: string | undefined;
 
   selectLastDate: CalendarDayPicker | undefined;
   selectLastDateStr: string | undefined;
+  selectLastTimeStr: string | undefined;
 
   constructor(
     private el: ElementRef,
     private cdr: ChangeDetectorRef,
     private crdp: CompackDatePickerService) { }
 
+  ngAfterViewInit() {
+    this.loadCalendarTemplate(this.type);
+    // console.log(this.initialSelectedDate);
+    // if(this.initialSelectedDate){
+    //   console.log('start set initial');
+    //   if(this.initialSelectedDate.length ==2){
+    //     if(this.rangeMode){
+
+    //     }else{
+    //       this.selectSingleDay(this.initialSelectedDate[0]);
+    //     }
+    //   }
+    // }
+  }
+
+  ngOnInit() {
+    this.checkCanAutoSelect();
+    this.clearCalendarSelected();
+    this.calendarWeekName = this.crdp.getNameDayOfWeek(this.locale);
+    this.setViewFormat();
+    this.loadMonthData();
+    this.setFields();
+    this.error = new CalendareError();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.autoSelect != undefined) {
+      this.checkCanAutoSelect();
+    }
+    if (changes.type != undefined) {
+      this.loadCalendarTemplate(this.type);
+    }
+    if (changes.locale != undefined) {
+      this.ngOnInit();
+    }
+    if (changes.min != undefined) {
+      this.loadMonthData();
+    }
+    if (changes.max != undefined) {
+      this.loadMonthData();
+    }
+    if (changes.rangeMode != undefined) {
+      this.setFields();
+      this.cleareEndDayStr();
+      this.cleareStartDayStr();
+      this.clearCalendarSelected();
+      // this.loadMonthData();
+    }
+    if (changes.formatOutputDate != undefined) {
+      this.setViewFormat();
+    }
+    if (changes.useTime != undefined) {
+      this.cleareEndDayStr();
+      this.cleareStartDayStr();
+      this.clearCalendarSelected();
+      this.checkCanAutoSelect();
+    }
+  }
+
+  private checkCanAutoSelect() {
+    this.canAutoSelect = this.autoSelect ? !this.useTime : false
+    //console.log(this.canAutoSelect);
+  }
+
+  public onChangeSelectedStartTime() {
+    if (this.selectStartTimeStr) {
+      const mDate = moment(this.selectStartTimeStr, this.baseTimeInputFormat);
+      const hour = mDate.hour();
+      const min = mDate.minute();
+      if (hour != NaN && min != NaN) {
+        // console.log(this.selectStartDate);
+        this.selectStartDate?.fulDate?.hour(hour).minute(min);
+      }
+    }
+  }
+
   public onChangeSelectedStartDate() {
     if (this.selectStartDateStr) {
 
-      const mDate = moment(this.selectStartDateStr, this.baseFormat);
+      console.log('this.selectStartDateStr', this.selectStartDateStr);
+
+      const mDate = moment(this.selectStartDateStr, this.baseDateInputFormat);
       const year = mDate.year();
-      const month = mDate.month() + 1;
+      const month = mDate.month();
 
       if (year && month) {
-        this.selectedMonth = month;
+        this.selectedMonth = month + 1;
         this.selectedYear = year;
         this.loadMonthData();
         const day = this.crdp.getDayByDate(mDate, this.calendar);
+        console.log(day);
+
         if (day != null) {
           // if (!day.isOutOfMaxMin) {
-
           if (this.rangeMode)
             this.selectStartDayInRange(day, false);
           else
@@ -99,15 +169,27 @@ export class CompackDatePickerComponent implements OnInit, AfterViewInit {
     }
   }
 
+  public onChangeSelectedLastTime() {
+    if (this.selectLastTimeStr) {
+      const mDate = moment(this.selectLastTimeStr, this.baseTimeInputFormat);
+      const hour = mDate.hour();
+      const min = mDate.minute();
+      if (hour != NaN && min != NaN) {
+        // console.log(this.selectStartDate);
+        this.selectLastDate?.fulDate?.hour(hour).minute(min);
+      }
+    }
+  }
+
   public onChangeSelectedLastDate() {
     if (this.selectLastDateStr) {
 
-      const mDate = moment(this.selectLastDateStr, this.baseFormat);
+      const mDate = moment(this.selectLastDateStr, this.baseDateInputFormat);
       const year = mDate.year();
-      const month = mDate.month() + 1;
+      const month = mDate.month();
 
       if (year && month) {
-        this.selectedMonth = month;
+        this.selectedMonth = month + 1;
         this.selectedYear = year;
         this.loadMonthData();
         const day = this.crdp.getDayByDate(mDate, this.calendar);
@@ -119,45 +201,8 @@ export class CompackDatePickerComponent implements OnInit, AfterViewInit {
     }
   }
 
-  ngAfterViewInit() {
-    this.loadCalendarTemplate(this.type);
-  }
-
-  ngOnInit() {
-    this.clearCalendarSelected();
-    this.calendarWeekName = this.crdp.getNameDayOfWeek(this.locale);
-    this.setViewFormat();
-    this.loadMonthData();
-    this.setFields();
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.type != undefined) {
-      this.ngAfterViewInit();
-    }
-    if (changes.locale != undefined) {
-      this.ngOnInit();
-    }
-    if (changes.min != undefined) {
-      this.ngOnInit();
-    }
-    if (changes.max != undefined) {
-      this.ngOnInit();
-    }
-    if (changes.rangeMode != undefined) {
-      this.setFields();
-    }
-    if (changes.formatOutputDate != undefined) {
-      this.setViewFormat();
-    }
-    if (changes.useTime != undefined) {
-      this.baseFormat = this.useTime ? 'DD.MM.YYYY HH:mm' : 'DD.MM.YYYY';
-      console.log(this.baseFormat);
-    }
-  }
-
   private setFields() {
-    if (this.locale.includes('ru')) {
+    if (this.locale.toLowerCase().includes('ru')) {
       this.fieldPlaceHolder = this.rangeMode ? 'от/до' : 'дата';
       this.acceptBtn = 'Принять';
       this.cancelBtn = 'Сбросить';
@@ -186,38 +231,6 @@ export class CompackDatePickerComponent implements OnInit, AfterViewInit {
   public onClick(event: Event) {
     if (!this.el.nativeElement.contains(event.target))
       this.menuIsVisiblr = false;
-  }
-
-  public changeHour() {
-    if (this.selectedHour > 23)
-      this.selectedHour = 0;
-
-    if (this.selectedHour < 0)
-      this.selectedHour = 23;
-
-    if (this.selectLastDate !== undefined) {
-      this.selectLastDate.fulDate?.hour(this.selectedHour);
-    } else {
-      if (this.selectStartDate !== undefined) {
-        this.selectStartDate.fulDate?.hour(this.selectedHour);
-      }
-    }
-  }
-
-  public changeMin() {
-    if (this.selectedMin > 59)
-      this.selectedMin = 0;
-
-    if (this.selectedMin < 0)
-      this.selectedMin = 59;
-
-    if (this.selectLastDate !== undefined) {
-      this.selectLastDate.fulDate?.minute(this.selectedMin);
-    } else {
-      if (this.selectStartDate !== undefined) {
-        this.selectStartDate.fulDate?.minute(this.selectedMin);
-      }
-    }
   }
 
   public loadCalendarTemplate(type: string) {
@@ -308,19 +321,29 @@ export class CompackDatePickerComponent implements OnInit, AfterViewInit {
 
   acceptNewDate() {
     if (this.rangeMode) {
-      if (this.selectStartDate !== undefined && this.selectLastDate !== undefined)
+      if (this.selectStartDate !== undefined && this.selectLastDate !== undefined) {
+        this.error = this.crdp.checkInputError(this.selectStartDate, this.selectLastDate, this.locale, this.maxChoseDay);
+        if (this.error.isError) {
+          this.cleareRange();
+          return;
+        }
         this.selectLastDateEvent.emit([
           moment(this.selectStartDate.fulDate).format(this.formatOutputDate),
           moment(this.selectLastDate.fulDate).format(this.formatOutputDate)
         ]);
+      }
     } else {
-      if (this.selectStartDate !== undefined)
+      if (this.selectStartDate !== undefined) {
         this.selectLastDateEvent.emit([moment(this.selectStartDate.fulDate).format(this.formatOutputDate)]);
+      }
     }
     this.menuIsVisiblr = !this.menuIsVisiblr;
   }
 
   clearCalendar() {
+    this.error = new CalendareError();
+    this.cleareEndDayStr();
+    this.cleareStartDayStr();
     this.ngOnInit();
     this.selectLastDateEvent.emit(['reset', 'reset']);
   }
@@ -338,19 +361,20 @@ export class CompackDatePickerComponent implements OnInit, AfterViewInit {
     day.isSelected = true;
     this.selectStartDate = JSON.parse(JSON.stringify(day));
     if (this.selectStartDate) {
+      this.selectStartDate.fulDate = moment(day.fulDate);
       if (this.useTime) {
-        this.selectedMin = 0;
-        this.selectedHour = 0;
-        this.selectStartDate.fulDate = moment(day.fulDate).minute(0).hour(0);
+        if (!this.selectStartTimeStr) {
+          this.selectStartTimeStr = '00:00';
+          this.selectStartDate.fulDate.hour(0).minute(0);
+        }
+        else {
+          const hm = moment(this.selectStartTimeStr, this.baseTimeInputFormat);
+          this.selectStartDate.fulDate.hour(hm.hour()).minute(hm.minute());
+        }
       }
-      else
-        this.selectStartDate.fulDate = moment(day.fulDate);
-
       if (fromCalendar)
-        this.selectStartDateStr = this.selectStartDate.fulDate.format(this.baseFormat);
-
+        this.selectStartDateStr = this.selectStartDate.fulDate.format(this.baseDateInputFormat);
       this.selectRowIncludeInRange();
-
     }
   }
 
@@ -360,20 +384,23 @@ export class CompackDatePickerComponent implements OnInit, AfterViewInit {
     day.isSelected = true;
     this.selectLastDate = JSON.parse(JSON.stringify(day));
     if (this.selectLastDate) {
+      this.selectLastDate.fulDate = moment(day.fulDate);
       if (this.useTime) {
-        this.selectedMin = 59;
-        this.selectedHour = 23;
-        this.selectLastDate.fulDate = moment(day.fulDate).minute(59).hour(23);
+        if (!this.selectLastTimeStr) {
+          this.selectLastTimeStr = '23:59';
+          this.selectLastDate.fulDate.hour(23).minute(59);
+        }
+        else {
+          const hm = moment(this.selectLastTimeStr, this.baseTimeInputFormat);
+          this.selectLastDate.fulDate.hour(hm.hour()).minute(hm.minute());
+        }
       }
-      else
-        this.selectLastDate.fulDate = moment(day.fulDate);
-
       if (fromCalendar)
-        this.selectLastDateStr = this.selectLastDate.fulDate.format(this.baseFormat);
-
+        this.selectLastDateStr = this.selectLastDate.fulDate.format(this.baseDateInputFormat);
       this.selectRowIncludeInRange();
-
     }
+    if (this.canAutoSelect)
+      this.acceptNewDate();
   }
 
 
@@ -402,98 +429,56 @@ export class CompackDatePickerComponent implements OnInit, AfterViewInit {
         day.isSelected = true;
         this.selectStartDate = JSON.parse(JSON.stringify(day));
         if (this.selectStartDate) {
+          this.selectStartDate.fulDate = moment(day.fulDate);
           if (this.useTime) {
-            this.selectedMin = 0;
-            this.selectedHour = 0;
-            this.selectStartDate.fulDate = moment(day.fulDate).minute(0).hour(0);
-          } else {
-            this.selectStartDate.fulDate = moment(day.fulDate);
+            if (!this.selectStartTimeStr) {
+              this.selectStartTimeStr = '00:00';
+              this.selectStartDate.fulDate.hour(0).minute(0);
+            }
+            else {
+              const hm = moment(this.selectStartTimeStr, this.baseTimeInputFormat);
+              this.selectStartDate.fulDate.hour(hm.hour()).minute(hm.minute());
+            }
           }
-          if (fromCalendar)
-            this.selectStartDateStr = this.selectStartDate.fulDate.format(this.baseFormat);
+          if (fromCalendar) {
+            this.selectStartDateStr = this.selectStartDate.fulDate.format(this.baseDateInputFormat);
+          }
         }
+        if (this.canAutoSelect)
+          this.acceptNewDate();
       }
     }
-  }
-
-  private selectRowIncludeInTempoRange(day: CalendarDayPicker) {
-    if (this.selectStartDate)
-      this.calendar = this.crdp.selectAllRowIncludeInRange(this.calendar, this.selectStartDate, day);
   }
 
   private selectRowIncludeInRange() {
     if (this.selectStartDate && this.selectLastDate) {
-
-      if (this.selectLastDate.fulDate?.isBefore(this.selectStartDate.fulDate)) {
-        this.serErrorByType(TypeError.StartAfterEnd)
-        this.isError = true;
+      this.error = this.crdp.checkInputError(this.selectStartDate, this.selectLastDate, this.locale, this.maxChoseDay);
+      if (this.error.isError) {
         this.cleareRange();
         return;
       }
-
-      if (this.selectStartDate.isOutOfMaxMin || this.selectLastDate.isOutOfMaxMin) {
-        this.serErrorByType(TypeError.OutOfMaxMin);
-        this.isError = true;
-        this.cleareRange();
-        return;
-      }
-
-      if (this.maxChoseDay) {
-        const duration = moment.duration(this.selectLastDate.fulDate?.diff(this.selectStartDate.fulDate));
-        if (duration.days() > this.maxChoseDay - 1) {
-          this.serErrorByType(TypeError.MaxChooseDay)
-          this.isError = true;
-          this.cleareRange();
-          return;
-        }
-      }
-
-      this.serErrorByType(TypeError.None)
-      this.isError = false;
-      this.calendar = this.crdp.selectAllRowIncludeInRange(this.calendar, this.selectStartDate, this.selectLastDate);
+      this.calendar = this.crdp.selectAllRowIncludeInRange(this.calendar, this.selectStartDate, this.selectLastDate, false);
     }
   }
 
-  public selectTest(day: CalendarDayPicker, fromCalendar: boolean) {
-    if (this.selectStartDate && !this.selectLastDate)
-      if (this.selectStartDate.numberDay != day.numberDay)
-        if (day.isDayThisMonth && !day.isOutOfMaxMin) {
-          this.cleareRange();
-          this.selectRowIncludeInTempoRange(day);
-        }
+  public cleareTempSelected() {
+    for (const cal of this.calendar)
+      for (const day of cal.week)
+        day.isIncludeTempoRage = false;
   }
 
-  private serErrorByType(type: TypeError) {
-    switch (type) {
-      case TypeError.None: {
-        this.error = '';
-        break;
-      }
-      case TypeError.OutOfMaxMin: {
-        if (this.locale.includes('ru'))
-          this.error = 'выход за макс/мин';
-        else
-          this.error = 'out of max/min';
-        break;
-      }
-      case TypeError.MaxChooseDay: {
-        if (this.locale.includes('ru'))
-          this.error = 'вне диапазона';
-        else
-          this.error = 'out of range';
-        break;
-      }
-      case TypeError.StartAfterEnd: {
-        if (this.locale.includes('ru'))
-          this.error = 'старт > конец';
-        else
-          this.error = 'start > end';
-        break;
-      }
-    }
+  public TempSelectEndPeriod(day: CalendarDayPicker) {
+    if (this.rangeMode)
+      if (this.selectStartDate && !this.selectLastDate)
+        if (this.selectStartDate.numberDay != day.numberDay)
+          if (day.isDayThisMonth && !day.isOutOfMaxMin) {
+            this.cleareRange();
+            this.calendar = this.crdp.selectAllRowIncludeInRange(this.calendar, this.selectStartDate, day, true);
+          }
   }
 
   private cleareStartDayStr() {
+    this.selectStartTimeStr = undefined;
     this.selectStartDateStr = undefined;
   }
   private cleareStartDay() {
@@ -510,6 +495,7 @@ export class CompackDatePickerComponent implements OnInit, AfterViewInit {
   }
 
   private cleareEndDayStr() {
+    this.selectLastTimeStr = undefined;
     this.selectLastDateStr = undefined;
   }
   private cleareEndDay() {
@@ -522,7 +508,6 @@ export class CompackDatePickerComponent implements OnInit, AfterViewInit {
         }
       }
     }
-
     this.selectLastDate = undefined;
   }
 
@@ -531,12 +516,10 @@ export class CompackDatePickerComponent implements OnInit, AfterViewInit {
       for (const day of cal.week)
         day.isIncludeRage = false;
   }
-
   private clearCalendarSelected() {
     this.cleareStartDay();
     this.cleareEndDay();
     this.cleareRange();
   }
-
 
 }

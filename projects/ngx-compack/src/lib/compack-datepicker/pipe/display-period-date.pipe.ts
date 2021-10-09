@@ -12,6 +12,9 @@ export class DisplayPeriodDatePipe implements PipeTransform {
 
   transform(value: (CalendarDayPicker | undefined)[], rangeMode: boolean, placeHolder: string, useTime: boolean): string {
 
+    if (value[0])
+      value[0].isDayToday = true;
+
     let str = placeHolder;
 
     if (value === null || value.length == 0 || (value.length > 0 && value[0] == undefined)) {

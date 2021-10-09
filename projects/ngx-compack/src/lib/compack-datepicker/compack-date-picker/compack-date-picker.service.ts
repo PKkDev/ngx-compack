@@ -1,14 +1,11 @@
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
-// import * as moment_ from 'moment';
 import { Moment } from 'moment';
 import { CalendarDayBuildService } from '../calendar-day-build.service';
 import { CalendarPicker } from '../model/calendar';
 import { CalendarDayPicker } from '../model/calendar-day';
 import { MonthSelect } from '../model/month-select';
-
-// const moment = moment_;
-//const moment = require('moment');
+import { CalendareError, TypePickerError } from '../model/type-picker-error';
 
 @Injectable({
   providedIn: 'root'
@@ -83,6 +80,7 @@ export class CompackDatePickerService {
           isDayToday: moment().format('D.M.YY') === fulDateView && +month === +monthView,
           isSelected: this.checkSelectedDate(fulDateView, nowMonth, selectStartDate, selectLastDate),
           isIncludeRage: false,
+          isIncludeTempoRage: false,
           isOutOfMaxMin: this.checkOutMaxMin(fulDateView, max, min)
         });
         y++;
@@ -91,7 +89,7 @@ export class CompackDatePickerService {
 
     // console.log('res arr day', calendar);
     if (selectStartDate != undefined && selectLastDate != undefined)
-      calendar = this.selectAllRowIncludeInRange(calendar, selectStartDate, selectLastDate);
+      calendar = this.selectAllRowIncludeInRange(calendar, selectStartDate, selectLastDate, false);
     listDay = [];
     return calendar;
   }
@@ -117,21 +115,13 @@ export class CompackDatePickerService {
   }
 
   private checkOutMaxMin(fulDateView: string, max?: Moment, min?: Moment): boolean {
-    let outMax = false;
-    let outMin = false;
-    if (max != undefined) {
-      const check = moment(max).isBefore(moment(fulDateView, 'D.M.YY'), 'day');
-      outMax = (check);
-    }
-    if (min != undefined) {
-      const check = moment(min).isAfter(moment(fulDateView, 'D.M.YY'), 'day');
-      outMin = (check);
-    }
+    const outMax = max ? moment(max).isBefore(moment(fulDateView, 'D.M.YY'), 'day') : false;
+    const outMin = min ? moment(min).isAfter(moment(fulDateView, 'D.M.YY'), 'day') : false;
     return outMax || outMin;
   }
 
-  selectAllRowIncludeInRange(
-    calendar: CalendarPicker[], selectStartDate: CalendarDayPicker, selectLastDate: CalendarDayPicker): CalendarPicker[] {
+  public selectAllRowIncludeInRange(
+    calendar: CalendarPicker[], selectStartDate: CalendarDayPicker, selectLastDate: CalendarDayPicker, isTempo: boolean): CalendarPicker[] {
     // console.log('range from/to:', selectStartDate, selectLastDate);
     const checkStartDate = moment(selectStartDate.fulDate);
     const checkLastDate = moment(selectLastDate.fulDate);
@@ -141,11 +131,71 @@ export class CompackDatePickerService {
         const checkAfter = moment(checkDate).isAfter(checkStartDate);
         const checkBefore = moment(checkDate).isBefore(checkLastDate, 'day');
         if (checkAfter && checkBefore && day.isDayThisMonth) {
-          day.isIncludeRage = true;
+          if (isTempo)
+            day.isIncludeTempoRage = true;
+          else
+            day.isIncludeRage = true;
         }
       }
     }
     return calendar;
+  }
+
+  public checkInputError(
+    startDate: CalendarDayPicker, endDate: CalendarDayPicker, locale: string, maxChoseDay?: number): CalendareError {
+    const result = new CalendareError();
+
+    if (endDate.fulDate?.isBefore(startDate.fulDate)) {
+      result.errorMessage = this.setErrorMessageByType(TypePickerError.StartAfterEnd, locale)
+      result.isError = true;
+    }
+
+    if (startDate.isOutOfMaxMin || endDate.isOutOfMaxMin) {
+      result.errorMessage = this.setErrorMessageByType(TypePickerError.OutOfMaxMin, locale);
+      result.isError = true;
+    }
+
+    if (maxChoseDay) {
+      const duration = moment.duration(endDate.fulDate?.diff(startDate.fulDate));
+      if (duration.days() > maxChoseDay - 1) {
+        result.errorMessage = this.setErrorMessageByType(TypePickerError.MaxChooseDay, locale)
+        result.isError = true;
+      }
+    }
+
+    return result;
+  }
+
+  public setErrorMessageByType(type: TypePickerError, locale: string): string {
+    let error = '';
+    switch (type) {
+      case TypePickerError.None: {
+        error = '';
+        break;
+      }
+      case TypePickerError.OutOfMaxMin: {
+        if (locale.includes('ru'))
+          error = 'выход за макс/мин';
+        else
+          error = 'out of max/min';
+        break;
+      }
+      case TypePickerError.MaxChooseDay: {
+        if (locale.includes('ru'))
+          error = 'вне диапазона';
+        else
+          error = 'out of range';
+        break;
+      }
+      case TypePickerError.StartAfterEnd: {
+        if (locale.includes('ru'))
+          error = 'старт > конец';
+        else
+          error = 'start > end';
+        break;
+      }
+    }
+    return error;
   }
 
 

@@ -1,6 +1,6 @@
 import { EventEmitter } from '@angular/core';
 import { Injectable } from '@angular/core';
-import { ReplaySubject } from 'rxjs';
+import { BehaviorSubject, ReplaySubject } from 'rxjs';
 import { DisplayMessage } from './model/display-message';
 import { DisplayMessageConfig } from './model/display-message-config';
 import { TypeMessage } from './model/type-message';
@@ -13,7 +13,7 @@ const mapColor: Map<string, string> = new Map<string, string>()
 @Injectable()
 export class CompackBannerMergeService {
 
-  public newMessageEvent$: ReplaySubject<DisplayMessageConfig> = new ReplaySubject<DisplayMessageConfig>(1);
+  public newMessageEvent$: BehaviorSubject<DisplayMessageConfig | null> = new BehaviorSubject<DisplayMessageConfig | null>(null);
 
   public removeMessageEvent$: EventEmitter<boolean> = new EventEmitter();
 

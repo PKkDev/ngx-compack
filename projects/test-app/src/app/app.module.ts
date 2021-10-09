@@ -6,19 +6,20 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 // compack
 import { CompackBannerModule, CompackToastModule, CompackDatepickerModule } from 'ngx-compack';
-// components
-import { TestCreatedComponent } from './test-created/test-created.component';
+// color-picker
+import { ColorPickerModule } from 'ngx-color-picker';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    TestCreatedComponent
+    AppComponent
   ],
   imports: [
     FormsModule,
     BrowserAnimationsModule,
     BrowserModule,
     AppRoutingModule,
+
+    ColorPickerModule,
 
     CompackDatepickerModule,
     CompackBannerModule,

@@ -77,7 +77,7 @@
           </tr>
         </thead>
 
-        <tbody>
+        <tbody (mouseout)="cleareTempSelected()">
           <tr *ngFor="let cal of calendar">
             <td *ngFor="let day of cal.week" [ngClass]="{
               'now_month': day.isDayThisMonth,
@@ -85,8 +85,8 @@
               'now_day': day.isDayToday,
               'select_day': day.isSelected,
               'out_max_mim': day.isOutOfMaxMin,
-              'day_in_range': day.isIncludeRage
-              }" (click)="selectDay(day, true)" (mouseover)="selectTest(day,true)">
+              'day_in_range': day.isIncludeRage || day.isIncludeTempoRage
+              }" (click)="selectDay(day, true)" (mouseover)="TempSelectEndPeriod(day)">
               <div class="cell">
                 <div class="dot" *ngIf="!day.isDayThisMonth; else DigitalBlock"></div>
                 <ng-template #DigitalBlock>
@@ -100,45 +100,65 @@
 
       </table>
 
-      <div class="time-select" *ngIf="useTime">
-
-        <div class="time_block hour">
-          <button (click)="selectedHour = selectedHour+1; changeHour()" class="control up"></button>
-          <input type="input" class="field" [(ngModel)]="selectedHour" (ngModelChange)="changeHour()">
-          <button (click)="selectedHour = selectedHour-1; changeHour()" class="control down"></button>
-        </div>
-        <span class="separate">
-          :
-        </span>
-        <div class="time_block min">
-          <button (click)="selectedMin = selectedMin+1; changeMin()" class="control up"></button>
-          <input type="input" class="field" [(ngModel)]="selectedMin" (ngModelChange)="changeMin()">
-          <button (click)="selectedMin = selectedMin-1; changeMin()" class="control down"></button>
-        </div>
-
-      </div>
-
-
       <div class="field_selected_date" *ngIf="viewFieldSelectedDate">
 
-        <!-- <span>
-          {{[selectStartDate, selectLastDate] | displayPeriodDate: rangeMode: fieldPlaceHolder : useTime}}
-        </span> -->
+        <ng-container *ngIf="rangeMode else singleDate">
 
-        <span class="field_container">
-          <input class="field" [(ngModel)]="selectStartDateStr" (ngModelChange)="onChangeSelectedStartDate()">
-          <!-- <span class="tresh" *ngIf="selectStartDateStr">-</span> -->
-          <input class="field" [(ngModel)]="selectLastDateStr" (ngModelChange)="onChangeSelectedLastDate()">
-        </span>
+          <ng-container *ngIf="useTime">
 
-        <span class="error_message" *ngIf="isError">
-          {{error}}
+            <span class="field_container">
+
+              <input maxlength="5" class="field time short_time" appTimeMask [(ngModel)]="selectStartTimeStr"
+                placeholder="HH:mm" (ngModelChange)="onChangeSelectedStartTime()" />
+
+              <input maxlength="5" class="field time short_time" appTimeMask [(ngModel)]="selectLastTimeStr"
+                placeholder="HH:mm" (ngModelChange)="onChangeSelectedLastTime()" />
+
+            </span>
+
+          </ng-container>
+
+          <span class="field_container">
+            <input maxlength="10" class="field short_date" appDateMask [(ngModel)]="selectStartDateStr"
+              [readonly]="canAutoSelect" placeholder="dd.MM.yyyy" (ngModelChange)="onChangeSelectedStartDate()">
+            <input maxlength="10" class="field short_date" appDateMask [(ngModel)]="selectLastDateStr"
+              [readonly]="canAutoSelect" placeholder="dd.MM.yyyy" (ngModelChange)="onChangeSelectedLastDate()">
+          </span>
+
+        </ng-container>
+
+        <ng-template #singleDate>
+
+          <ng-container *ngIf="useTime; else onlyDate">
+
+            <span class="field_container">
+              <input maxlength="10" class="field medium_date" appDateMask [(ngModel)]="selectStartDateStr"
+                [readonly]="canAutoSelect" placeholder="dd.MM.yyyy" (ngModelChange)="onChangeSelectedStartDate()">
+              <input maxlength="5" class="field time medium_time" appTimeMask [(ngModel)]="selectStartTimeStr"
+                placeholder="HH:mm" (ngModelChange)="onChangeSelectedStartTime()" />
+            </span>
+
+          </ng-container>
+
+          <ng-template #onlyDate>
+
+            <span class="field_container">
+              <input maxlength="10" class="field large_date" appDateMask [(ngModel)]="selectStartDateStr"
+                [readonly]="canAutoSelect" placeholder="dd.MM.yyyy" (ngModelChange)="onChangeSelectedStartDate()">
+            </span>
+
+          </ng-template>
+
+        </ng-template>
+
+        <span class="error_message" *ngIf="error.isError">
+          {{error.errorMessage}}
         </span>
 
       </div>
 
       <div class="footer">
-        <button class="btn" [disabled]='isError' (click)="acceptNewDate()">{{acceptBtn}}</button>
+        <button class="btn" [disabled]='error.isError' (click)="acceptNewDate()">{{acceptBtn}}</button>
         <button class="btn" (click)="clearCalendar()">{{cancelBtn}}</button>
       </div>
 

@@ -251,86 +251,8 @@
             }
         }
 
-        .time-select {
-            margin: 0;
-            padding: 0 30%;
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: row;
-            // height: 6em;
-
-            .time_block {
-                width: 40%;
-                height: 100%;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-
-                .control {
-                    cursor: pointer;
-                    line-height: 0.9;
-                    font-size: 1.9em;
-                    background-color: transparent;
-                    border: none;
-                    outline: none;
-                    overflow: hidden;
-
-                    &:hover {
-                        color: #e9041e;
-                        font-weight: bold;
-                        transform: scale(1.5);
-                    }
-                }
-
-                .up {
-                    &:after {
-                        position: relative;
-                        top: 5px;
-                        content: "\2303";
-                    }
-                }
-
-                .down {
-                    &:after {
-                        position: relative;
-                        top: -9px;
-                        content: "\2304";
-                    }
-                }
-
-                .field {
-                    margin: 5px 0;
-                    outline-color: #e9041e;
-                    text-align: center;
-                    max-width: 100%;
-                    font-size: 20px;
-                }
-            }
-
-            .separate {
-                display: flex;
-                align-items: center;
-                margin: 0 0.25em;
-                font-size: 3em;
-                color: black;
-                height: 100%;
-                position: relative;
-                top: -4px;
-            }
-        }
-
         .field_selected_date {
-            //border: thin solid #d3d3d3;
-            // border-radius: 5px;
-            // display: flex;
             margin: 0.5em 0.5em;
-
-            // span {
-            //     font-size: 1em;
-            //     margin: 0.5em 0.5em;
-            // }
 
             .field_container {
                 display: flex;
@@ -341,21 +263,47 @@
                     outline: none;
                     box-shadow: none;
                     border: none;
-                    font-size: .97em;
                     padding: 0;
-                    //width: 8em;
-                    max-width: 42%;
                     font-family: "Roboto";
                     text-align: center;
                     border: thin solid #d3d3d3;
                     border-radius: 5px;
-                    // display: flex;
+                    font-size: 0.97em;
                     padding: 0.5em 0.5em;
-                    // flex-direction: column;
                 }
 
-                .tresh {
-                    margin: 0 0.5em;
+                .time {
+                    width: 20%;
+                    margin: 0 0 2px 0;
+                }
+
+                .short_time {
+                    &:first-child {
+                        margin: 0px 0 2px 22%;
+                    }
+                }
+
+                .medium_time {
+                    margin: 0;
+                    width: 20%;
+                }
+
+                .large_time {
+                    &:first-child {
+                        margin: 0 0 2px 85%;
+                    }
+                }
+
+                .short_date {
+                    max-width: 42%;
+                }
+
+                .medium_date {
+                    width: 65%;
+                }
+
+                .large_date {
+                    width: 100%;
                 }
             }
 

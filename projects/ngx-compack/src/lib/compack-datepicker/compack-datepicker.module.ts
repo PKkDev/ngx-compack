@@ -4,6 +4,8 @@ import { CompackDatePickerComponent } from './compack-date-picker/compack-date-p
 import { DisplayDatePipe } from './pipe/display-date.pipe';
 import { DisplayPeriodDatePipe } from './pipe/display-period-date.pipe';
 import { FormsModule } from '@angular/forms';
+import { TimeMaskDirective } from './directive/time-mask.directive';
+import { DateMaskDirective } from './directive/date-mask.directive';
 
 @NgModule({
   imports: [
@@ -11,6 +13,8 @@ import { FormsModule } from '@angular/forms';
     FormsModule
   ],
   declarations: [
+    DateMaskDirective,
+    TimeMaskDirective,
     DisplayPeriodDatePipe,
     DisplayDatePipe,
     CompackDatePickerComponent

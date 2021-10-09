@@ -1,7 +1,13 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import * as moment from 'moment';
 import { Moment } from 'moment';
 import { CompackBannerService, CompackToastService, DisplayMessageConfig, TypeMessage, TypePositionMessage, TypeToast } from 'ngx-compack';
+
+export enum TypeViewComponent {
+  Picker = 0,
+  Toast = 1,
+  Banner = 2
+}
 
 @Component({
   selector: 'app-root',
@@ -10,79 +16,138 @@ import { CompackBannerService, CompackToastService, DisplayMessageConfig, TypeMe
 })
 export class AppComponent implements OnInit, AfterViewInit {
 
+  public viewComponent = TypeViewComponent.Picker;
+  selectedTemplate: TemplateRef<any> | null = null;
+  @ViewChild('picker') picker: TemplateRef<any> | undefined;
+  @ViewChild('toast') toast: TemplateRef<any> | undefined;
+  @ViewChild('banner') banner: TemplateRef<any> | undefined;
+
+  constructor(
+    private cts: CompackToastService,
+    private cbs: CompackBannerService,
+    private cdr: ChangeDetectorRef) { }
+
+  ngOnInit() {
+    //setTimeout(()=> this.cbs.viewBanner(this.bannerType, this.bannerPosition, 'asdas', this.bannerTitle, this.bannerViewTime),0)
+  }
+
+  ngAfterViewInit() {
+    this.viewComponent = TypeViewComponent.Picker;
+    this.selectedTemplate = this.picker ?? null;
+    this.cdr.detectChanges();
+  }
+
+  public loadTemplate(newView: TypeViewComponent) {
+    this.viewComponent = newView;
+    switch (newView) {
+      case TypeViewComponent.Picker:
+        this.selectedTemplate = this.picker ?? null;
+        break;
+      case TypeViewComponent.Toast:
+        this.selectedTemplate = this.toast ?? null;
+        break;
+      case TypeViewComponent.Banner:
+        this.selectedTemplate = this.banner ?? null;
+        break;
+      default:
+        this.selectedTemplate = this.picker ?? null;
+        break;
+    }
+    this.cdr.detectChanges();
+  }
+
   public type = 'block';
   public formatOutputDate = 'DD.MM.YYYYTHH:mm';
   public locale = 'ru';
   public useTime = true;
-  public rangeMode = true;
+  public rangeMode = false;
+  public autoSelect = false;
   public viewFieldSelectedDate = true;
   public maxChoseDay = 5;
-
   public min: Moment | undefined = undefined;
   public max: Moment | undefined = undefined;
-
-  public selectedDatesStr: string = 'none';
-
-  constructor(
-    private cts: CompackToastService,
-    private cbs: CompackBannerService
-  ) { }
-
-  ngOnInit() {
-
-    this.cbs.setInfoColor('#fff');
-    this.cbs.setErrorColor('#fff');
-
-    const config: DisplayMessageConfig = {
-      message: 'this website is sdsd sdsd sdfsdf sdfsd ' + '\n' + ' intended solely \n for testing functions',
-      position: TypePositionMessage.BottomRight,
-      typeMessage: TypeMessage.Info
-    }
-    setTimeout(() => { this.cbs.viewBanner(config.typeMessage, config.position, config.message); }, 0);
-
-    this.cts.setInfoColor('#fff')
-
-    this.cts.emitNotife(TypeToast.Error, 'ErrorError Error Error Error Errorv Error Error Error', 'Body Error Body Error Body Error Body ErrorBody ErrorBody Error vBody Error');
-    this.cts.emitNotife(TypeToast.Error, 'Error Error ErrorError ErrorErrorErrorErrorError vErrorError Error Error');
-    this.cts.emitNotife(TypeToast.Info, 'Info');
-    this.cts.emitNotife(TypeToast.Info, 'Info');
-    this.cts.emitNotife(TypeToast.Info, 'Info');
-    this.cts.emitNotife(TypeToast.Info, 'Info');
-    this.cts.emitNotife(TypeToast.Info, 'Info');
-    this.cts.emitNotife(TypeToast.Info, 'Info');
-    this.cts.emitNotife(TypeToast.Info, 'Info');
-
-
-  }
-
-  ngAfterViewInit() {
-    // this.cbs.addNewMessage({ message: 'new test', position: TypePositionMessage.TopLeft, typeMessage: TypeMessage.Info });
-
-    // setTimeout(() => {
-    //   this.cbs.addNewMessage({ message: 'new new test', position: TypePositionMessage.BottomRight, typeMessage: TypeMessage.Info });
-    // }, 5000)
-  }
-
+  public selectedDateOneStr: string = 'none';
+  public selectedDateTwoStr: string = 'none'
+  // public initialSelectedDate: string[] | undefined = ['asd'];
   public selectLastDateEvent(selected: string[]) {
-    console.log('selected', selected);
-
+    this.selectedDateOneStr = 'none';
+    this.selectedDateTwoStr = 'none';
     if (selected.length == 1) {
-      this.selectedDatesStr = selected[0];
+      this.selectedDateOneStr = selected[0];
       return;
     }
     if (selected.length == 2) {
-      this.selectedDatesStr = selected[0] + '-' + selected[1];
+      this.selectedDateOneStr = selected[0];
+      this.selectedDateTwoStr = selected[1];
       return;
     }
-    this.selectedDatesStr = 'none';
+    this.selectedDateOneStr = 'error';
+    this.selectedDateTwoStr = 'error';
   }
-
   public selectMinDateEvent(selected: string[]) {
     this.min = moment(selected[0], 'DD.MM.YYYY');
   }
-
   public selectMaxDateEvent(selected: string[]) {
     this.max = moment(selected[0], 'DD.MM.YYYY');
+  }
+
+  public toastType: number = 0;
+  public toastTitle: string = '';
+  public toastText: string = '';
+  public toastTimeToDel: number = 15;
+  public toastErrorColor: string = '#ff5252';
+  public toastInfoColor: string = '#2196f3';
+  public toastSuccessColor: string = '#4caf50';
+
+  public setToastErrorColor() {
+    if (!this.toastErrorColor.includes('#'))
+      this.toastErrorColor = `#${this.toastErrorColor}`;
+    this.cts.setErrorColor(this.toastErrorColor);
+  }
+  public setToastInfoColor() {
+    if (!this.toastInfoColor.includes('#'))
+      this.toastInfoColor = `#${this.toastInfoColor}`;
+    this.cts.setInfoColor(this.toastInfoColor);
+  }
+  public setToastSuccessColor() {
+    if (!this.toastSuccessColor.includes('#'))
+      this.toastSuccessColor = `#${this.toastSuccessColor}`;
+    this.cts.setSuccessColor(this.toastSuccessColor);
+  }
+  public setToastTimeToDel() {
+    this.cts.setTimeToAutoRemove(this.toastTimeToDel);
+  }
+  public viewToast() {
+    const type: TypeToast = (+this.toastType) as TypeToast;
+    this.cts.emitNotife(type, this.toastTitle, this.toastText);
+  }
+
+
+  public bannerViewTime: number = 10;
+  public bannerTitle: string = '';
+  public bannerMessage: string = '';
+  public bannerPosition: number = 0;
+  public bannerType: number = 0;
+  public bannerErrorColor: string = '#ff5252';
+  public bannerInfoColor: string = '#2196f3';
+
+  public setBannerErrorColor() {
+    if (!this.bannerErrorColor.includes('#'))
+      this.bannerErrorColor = `#${this.bannerErrorColor}`;
+    this.cbs.setErrorColor(this.bannerErrorColor);
+  }
+  public setBannerInfoColor() {
+    if (!this.bannerInfoColor.includes('#'))
+      this.bannerInfoColor = `#${this.bannerInfoColor}`;
+    this.cbs.setInfoColor(this.bannerInfoColor);
+  }
+  public viewBanner() {
+    const type: TypeMessage = (+this.bannerType) as TypeMessage;
+    const positon: TypePositionMessage = (+this.bannerPosition) as TypePositionMessage;
+    this.cbs.viewBanner(type, positon, this.bannerMessage, this.bannerTitle, this.bannerViewTime)
+  }
+  public removeBanner() {
+    this.cbs.removeBanner()
   }
 
 }

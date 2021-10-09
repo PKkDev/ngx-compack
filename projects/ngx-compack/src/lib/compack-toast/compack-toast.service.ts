@@ -15,10 +15,13 @@ export class CompackToastService {
   }
 
   public emitNotife(type: TypeToast, title: string, message?: string) {
-    if (message)
-      this.ctms.notifEmite$.next({ title, type, message });
-    else
-      this.ctms.notifEmite$.next({ title, type });
+    console.log('d');
+    
+    if (message || title)
+      if (message)
+        this.ctms.notifEmite$.next({ title, type, message });
+      else
+        this.ctms.notifEmite$.next({ title, type });
   }
 
   public setInfoColor(newInfoColor: string) {
@@ -31,6 +34,10 @@ export class CompackToastService {
 
   public setSuccessColor(newSuccess: string) {
     this.ctms.setSuccessColor(newSuccess);
+  }
+
+  public setTimeToAutoRemove(time: number) {
+    this.ctms.setTimeToAutoRemove(time);
   }
 
   private createdContainer() {

@@ -41,10 +41,10 @@ export class CompackToastComponent implements OnInit, OnDestroy {
       .subscribe((next: ToastConfig) => {
         if (next !== null) {
           const newIndex = this.index++;
-          const newToast = this.ctms.mergeToastConfig(next, newIndex)
+          const newToast = this.ctms.mergeToastConfig(next, newIndex);
           if (newToast != null) {
             this.listMessages.push(newToast);
-            this.setTimerToDel(newIndex);
+            this.setTimerToDel(newIndex, newToast.timeToDel);
             setTimeout(() => {
               const container = document.getElementById('notif-container');
               if (container != null)
@@ -62,11 +62,12 @@ export class CompackToastComponent implements OnInit, OnDestroy {
   }
 
   public loadTemplate(mess: Toast) {
-    if (mess.file !== undefined) {
-      return this.messageWithFileTemplate;
-    } else {
-      return this.messageOnlyTextTemplate;
-    }
+    return this.messageOnlyTextTemplate;
+    // if (mess.file !== undefined) {
+    //   return this.messageWithFileTemplate;
+    // } else {
+    //   return this.messageOnlyTextTemplate;
+    // }
   }
 
   public downloadFile(blob: Blob, fileName: string) {
@@ -74,8 +75,8 @@ export class CompackToastComponent implements OnInit, OnDestroy {
     // saveAs(blob, fileName);
   }
 
-  private setTimerToDel(index: number) {
-    setTimeout(() => (this.autoRemoveLastMessage(index)), 1000 * 15);
+  private setTimerToDel(index: number, interval: number) {
+    setTimeout(() => (this.autoRemoveLastMessage(index)), 1000 * interval);
   }
 
   private autoRemoveLastMessage(index: number) {

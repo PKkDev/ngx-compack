@@ -19,6 +19,7 @@ export class CalendarDay {
 export class CalendarDayPicker extends CalendarDay {
     public isOutOfMaxMin: boolean;
     public isIncludeRage: boolean;
+    public isIncludeTempoRage: boolean;
     public isSelected: boolean;
 
     constructor() {
@@ -26,5 +27,6 @@ export class CalendarDayPicker extends CalendarDay {
         this.isSelected = false;
         this.isOutOfMaxMin = false;
         this.isIncludeRage = false;
+        this.isIncludeTempoRage = false;
     }
 }

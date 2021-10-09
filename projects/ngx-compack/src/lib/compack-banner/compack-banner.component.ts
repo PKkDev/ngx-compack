@@ -25,6 +25,7 @@ export class CompackBannerComponent implements OnInit, OnDestroy {
   public positionClass = 'top';
   // data
   public displayMessage: DisplayMessage | null = null;
+  private timeOutView: any;
   private intervalView: any;
   public counterClose = -1;
 
@@ -35,16 +36,18 @@ export class CompackBannerComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
     this.compackBannerService.newMessageEvent$.subscribe(
-      (data: DisplayMessageConfig) => {
-        this.removeMessage();
-        this.displayMessage = this.compackBannerService.mergeMessageConfig(data);
-        if (this.displayMessage != null) {
-          this.positionClass = this.displayMessage.positionClass;
-          this.cdr.detectChanges();
-          if (this.displayMessage.intervalView != null) {
-            this.counterClose = this.displayMessage.intervalView;
-            this.setTimerView(this.displayMessage.intervalView)
-            this.setIntervalAutoClose()
+      (data: DisplayMessageConfig | null) => {
+        if (data != null) {
+          this.removeMessage();
+          this.displayMessage = this.compackBannerService.mergeMessageConfig(data);
+          if (this.displayMessage != null) {
+            this.positionClass = this.displayMessage.positionClass;
+            this.cdr.detectChanges();
+            if (this.displayMessage.intervalView != null) {
+              this.counterClose = this.displayMessage.intervalView;
+              this.setTimerView(this.displayMessage.intervalView)
+              this.setIntervalAutoClose()
+            }
           }
         }
       }
@@ -67,18 +70,22 @@ export class CompackBannerComponent implements OnInit, OnDestroy {
   }
 
   private setIntervalAutoClose() {
-    setInterval(() => { this.counterClose--; }, 1000);
+    this.intervalView = setInterval(() => { this.counterClose--; }, 1000);
   }
 
   private setTimerView(interval: number) {
-    this.intervalView = setTimeout(() => {
+    this.timeOutView = setTimeout(() => {
       this.displayMessage = null;
     }, 1000 * interval)
   }
 
   private destroyTimer() {
+    if (this.timeOutView != null) {
+      clearTimeout(this.timeOutView);
+    }
     if (this.intervalView != null) {
-      clearTimeout(this.intervalView)
+      clearInterval(this.intervalView);
+      this.counterClose = -1;
     }
   }
 

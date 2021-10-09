@@ -12,6 +12,8 @@ const mapColor: Map<string, string> = new Map<string, string>()
 @Injectable()
 export class CompackToastMergeService {
 
+  private timeToDel: number = 15;
+
   public notifEmite$: ReplaySubject<ToastConfig> = new ReplaySubject<ToastConfig>(30);
 
   constructor() { }
@@ -31,8 +33,15 @@ export class CompackToastMergeService {
       mapColor.set('success', newSuccessColor);
   }
 
+  public setTimeToAutoRemove(time: number) {
+    if (+time >= 0)
+      this.timeToDel = time;
+    else
+      this.timeToDel = 15;
+  }
+
   public mergeToastConfig(toastConfig: ToastConfig, newIndex: number): Toast | null {
-    // console.log('messageConfig', messageConfig);
+    console.log('messageConfig', toastConfig);
 
     if (toastConfig == null)
       return null;
@@ -44,6 +53,7 @@ export class CompackToastMergeService {
     result.type = toastConfig.type;
     result.file = toastConfig.file;
     result.index = newIndex;
+    result.timeToDel = this.timeToDel;
 
     switch (toastConfig.type) {
       case TypeToast.Error: {

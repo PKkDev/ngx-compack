@@ -24,7 +24,8 @@ export class CompackBannerService {
       title,
       intervalView
     }
-    this.cbms.newMessageEvent$.next(messConfig);
+    if (message || title)
+      this.cbms.newMessageEvent$.next(messConfig);
   }
 
   public removeBanner() {

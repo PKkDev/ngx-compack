@@ -1,0 +1,1 @@
+{"version":3,"sources":["styles.scss"],"names":[],"mappings":";AAEA;EACI;EACA;EACA;AAAJ,C","file":"styles.css","sourcesContent":["@import url(\"https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;1,500&display=swap\");\n\nbody {\n    background-color: #eee;\n    font-family: 'Nunito';\n    font-weight: 500;\n}\n"],"sourceRoot":"webpack:///"}

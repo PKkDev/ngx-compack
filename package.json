@@ -16,6 +16,7 @@
     "ng": "ng",
     "build": "ng build",
     "start": "ng serve",
+    "build:test-app:ghpages": "ng build test-app --output-path docs --base-href ngx-compack",
     "start:test-app": "ng serve test-app",
     "start:test-app:outside": "ng serve test-app --host 0.0.0.0 --disable-host-check",
     "lib:compack:build": "ng build ngx-compack --prod",

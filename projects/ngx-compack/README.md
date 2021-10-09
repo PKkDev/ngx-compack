@@ -84,7 +84,7 @@ add in app.component.htm:
 
 #### Properties:
 
-Name | Defult | Description<br>
+Name | Defult | Description
 ------------ | -------------
 @Input() <br> rangeMode: boolean | false |  select one date or range
 @Input() <br> type: string |  'block' | type of picker -'block', 'line' or 'icon'
@@ -96,6 +96,11 @@ Name | Defult | Description<br>
 @Input() <br> max: string | undefined | date limit from below
 @Input() <br> min: string | undefined | date cut from above
 @Input() <br> locale: string | 'en' | Moment locale
+
+#### Events:
+
+Name | Defult | Description
+------------ | -------------
 @Output() <br> selectLastDateEvent: EventEmitter<string[]> | EventEmitter | event select date
 
 ### compack-banner

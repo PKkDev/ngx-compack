@@ -84,6 +84,8 @@ add in app.component.htm:
 
 #### Properties:
 
+parameters with which there is changed data-picker behavior
+
 Name | Defult | Description
 ------------ | -------------
 @Input() <br> rangeMode: boolean | false |  select one date or range
@@ -98,6 +100,8 @@ Name | Defult | Description
 @Input() <br> locale: string | 'en' | Moment locale
 
 #### Events:
+
+Events generated from date picker
 
 Name | Defult | Description
 ------------ | -------------

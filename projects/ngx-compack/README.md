@@ -103,9 +103,9 @@ Name | Defult | Description
 
 Events generated from date picker
 
-Name | Defult | Description
+Name | Description
 ------------ | -------------
-@Output() <br> selectLastDateEvent: EventEmitter<string[]> | EventEmitter | event select date
+@Output() <br> selectLastDateEvent: EventEmitter<string[]> | event select date
 
 ### compack-banner
 

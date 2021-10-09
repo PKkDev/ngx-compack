@@ -4,7 +4,7 @@ This library is used in the author's personal works, but if someone likes the im
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.6.
 Supported 9/10/11.
 
-~~You can view live example on [**in development**]~~
+You can view  [live example](https://pkkdev.github.io/ngx-compack/ "live example")
 
 [![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat-square)]()
 

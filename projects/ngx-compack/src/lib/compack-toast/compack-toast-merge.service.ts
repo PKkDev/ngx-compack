@@ -41,7 +41,7 @@ export class CompackToastMergeService {
   }
 
   public mergeToastConfig(toastConfig: ToastConfig, newIndex: number): Toast | null {
-    console.log('messageConfig', toastConfig);
+    // console.log('messageConfig', toastConfig);
 
     if (toastConfig == null)
       return null;

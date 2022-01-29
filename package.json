@@ -16,14 +16,15 @@
     "ng": "ng",
     "build": "ng build",
     "start": "ng serve",
-    "build:test-app:ghpages": "ng build  --output-path docs --base-href ngx-compack",
+    "build:test-app:ghpages": "ng build test-app --output-path docs --base-href ngx-compack",
     "start:test-app": "ng serve test-app",
     "start:test-app:outside": "ng serve test-app --host 0.0.0.0 --disable-host-check",
     "lib:compack:build": "ng build ngx-compack --prod",
     "lib:compack:watch": "ng build ngx-compack --watch",
     "lib:compack:watch:app": "npm-run-all -p -r lib:compack:watch start:test-app",
     "lib:compack:publish": "npm run lib:compack:build && cd dist/ngx-compack && npm pack npm publish",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "start:lib:test-app": "ng build ngx-compack --prod && ng serve test-app"
   },
   "private": true,
   "dependencies": {

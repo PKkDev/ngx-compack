@@ -151,7 +151,7 @@
 
         </ng-template>
 
-        <span class="error_message" *ngIf="error.isError">
+        <span class="error_message" *ngIf="error.isError && viewErrorMessage">
           {{error.errorMessage}}
         </span>
 

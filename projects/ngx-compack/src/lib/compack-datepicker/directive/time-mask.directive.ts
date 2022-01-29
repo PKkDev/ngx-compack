@@ -1,6 +1,5 @@
-import { Directive, ElementRef, forwardRef, HostListener, Renderer2, Self } from '@angular/core';
-import { FormControl, NgModel, NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
-import * as moment from 'moment';
+import { Directive, ElementRef, HostListener, Renderer2 } from '@angular/core';
+import { NgModel } from '@angular/forms';
 
 @Directive({
   selector: '[appTimeMask]',
@@ -54,7 +53,7 @@ export class TimeMaskDirective {
     if (newTime.length > 5)
       return;
 
-    console.log('insert into: ', oldValue, 'value: ', key, 'and res: ', newTime);
+    // console.log('insert into: ', oldValue, 'value: ', key, 'and res: ', newTime);
 
     if (newTime.length > 2 && !oldValue.includes(':')) {
       caretPosition++;
@@ -68,7 +67,7 @@ export class TimeMaskDirective {
       }
 
     const arr = newTime.split(':');
-    console.log('splited arr: ', arr);
+    // console.log('splited arr: ', arr);
 
     var hour = arr[0];
     let newHour = hour ?? '';
@@ -98,7 +97,7 @@ export class TimeMaskDirective {
   }
 
   private updateValue(newTime: string, evt: KeyboardEvent) {
-    console.log('newValue', newTime);
+    // console.log('newValue', newTime);
     this._renderer.setProperty(this._el.nativeElement, 'value', newTime);
     this.ngModel.update.emit(newTime);
     evt.preventDefault();

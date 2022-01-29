@@ -5,64 +5,6 @@
   </div>
 </div>
 
-<!-- <ng-template #messageWithFileTemplate let-mess>
-
-  <span class="container-mess-file">
-
-    <div class="message with-file" [ngStyle]=" {'background-color': mess.color}">
-
-      <span class="close" (click)="removeMessage(mess.index)">
-        <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-          <g id="Lager_20" data-name="Lager 20" transform="translate(-6 -6)">
-            <path id="Path_23" data-name="Path 23"
-              d="M18.695,16l6.752-6.752a1.886,1.886,0,0,0,0-2.668l-.027-.027a1.886,1.886,0,0,0-2.668,0L16,13.305,9.248,6.553a1.886,1.886,0,0,0-2.668,0l-.027.027a1.886,1.886,0,0,0,0,2.668L13.305,16,6.553,22.752a1.886,1.886,0,0,0,0,2.668l.027.027a1.886,1.886,0,0,0,2.668,0L16,18.695l6.752,6.752a1.886,1.886,0,0,0,2.668,0l.027-.027a1.886,1.886,0,0,0,0-2.668Z" />
-          </g>
-        </svg>
-      </span>
-
-      <span class="title">
-
-        <div class="title_icon">
-
-          <svg id="success" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="30" width="30">
-            <path d="M0 0h24v24H0V0z" fill="none" />
-            <path
-              d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM17.99 9l-1.41-1.42-6.59 6.59-2.58-2.57-1.42 1.41 4 3.99z" />
-          </svg>
-
-        </div>
-
-        <div class="title_text">
-
-          {{mess.title}}
-
-        </div>
-
-      </span>
-
-      <hr>
-
-      <span class="body">
-        {{mess.message}}
-      </span>
-
-    </div>
-
-    <div class="container-mess-button">
-
-      <button class="btn down-but" *ngIf="mess.file!=null" (click)="downloadFile(mess.file.file, mess.file.fileName)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="3" stroke-linecap="round"
-          stroke-linejoin="round">
-          <path d="M3 15v4c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2v-4M17 9l-5 5-5-5M12 12.8V2.5"></path>
-        </svg>
-      </button>
-
-    </div>
-
-  </span>
-
-</ng-template> -->
-
 <ng-template #messageOnlyTextTemplate let-mess>
 
   <div class="message" [ngStyle]=" {'background-color': mess.color}">
@@ -83,14 +25,14 @@
         <ng-container [ngSwitch]="mess.type">
 
           <ng-template ngSwitchCase="0">
-            <svg id="error" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="30" width="30">
+            <svg id="error" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
               <path
                 d="M11 15h2v2h-2v-2zm0-8h2v6h-2V7zm.99-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" />
             </svg>
           </ng-template>
 
           <ng-template ngSwitchCase="1">
-            <svg id="info" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="30" width="30">
+            <svg id="info" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
               <path d="M0 0h24v24H0V0z" fill="none" />
               <path
                 d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
@@ -98,7 +40,7 @@
           </ng-template>
 
           <ng-template ngSwitchCase="2">
-            <svg id="success" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="30" width="30">
+            <svg id="success" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
               <path d="M0 0h24v24H0V0z" fill="none" />
               <path
                 d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM17.99 9l-1.41-1.42-6.59 6.59-2.58-2.57-1.42 1.41 4 3.99z" />
@@ -117,11 +59,15 @@
 
     </span>
 
-    <hr>
+    <ng-container *ngIf="mess.message">
 
-    <span class="body">
-      {{mess.message}}
-    </span>
+      <hr>
+
+      <span class="body">
+        {{mess.message}}
+      </span>
+
+    </ng-container>
 
   </div>
 

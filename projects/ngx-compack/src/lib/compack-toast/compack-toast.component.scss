@@ -5,14 +5,16 @@
 }
 
 .notif-container {
-    font-family: "Roboto";
+    // font-family: "Roboto";
+    font-family: "Nunito";
+
     width: 330px;
     max-height: 500px;
     position: absolute;
     bottom: 5px;
     left: 0;
     z-index: 3;
-    padding: 15px;
+    padding: 5px 5px 0 10px;
     overflow-y: auto;
     overflow-x: hidden;
 
@@ -45,7 +47,7 @@
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
-        margin-bottom: 15px;
+        margin-bottom: 10px;
 
         .with-file {
             width: 85% !important;
@@ -79,7 +81,7 @@
         height: fit-content;
         position: relative;
         transition: all 1s;
-        padding: 5px;
+        padding: 10px;
         margin-bottom: 15px;
         opacity: 1;
         color: #000000;
@@ -127,9 +129,15 @@
             font-size: 17px;
 
             .title_icon {
-                min-width: 35px;
+                // min-width: 35px;
+                align-items: center;
+                display: flex;
+                justify-content: center;
+                margin-right: 5px;
+
                 svg {
-                    margin-right: 5px;
+                    height: 30px;
+                    width: 30px;
                 }
             }
 

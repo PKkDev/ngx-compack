@@ -93,7 +93,7 @@ Name | Default | Description
 @Input() <br> viewFieldSelectedDate: boolean | false |  display field with selected date
 @Input() <br> formatOutputDate: string | undefined |  exit date format
 @Input() <br> useTime: boolean | false | add time field or not
-@Input() <br> autoSelect: boolean | false|  auto select date after choose
+@Input() <br> autoSelect: boolean | false|  auto select date after choose <br> only without **useTime**
 @Input() <br> maxChoseDay: number | undefined | maximum range for selection
 @Input() <br> max: string | undefined | date limit from below
 @Input() <br> min: string | undefined | date cut from above

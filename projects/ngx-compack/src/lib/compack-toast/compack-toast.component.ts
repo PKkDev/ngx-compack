@@ -1,5 +1,5 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { CompackToastMergeService } from './compack-toast-merge.service';
 import { Toast } from './model/toast';
 import { ToastConfig } from './model/toast-config';
@@ -29,7 +29,6 @@ export class CompackToastComponent implements OnInit, OnDestroy {
   messageWithFileTemplate!: TemplateRef<any>;
   @ViewChild('messageOnlyTextTemplate', { static: false })
   messageOnlyTextTemplate!: TemplateRef<any>;
-
 
   constructor(
     private cdr: ChangeDetectorRef,

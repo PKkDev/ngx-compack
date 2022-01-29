@@ -31,6 +31,7 @@ export class CompackDatePickerComponent implements OnInit, AfterViewInit {
   @Input() max: Moment | undefined;
   @Input() min: Moment | undefined;
   @Input() locale = 'en';
+  public viewErrorMessage = false;
   // @Input() initialSelectedDate: string[] | undefined;
   // type template
   @ViewChild('lineTemplate', { static: false }) lineTemplate!: TemplateRef<any>;
@@ -144,7 +145,7 @@ export class CompackDatePickerComponent implements OnInit, AfterViewInit {
   public onChangeSelectedStartDate() {
     if (this.selectStartDateStr) {
 
-      console.log('this.selectStartDateStr', this.selectStartDateStr);
+      // console.log('this.selectStartDateStr', this.selectStartDateStr);
 
       const mDate = moment(this.selectStartDateStr, this.baseDateInputFormat);
       const year = mDate.year();
@@ -155,7 +156,7 @@ export class CompackDatePickerComponent implements OnInit, AfterViewInit {
         this.selectedYear = year;
         this.loadMonthData();
         const day = this.crdp.getDayByDate(mDate, this.calendar);
-        console.log(day);
+        // console.log(day);
 
         if (day != null) {
           // if (!day.isOutOfMaxMin) {

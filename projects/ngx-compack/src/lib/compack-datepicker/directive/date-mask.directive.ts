@@ -1,5 +1,5 @@
-import { Directive, ElementRef, EventEmitter, forwardRef, HostListener, Optional, Output, Renderer2, Self } from '@angular/core';
-import { DefaultValueAccessor, NgModel, NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Directive, ElementRef, HostListener, Renderer2 } from '@angular/core';
+import { NgModel } from '@angular/forms';
 
 @Directive({
   selector: '[ngModel][appDateMask]',
@@ -52,7 +52,7 @@ export class DateMaskDirective {
     if (newDate.length > 10)
       return;
 
-    console.log('insert into: ', oldValue, 'value: ', key, 'and res: ', newDate);
+    // console.log('insert into: ', oldValue, 'value: ', key, 'and res: ', newDate);
 
     if (newDate.length == 1)
       if (+key > 3) {
@@ -78,25 +78,46 @@ export class DateMaskDirective {
 
       newDate = `${day}.`;
     }
+
+    let monthEarling = false;
     if (month) {
       if (month.length == 1)
         if (+month > 1) {
           caretPosition++;
           month = `0${month}`;
         }
-        else
-          caretPosition--;
-      if (+month > 12)
-        month = `12`;
+        else {
+          monthEarling = true;
+          newDate = `${day}.${month}`;
+          if (year) {
+            caretPosition--;
+          }
+        }
+      if (+month > 12) {
+        if (+month[0] == 0) {
+          year = month[2];
+          month = `${month[0]}${month[1]}`;
+          caretPosition++;
+        }
+        else {
+          if (month.length > 2) {
+            year = month[2];
+            caretPosition++;
+          }
+          month = `12`;
+        }
+      }
 
-      newDate = `${day}.${month}.`;
+      if (!monthEarling)
+        newDate = `${day}.${month}.`;
     }
+
     if (year) {
       if (year.length > 4)
         year = year.substring(0, 4);
 
       newDate = `${day}.${month}.${year}`;
-      caretPosition--;
+      // caretPosition--;
     }
 
     this.updateValue(newDate, evt);
@@ -187,7 +208,7 @@ export class DateMaskDirective {
   }
 
   private updateValue(newTime: string, evt: KeyboardEvent) {
-    console.log('newValue', newTime);
+    // console.log('newValue', newTime);
     this._renderer.setProperty(this._el.nativeElement, 'value', newTime);
     this.ngModel.update.emit(newTime);
     evt.preventDefault();

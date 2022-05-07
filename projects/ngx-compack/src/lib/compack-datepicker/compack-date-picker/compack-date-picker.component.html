@@ -108,10 +108,10 @@
 
             <span class="field_container">
 
-              <input maxlength="5" class="field time short_time" appTimeMask [(ngModel)]="selectStartTimeStr"
+              <input maxlength="5" class="field time short_time" timeMask [(ngModel)]="selectStartTimeStr"
                 placeholder="HH:mm" (ngModelChange)="onChangeSelectedStartTime()" />
 
-              <input maxlength="5" class="field time short_time" appTimeMask [(ngModel)]="selectLastTimeStr"
+              <input maxlength="5" class="field time short_time" timeMask [(ngModel)]="selectLastTimeStr"
                 placeholder="HH:mm" (ngModelChange)="onChangeSelectedLastTime()" />
 
             </span>
@@ -119,9 +119,9 @@
           </ng-container>
 
           <span class="field_container">
-            <input maxlength="10" class="field short_date" appDateMask [(ngModel)]="selectStartDateStr"
+            <input maxlength="10" class="field short_date" dateMask [(ngModel)]="selectStartDateStr"
               [readonly]="canAutoSelect" placeholder="dd.MM.yyyy" (ngModelChange)="onChangeSelectedStartDate()">
-            <input maxlength="10" class="field short_date" appDateMask [(ngModel)]="selectLastDateStr"
+            <input maxlength="10" class="field short_date" dateMask [(ngModel)]="selectLastDateStr"
               [readonly]="canAutoSelect" placeholder="dd.MM.yyyy" (ngModelChange)="onChangeSelectedLastDate()">
           </span>
 
@@ -132,9 +132,9 @@
           <ng-container *ngIf="useTime; else onlyDate">
 
             <span class="field_container">
-              <input maxlength="10" class="field medium_date" appDateMask [(ngModel)]="selectStartDateStr"
+              <input maxlength="10" class="field medium_date" dateMask [(ngModel)]="selectStartDateStr"
                 [readonly]="canAutoSelect" placeholder="dd.MM.yyyy" (ngModelChange)="onChangeSelectedStartDate()">
-              <input maxlength="5" class="field time medium_time" appTimeMask [(ngModel)]="selectStartTimeStr"
+              <input maxlength="5" class="field time medium_time" timeMask [(ngModel)]="selectStartTimeStr"
                 placeholder="HH:mm" (ngModelChange)="onChangeSelectedStartTime()" />
             </span>
 
@@ -143,7 +143,7 @@
           <ng-template #onlyDate>
 
             <span class="field_container">
-              <input maxlength="10" class="field large_date" appDateMask [(ngModel)]="selectStartDateStr"
+              <input maxlength="10" class="field large_date" dateMask [(ngModel)]="selectStartDateStr"
                 [readonly]="canAutoSelect" placeholder="dd.MM.yyyy" (ngModelChange)="onChangeSelectedStartDate()">
             </span>
 

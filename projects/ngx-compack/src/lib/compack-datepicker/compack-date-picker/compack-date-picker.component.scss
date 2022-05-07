@@ -176,16 +176,25 @@
             box-sizing: border-box;
             height: 7em;
             padding: 0.4em;
+            border-radius: 6px;
 
             .month {
-                transition: all 0.5s linear;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                line-height: 0.9;
+                // transition: background-color 0.5s linear, color 0.5s linear;
                 text-align: center;
                 font-size: 1em;
                 width: 25%;
                 height: 33.33%;
                 cursor: pointer;
+
                 &:hover {
-                    color: #e9041e;
+                    background-color: #e9041e;
+                    color: #fff;
+                    font-weight: bold;
+                    border-radius: 6px;
                 }
             }
         }

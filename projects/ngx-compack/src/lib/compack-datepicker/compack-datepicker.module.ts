@@ -20,6 +20,10 @@ import { DateMaskDirective } from './directive/date-mask.directive';
     CompackDatePickerComponent
   ],
   exports: [
+    DateMaskDirective,
+    TimeMaskDirective,
+    DisplayPeriodDatePipe,
+    DisplayDatePipe,
     CompackDatePickerComponent
   ]
 })

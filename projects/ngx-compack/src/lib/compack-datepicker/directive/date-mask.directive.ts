@@ -1,27 +1,36 @@
-import { Directive, ElementRef, HostListener, Renderer2 } from '@angular/core';
-import { NgModel } from '@angular/forms';
+import { Directive, ElementRef, EventEmitter, HostListener, Output, Renderer2 } from '@angular/core';
 
 @Directive({
-  selector: '[ngModel][appDateMask]',
-  providers: [NgModel]
+  selector: '[ngModel][dateMask]'
 })
 export class DateMaskDirective {
 
+  @Output() ngModelChange: EventEmitter<any> = new EventEmitter();
+
   constructor(
     private _el: ElementRef,
-    private _renderer: Renderer2,
-    private ngModel: NgModel) {
+    private _renderer: Renderer2) { }
+
+  @HostListener('dragstart', ['$event'])
+  onDragstart(evt: DragEvent) {
+    evt.preventDefault();
   }
 
   @HostListener('keydown', ['$event'])
   onKeyDown(evt: KeyboardEvent) {
+    let selectionStart = this._el.nativeElement.selectionStart;
+    let selectionEnd = this._el.nativeElement.selectionEnd;
+    let valueLength = this._el.nativeElement.value.length;
+    if (selectionEnd - selectionStart == valueLength)
+      this._el.nativeElement.value = '';
+
     const key = evt.key;
     if (key == 'Backspace') { // || key == 'Delete'
       this._checkDeleted(key, evt);
     } else {
       if (key == 'ArrowLeft' || key == 'ArrowRight') {
       } else {
-        if (+key >= 0)
+        if (key != ' ' && +key >= 0)
           this._setInputText(key, evt);
         else
           evt.preventDefault();
@@ -210,7 +219,7 @@ export class DateMaskDirective {
   private updateValue(newTime: string, evt: KeyboardEvent) {
     // console.log('newValue', newTime);
     this._renderer.setProperty(this._el.nativeElement, 'value', newTime);
-    this.ngModel.update.emit(newTime);
+    this.ngModelChange.emit(newTime);
     evt.preventDefault();
   }
 

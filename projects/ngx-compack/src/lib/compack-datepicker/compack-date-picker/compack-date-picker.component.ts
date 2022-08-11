@@ -1,6 +1,7 @@
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, SimpleChange, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import * as moment from 'moment';
 import { Moment } from 'moment';
+import { Subscription } from 'rxjs';
 import { CalendarPicker } from '../model/calendar';
 import { CalendarDayPicker } from '../model/calendar-day';
 import { MonthSelect } from '../model/month-select';
@@ -20,18 +21,20 @@ export class CompackDatePickerComponent implements OnInit, AfterViewInit {
   // events
   @Output() selectLastDateEvent = new EventEmitter<string[]>();
   // input config
-  @Input() rangeMode = false;
-  @Input() type = 'block'; /* block line icon */
-  @Input() viewFieldSelectedDate = false;
-  @Input() formatOutputDate: string | undefined;
-  @Input() useTime = false;
-  @Input() autoSelect = false;
-  public canAutoSelect = false;
+  @Input() rangeMode: boolean = false;
+  @Input() type: string = 'block'; /* block line icon */
+  @Input() viewFieldSelectedDate: boolean = false;
+  @Input() formatOutputDate: string | undefined = 'DD.MM.YYYYTHH:mm';
+  @Input() useTime: boolean = false;
+  @Input() autoSelect: boolean = false;
+  public canAutoSelect: boolean = false;
   @Input() maxChoseDay: number | undefined;
   @Input() max: Moment | undefined;
   @Input() min: Moment | undefined;
-  @Input() locale = 'en';
-  public viewErrorMessage = false;
+  @Input() locale: string = 'en';
+  @Input() disabled: boolean = false;
+  @Input() setDate: EventEmitter<string[]> | undefined;
+  public viewErrorMessage: boolean = false;
   // @Input() initialSelectedDate: string[] | undefined;
   // type template
   @ViewChild('lineTemplate', { static: false }) lineTemplate!: TemplateRef<any>;
@@ -61,10 +64,23 @@ export class CompackDatePickerComponent implements OnInit, AfterViewInit {
   selectLastDateStr: string | undefined;
   selectLastTimeStr: string | undefined;
 
+  // subs
+  private setDateSubs: Subscription | undefined;
+
   constructor(
     private el: ElementRef,
     private cdr: ChangeDetectorRef,
-    private crdp: CompackDatePickerService) { }
+    private crdp: CompackDatePickerService) {
+
+    console.log('constructor', this.setDate);
+    if (this.setDate) {
+      if (this.setDateSubs) this.setDateSubs.unsubscribe();
+      this.setDateSubs = this.setDate
+        .subscribe((next: string[]) => {
+          console.log(next);
+        });
+    }
+  }
 
   ngAfterViewInit() {
     this.loadCalendarTemplate(this.type);
@@ -92,6 +108,51 @@ export class CompackDatePickerComponent implements OnInit, AfterViewInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    if (changes.setDate) {
+      console.log('changes.setDate', changes.setDate);
+      if (this.setDate) {
+        if (this.setDateSubs) this.setDateSubs.unsubscribe();
+        this.setDateSubs = this.setDate
+          .subscribe((next: string[]) => {
+            if (this.rangeMode) {
+              const start = moment(next[0], this.formatOutputDate);
+              this.selectedMonth = start.month() + 1;
+              this.loadMonthData();
+              const searchStart = this.crdp.getDayByDate(start, this.calendar);
+              if (searchStart) this.selectDay(searchStart, true);
+
+              const end = moment(next[1], this.formatOutputDate);
+              this.selectedMonth = end.month() + 1;
+              this.loadMonthData();
+              const searchEnd = this.crdp.getDayByDate(end, this.calendar);
+              if (searchEnd) this.selectDay(searchEnd, true);
+
+              if (this.useTime) {
+                this.selectStartTimeStr = start.format(this.baseTimeInputFormat);
+                this.onChangeSelectedStartTime();
+
+                this.selectLastTimeStr = end.format(this.baseTimeInputFormat);
+                this.onChangeSelectedLastTime();
+              }
+
+            } else {
+              const date = moment(next[0], this.formatOutputDate);
+              this.selectedMonth = date.month() + 1;
+              this.loadMonthData();
+              const search = this.crdp.getDayByDate(date, this.calendar);
+              if (search) this.selectDay(search, true);
+
+              if (this.useTime) {
+                this.selectStartTimeStr = date.format(this.baseTimeInputFormat);
+                this.onChangeSelectedStartTime();
+              }
+
+            }
+            console.log(next);
+          });
+      }
+    }
+
     if (changes.autoSelect != undefined) {
       this.checkCanAutoSelect();
     }
@@ -257,44 +318,47 @@ export class CompackDatePickerComponent implements OnInit, AfterViewInit {
   }
 
   public openMenuPicker(element: HTMLElement) {
-    this.menuIsVisiblr = !this.menuIsVisiblr;
-    if (this.menuIsVisiblr) {
-      element.style.cssText = 'display: block;'
-      const rec = element?.getBoundingClientRect()
-      // console.log(rec);
+    if (!this.disabled) {
+      this.menuIsVisiblr = !this.menuIsVisiblr;
+      if (this.menuIsVisiblr) {
+        element.style.cssText = 'display: block;'
+        const rec = element?.getBoundingClientRect()
+        // console.log(rec);
 
-      const offsetLeft = element?.offsetLeft;
-      const offsetTop = element?.offsetTop;
-      const offsetHeight = element?.offsetHeight;
-      const offsetWidth = element?.offsetWidth;
+        const offsetLeft = element?.offsetLeft;
+        const offsetTop = element?.offsetTop;
+        const offsetHeight = element?.offsetHeight;
+        const offsetWidth = element?.offsetWidth;
 
-      // console.log('offsetLeft', offsetLeft, 'offsetTop', offsetTop, 'offsetHeight', offsetHeight, 'offsetWidth', offsetWidth);
+        // console.log('offsetLeft', offsetLeft, 'offsetTop', offsetTop, 'offsetHeight', offsetHeight, 'offsetWidth', offsetWidth);
 
-      const innerHeight = window.innerHeight;
-      const innerWidth = window.innerWidth;
+        const innerHeight = window.innerHeight;
+        const innerWidth = window.innerWidth;
 
-      // console.log('innerHeight', innerHeight, 'innerWidth', innerWidth);
+        // console.log('innerHeight', innerHeight, 'innerWidth', innerWidth);
 
-      // не влез снизу
-      if (innerHeight - rec.bottom < 10) {
-        const offset = rec.height + 10 + offsetTop;
-        element.style.cssText = 'transform: translateY(-' + offset + 'px);'
+        // не влез снизу
+        if (innerHeight - rec.bottom < 10) {
+          const offset = rec.height + 10 + offsetTop;
+          element.style.cssText = 'transform: translateY(-' + offset + 'px);'
+        }
+
+        // не влез справа
+        if (innerWidth - rec.right < 10) {
+          const offset = Math.abs(innerWidth - rec.right) + 25;
+          const prevValue = element.style.transform;
+          element.style.cssText = 'transform: ' + prevValue + ' translateX(-' + offset + 'px);'
+        }
+
       }
-
-      // не влез справа
-      if (innerWidth - rec.right < 10) {
-        const offset = Math.abs(innerWidth - rec.right) + 25;
-        const prevValue = element.style.transform;
-        element.style.cssText = 'transform: ' + prevValue + ' translateX(-' + offset + 'px);'
-      }
-
     }
-
   }
 
   public openMonthSelector() {
-    this.allMonth = this.crdp.getMonths(this.locale);
-    this.menuMonthIsVisible = !this.menuMonthIsVisible;
+    if (!this.disabled) {
+      this.allMonth = this.crdp.getMonths(this.locale);
+      this.menuMonthIsVisible = !this.menuMonthIsVisible;
+    }
   }
   public selectMonth(order: number) {
     this.selectedMonth = order;
@@ -350,10 +414,12 @@ export class CompackDatePickerComponent implements OnInit, AfterViewInit {
   }
 
   selectDay(day: CalendarDayPicker, setStr: boolean) {
-    if (this.rangeMode)
-      this.selectRangeDay(day, setStr);
-    else
-      this.selectSingleDay(day, setStr);
+    if (!this.disabled) {
+      if (this.rangeMode)
+        this.selectRangeDay(day, setStr);
+      else
+        this.selectSingleDay(day, setStr);
+    }
   }
 
   private selectStartDayInRange(day: CalendarDayPicker, fromCalendar: boolean) {

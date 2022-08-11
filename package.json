@@ -13,6 +13,7 @@
     "url": "https://github.com/PKkDev/ngx-compack"
   },
   "scripts": {
+    "startAppWithLib": "ng build ngx-compack --prod && ng serve test-app",
     "ng": "ng",
     "build": "ng build",
     "start": "ng serve",

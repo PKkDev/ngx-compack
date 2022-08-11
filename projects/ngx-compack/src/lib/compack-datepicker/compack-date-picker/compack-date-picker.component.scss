@@ -17,6 +17,10 @@
         }
     }
 
+    .disabled {
+        opacity: 0.7;
+    }
+
     .input {
         width: 100%;
 
@@ -69,7 +73,7 @@
     }
 
     .menu_calendar {
-        z-index: 3;
+        z-index: 1000;
         position: absolute;
         margin: 5px;
         box-shadow: 0px 4px 4px 4px rgba(0, 0, 0, 0.25);
@@ -342,6 +346,10 @@
                 }
             }
         }
+    }
+
+    .disabled {
+        opacity: 0.7;
     }
 }
 

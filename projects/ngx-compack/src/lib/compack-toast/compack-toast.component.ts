@@ -22,13 +22,10 @@ import { ToastConfig } from './model/toast-config';
 })
 export class CompackToastComponent implements OnInit, OnDestroy {
   // data
-  private index = 0;
   public listMessages: Toast[] = [];
   // type template
-  @ViewChild('messageWithFileTemplate', { static: false })
-  messageWithFileTemplate!: TemplateRef<any>;
-  @ViewChild('messageOnlyTextTemplate', { static: false })
-  messageOnlyTextTemplate!: TemplateRef<any>;
+  @ViewChild('messageWithFileTemplate', { static: false }) messageWithFileTemplate!: TemplateRef<any>;
+  @ViewChild('messageOnlyTextTemplate', { static: false }) messageOnlyTextTemplate!: TemplateRef<any>;
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -39,7 +36,8 @@ export class CompackToastComponent implements OnInit, OnDestroy {
     this.ctms.notifEmite$
       .subscribe((next: ToastConfig) => {
         if (next !== null) {
-          const newIndex = this.index++;
+          const newIndex = +(new Date());
+          console.log(newIndex);
           const newToast = this.ctms.mergeToastConfig(next, newIndex);
           if (newToast != null) {
             this.listMessages.push(newToast);

@@ -5,7 +5,8 @@
 
   <div class="calendar_container">
 
-    <input class="input" [ngClass]="{'short':!useTime, 'long':useTime }" (click)="openMenuPicker(menu)" readonly
+    <input class="input" [ngClass]="{'short':!useTime, 'long':useTime }" [disabled]="disabled"
+      (click)="openMenuPicker(menu)" readonly
       [value]="[selectStartDate, selectLastDate] | displayPeriodDate: rangeMode : fieldPlaceHolder: useTime">
 
     <label class="mark" for="dropdownForm3"></label>
@@ -28,7 +29,8 @@
 
   <div class="calendar_container">
 
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" (click)="openMenuPicker(menu)">
+    <svg xmlns="http://www.w3.org/2000/svg" [ngClass]="{'disabled':disabled}" viewBox="0 0 24 24"
+      (click)="openMenuPicker(menu)">
       <path d="M0 0h24v24H0z" fill="none" />
       <path
         d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z" />
@@ -54,8 +56,8 @@
       </div>
 
       <div class="titile_tool">
-        <button (click)="previewMonth()">&lt;</button>
-        <button (click)="nextMonth()">&gt;</button>
+        <button (click)="previewMonth()" [disabled]="disabled">&lt;</button>
+        <button (click)="nextMonth()" [disabled]="disabled">&gt;</button>
       </div>
 
       <div class="month_selector" [ngClass]="{'visible':menuMonthIsVisible}">
@@ -66,7 +68,7 @@
 
     </div>
 
-    <div class="body">
+    <div class="body" [ngClass]="{'disabled':disabled}">
 
       <table class="my-table">
         <thead>
@@ -109,10 +111,10 @@
             <span class="field_container">
 
               <input maxlength="5" class="field time short_time" timeMask [(ngModel)]="selectStartTimeStr"
-                placeholder="HH:mm" (ngModelChange)="onChangeSelectedStartTime()" />
+                [disabled]="disabled" placeholder="HH:mm" (ngModelChange)="onChangeSelectedStartTime()" />
 
               <input maxlength="5" class="field time short_time" timeMask [(ngModel)]="selectLastTimeStr"
-                placeholder="HH:mm" (ngModelChange)="onChangeSelectedLastTime()" />
+                [disabled]="disabled" placeholder="HH:mm" (ngModelChange)="onChangeSelectedLastTime()" />
 
             </span>
 
@@ -120,9 +122,11 @@
 
           <span class="field_container">
             <input maxlength="10" class="field short_date" dateMask [(ngModel)]="selectStartDateStr"
-              [readonly]="canAutoSelect" placeholder="dd.MM.yyyy" (ngModelChange)="onChangeSelectedStartDate()">
+              [disabled]="disabled" [readonly]="canAutoSelect" placeholder="dd.MM.yyyy"
+              (ngModelChange)="onChangeSelectedStartDate()">
             <input maxlength="10" class="field short_date" dateMask [(ngModel)]="selectLastDateStr"
-              [readonly]="canAutoSelect" placeholder="dd.MM.yyyy" (ngModelChange)="onChangeSelectedLastDate()">
+              [disabled]="disabled" [readonly]="canAutoSelect" placeholder="dd.MM.yyyy"
+              (ngModelChange)="onChangeSelectedLastDate()">
           </span>
 
         </ng-container>
@@ -133,9 +137,10 @@
 
             <span class="field_container">
               <input maxlength="10" class="field medium_date" dateMask [(ngModel)]="selectStartDateStr"
-                [readonly]="canAutoSelect" placeholder="dd.MM.yyyy" (ngModelChange)="onChangeSelectedStartDate()">
+                [disabled]="disabled" [readonly]="canAutoSelect" placeholder="dd.MM.yyyy"
+                (ngModelChange)="onChangeSelectedStartDate()">
               <input maxlength="5" class="field time medium_time" timeMask [(ngModel)]="selectStartTimeStr"
-                placeholder="HH:mm" (ngModelChange)="onChangeSelectedStartTime()" />
+                [disabled]="disabled" placeholder="HH:mm" (ngModelChange)="onChangeSelectedStartTime()" />
             </span>
 
           </ng-container>
@@ -144,7 +149,8 @@
 
             <span class="field_container">
               <input maxlength="10" class="field large_date" dateMask [(ngModel)]="selectStartDateStr"
-                [readonly]="canAutoSelect" placeholder="dd.MM.yyyy" (ngModelChange)="onChangeSelectedStartDate()">
+                [disabled]="disabled" [readonly]="canAutoSelect" placeholder="dd.MM.yyyy"
+                (ngModelChange)="onChangeSelectedStartDate()">
             </span>
 
           </ng-template>
@@ -158,8 +164,8 @@
       </div>
 
       <div class="footer">
-        <button class="btn" [disabled]='error.isError' (click)="acceptNewDate()">{{acceptBtn}}</button>
-        <button class="btn" (click)="clearCalendar()">{{cancelBtn}}</button>
+        <button class="btn" [disabled]='error.isError || disabled' (click)="acceptNewDate()">{{acceptBtn}}</button>
+        <button class="btn" [disabled]="disabled" (click)="clearCalendar()">{{cancelBtn}}</button>
       </div>
 
     </div>

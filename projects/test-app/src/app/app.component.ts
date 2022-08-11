@@ -56,11 +56,16 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.cdr.detectChanges();
   }
 
+  public setDateEvent: EventEmitter<string[]> = new EventEmitter<string[]>();
+  public OnSetDate() {
+    this.setDateEvent.next(['08.07.2022T05:45', '18.07.2022T15:55']);
+  }
   public type = 'block';
   public formatOutputDate = 'DD.MM.YYYYTHH:mm';
   public locale = 'ru';
   public useTime = true;
   public rangeMode = false;
+  public disabled = false;
   public autoSelect = false;
   public viewFieldSelectedDate = true;
   public maxChoseDay = 5;

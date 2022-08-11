@@ -31,10 +31,11 @@
 
             <div class="col">
 
-                <compack-date-picker [rangeMode]="rangeMode" [type]="type"
-                    [viewFieldSelectedDate]="viewFieldSelectedDate" [formatOutputDate]="formatOutputDate"
-                    [useTime]="useTime" [maxChoseDay]="maxChoseDay" [locale]="locale" [max]="max" [min]="min"
-                    [autoSelect]="autoSelect" (selectLastDateEvent)="selectLastDateEvent($event)">
+                <compack-date-picker [rangeMode]="rangeMode" [type]="type" [disabled]="disabled"
+                    [setDate]="setDateEvent" [viewFieldSelectedDate]="viewFieldSelectedDate"
+                    [formatOutputDate]="formatOutputDate" [useTime]="useTime" [maxChoseDay]="maxChoseDay"
+                    [locale]="locale" [max]="max" [min]="min" [autoSelect]="autoSelect"
+                    (selectLastDateEvent)="selectLastDateEvent($event)">
                 </compack-date-picker>
 
             </div>
@@ -56,6 +57,10 @@
                     </div>
 
                     <div class="field_group">
+                        disabled: <input type="checkbox" [(ngModel)]="disabled">
+                    </div>
+
+                    <div class="field_group">
                         rangeMode: <input type="checkbox" [(ngModel)]="rangeMode">
                     </div>
 
@@ -72,6 +77,10 @@
                     </div>
 
                     <div class="field_group">
+                        <button (click)="OnSetDate()">setDate</button>
+                    </div>
+
+                    <div class="field_group">
                         type:
                         <select [(ngModel)]="type">
                             <option>block</option>
@@ -84,7 +93,7 @@
                         min:
                         <div class="max_container">
                             <compack-date-picker [type]="'line'" (selectLastDateEvent)="selectMinDateEvent($event)"
-                                [autoSelect]="true">
+                                [autoSelect]="true" >
                             </compack-date-picker>
                         </div>
                     </div>

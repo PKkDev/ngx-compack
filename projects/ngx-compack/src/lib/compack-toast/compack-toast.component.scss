@@ -13,7 +13,7 @@
     position: absolute;
     bottom: 5px;
     left: 0;
-    z-index: 3;
+    z-index: 1001;
     padding: 5px 5px 0 10px;
     overflow-y: auto;
     overflow-x: hidden;
@@ -126,7 +126,7 @@
             display: flex;
             align-items: center;
             justify-content: flex-start;
-            font-size: 17px;
+            font-size: 15px;
 
             .title_icon {
                 // min-width: 35px;
@@ -155,7 +155,7 @@
         }
 
         .body {
-            font-size: 17px;
+            font-size: 15px;
         }
     }
 }

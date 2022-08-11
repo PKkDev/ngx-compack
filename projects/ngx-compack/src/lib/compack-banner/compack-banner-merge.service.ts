@@ -20,15 +20,13 @@ export class CompackBannerMergeService {
   constructor() { }
 
   public setInfoColor(newInfoColor: string) {
-    if (mapColor.has('info')) {
+    if (mapColor.has('info'))
       mapColor.set('info', newInfoColor);
-    }
   }
 
   public setErrorColor(newErrorColor: string) {
-    if (mapColor.has('error')) {
+    if (mapColor.has('error'))
       mapColor.set('error', newErrorColor);
-    }
   }
 
   public mergeMessageConfig(messageConfig: DisplayMessageConfig): DisplayMessage | null {
@@ -68,38 +66,23 @@ export class CompackBannerMergeService {
     }
 
     switch (messageConfig.position) {
-      case TypePositionMessage.Top: {
-        result.positionClass = 'top';
-        break;
-      }
-      case TypePositionMessage.TopLeft: {
-        result.positionClass = 'top_left';
-        break;
-      }
-      case TypePositionMessage.TopRight: {
-        result.positionClass = 'top_right';
-        break;
-      }
-      case TypePositionMessage.Middle: {
-        result.positionClass = 'Middle';
-        break;
-      }
-      case TypePositionMessage.Bottom: {
-        result.positionClass = 'bottom';
-        break;
-      }
-      case TypePositionMessage.BottomLeft: {
-        result.positionClass = 'bottom_left';
-        break;
-      }
-      case TypePositionMessage.BottomRight: {
-        result.positionClass = 'bottom_right';
-        break;
-      }
-      default: {
-        result.positionClass = 'top_right';
-        break;
-      }
+      case TypePositionMessage.Top:
+        result.positionClass = 'top'; break;
+      case TypePositionMessage.TopLeft:
+        result.positionClass = 'top_left'; break;
+      case TypePositionMessage.TopRight:
+        result.positionClass = 'top_right'; break;
+      case TypePositionMessage.Middle:
+        result.positionClass = 'Middle'; break;
+      case TypePositionMessage.Bottom:
+        result.positionClass = 'bottom'; break;
+      case TypePositionMessage.BottomLeft:
+        result.positionClass = 'bottom_left'; break;
+      case TypePositionMessage.BottomRight:
+        result.positionClass = 'bottom_right'; break;
+      default:
+        result.positionClass = 'top_right'; break;
+
     }
     // console.log('message', result);
     return result;

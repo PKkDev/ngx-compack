@@ -22,7 +22,7 @@ import { DisplayMessageConfig } from './model/display-message-config';
 })
 export class CompackBannerComponent implements OnInit, OnDestroy {
   // config position
-  public positionClass = 'top';
+  public positionClass: string = 'top';
   // data
   public displayMessage: DisplayMessage | null = null;
   private timeOutView: any;
@@ -35,29 +35,31 @@ export class CompackBannerComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.compackBannerService.newMessageEvent$.subscribe(
-      (data: DisplayMessageConfig | null) => {
-        if (data != null) {
-          this.removeMessage();
-          this.displayMessage = this.compackBannerService.mergeMessageConfig(data);
-          if (this.displayMessage != null) {
-            this.positionClass = this.displayMessage.positionClass;
-            this.cdr.detectChanges();
-            if (this.displayMessage.intervalView != null) {
-              this.counterClose = this.displayMessage.intervalView;
-              this.setTimerView(this.displayMessage.intervalView)
-              this.setIntervalAutoClose()
+    this.compackBannerService.newMessageEvent$
+      .subscribe(
+        (data: DisplayMessageConfig | null) => {
+          if (data != null) {
+            this.removeMessage();
+            this.displayMessage = this.compackBannerService.mergeMessageConfig(data);
+            if (this.displayMessage != null) {
+              this.positionClass = this.displayMessage.positionClass;
+              this.cdr.detectChanges();
+              if (this.displayMessage.intervalView != null) {
+                this.counterClose = this.displayMessage.intervalView;
+                this.setTimerView(this.displayMessage.intervalView)
+                this.setIntervalAutoClose()
+              }
             }
           }
         }
-      }
-    );
+      );
 
-    this.compackBannerService.removeMessageEvent$.subscribe(
-      (next: boolean) => {
-        this.removeMessage();
-      }
-    )
+    this.compackBannerService.removeMessageEvent$
+      .subscribe(
+        (next: boolean) => {
+          this.removeMessage();
+        }
+      )
   }
 
   ngOnDestroy() {

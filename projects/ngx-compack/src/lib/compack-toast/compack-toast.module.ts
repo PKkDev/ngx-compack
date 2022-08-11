@@ -5,18 +5,15 @@ import { CompackToastMergeService } from './compack-toast-merge.service';
 import { CompackToastService } from './compack-toast.service';
 
 @NgModule({
-  imports: [
-    CommonModule
-  ],
-  declarations: [
-    CompackToastComponent
-  ],
-  entryComponents: [
-    CompackToastComponent
-  ],
-  exports: [
-    CompackToastComponent
-  ],
-  providers: [CompackToastMergeService, CompackToastService]
+    imports: [
+        CommonModule
+    ],
+    declarations: [
+        CompackToastComponent
+    ],
+    exports: [
+        CompackToastComponent
+    ],
+    providers: [CompackToastMergeService, CompackToastService]
 })
 export class CompackToastModule { }

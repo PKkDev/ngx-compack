@@ -5,18 +5,15 @@ import { CompackBannerMergeService } from './compack-banner-merge.service';
 import { CompackBannerService } from './compack-banner.service';
 
 @NgModule({
-  imports: [
-    CommonModule
-  ],
-  declarations: [
-    CompackBannerComponent
-  ],
-  entryComponents: [
-    CompackBannerComponent
-  ],
-  exports: [
-    CompackBannerComponent
-  ],
-  providers: [CompackBannerMergeService, CompackBannerService]
+    imports: [
+        CommonModule
+    ],
+    declarations: [
+        CompackBannerComponent
+    ],
+    exports: [
+        CompackBannerComponent
+    ],
+    providers: [CompackBannerMergeService, CompackBannerService]
 })
 export class CompackBannerModule { }

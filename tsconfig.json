@@ -31,6 +31,9 @@
       "ngx-compack": [
         "dist/ngx-compack/ngx-compack",
         "dist/ngx-compack"
+      ],
+      "test-lib": [
+        "dist/test-lib"
       ]
     }
   },
@@ -38,6 +41,6 @@
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true,
-    "enableIvy": false
+    //"enableIvy": false
   }
 }

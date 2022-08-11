@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import * as moment_ from 'moment';
 import { CalendarDay } from '../model/calendar-day';
 
+import * as moment_ from 'moment';
 const moment = moment_;
 
 @Pipe({
@@ -20,9 +20,7 @@ export class DisplayDatePipe implements PipeTransform {
     if (formatView !== undefined)
       formatDate = formatView;
 
-
     return ' ' + moment(value.fulDate, formatInputDate).format(formatView);
   }
-
 
 }

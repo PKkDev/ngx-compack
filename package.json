@@ -13,7 +13,9 @@
     "url": "https://github.com/PKkDev/ngx-compack"
   },
   "scripts": {
-    "startAppWithLib": "ng build ngx-compack --prod && ng serve test-app",
+    "build:lib": "ng build ngx-compack --configuration production",
+    "startAppWithLib": "ng build ngx-compack --configuration production && ng serve test-view-app",
+    "testApp:serve": "ng serve test-view-app",
     "ng": "ng",
     "build": "ng build",
     "start": "ng serve",

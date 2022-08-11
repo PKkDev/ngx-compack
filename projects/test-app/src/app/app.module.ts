@@ -5,9 +5,9 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 // compack
-import { CompackBannerModule, CompackToastModule, CompackDatepickerModule } from 'ngx-compack';
+//import { CompackBannerModule, CompackToastModule, CompackDatepickerModule } from 'ngx-compack';
 // color-picker
-import { ColorPickerModule } from 'ngx-color-picker';
+//import { ColorPickerModule } from 'ngx-color-picker';
 
 @NgModule({
   declarations: [
@@ -19,11 +19,11 @@ import { ColorPickerModule } from 'ngx-color-picker';
     BrowserModule,
     AppRoutingModule,
 
-    ColorPickerModule,
+    // ColorPickerModule,
 
-    CompackDatepickerModule,
-    CompackBannerModule,
-    CompackToastModule,
+    // CompackDatepickerModule,
+    // CompackBannerModule,
+    // CompackToastModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

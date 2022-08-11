@@ -13,11 +13,11 @@
     "url": "https://github.com/PKkDev/ngx-compack"
   },
   "peerDependencies": {
-    "@angular/common": "^11.0.6",
-    "@angular/core": "^11.0.6",
+    "@angular/common": "^14.1.0",
+    "@angular/core": "^14.1.0",
     "moment": "^2.29.1"
   },
   "dependencies": {
-    "tslib": "^2.0.0"
+    "tslib": "^2.3.0"
   }
 }

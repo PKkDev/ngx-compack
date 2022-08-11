@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
-import * as moment from 'moment';
 import { Moment } from 'moment';
+
+import * as moment_ from 'moment';
+const moment = moment_;
 
 @Injectable({
   providedIn: 'root'

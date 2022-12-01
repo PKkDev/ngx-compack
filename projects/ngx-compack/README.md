@@ -72,32 +72,23 @@ add `compackDatePickerRangeHost`  directive to element <br> or create `<compack-
 Example:
 
 ```html
-        <compack-date-picker-range 
-		[locale]="'en'" 
-		(selectLastDateEvent)="selectLastDateEventRange($event)">
-        </compack-date-picker-range>
+<compack-date-picker-range [locale]="'en'" (selectLastDateEvent)="selectLastDateEventRange($event)">
+</compack-date-picker-range>
 
-        <input  placeholder="click me" 
-		compackDatePickerRangeHost 
-		[locale]="'en'" 
-		(selectLastDateEvent)="selectLastDateEventRange($event)"
-		[disabled]="false" 
-		[formatOutputDate]="'dd-mm-yyyy'" />
+<input placeholder="click me" compackDatePickerRangeHost [locale]="'en'"
+  (selectLastDateEvent)="selectLastDateEventRange($event)" [disabled]="false" [formatOutputDate]="'dd-mm-yyyy'" />
 
-        <div 
-		compackDatePickerRangeHost 
-		(selectLastDateEvent)="selectLastDateEventRange($event)" 
-		[relativeDateModel]="[]">
-          click me
-        </div>
+<div compackDatePickerRangeHost (selectLastDateEvent)="selectLastDateEventRange($event)" [relativeDateModel]="[]">
+  click me
+</div>
 
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" compackDatePickerRangeHost
-          [locale]="localeRange" (selectLastDateEvent)="selectLastDateEventRange($event)" [disabled]="disabledRange"
-          [formatOutputDate]="formatOutputDateRange" [relativeDateModel]="relativeDateModel">
-          <path d="M0 0h24v24H0z" fill="none" />
-          <path
-            d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z" />
-        </svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" compackDatePickerRangeHost [locale]="localeRange"
+  (selectLastDateEvent)="selectLastDateEventRange($event)" [disabled]="disabledRange"
+  [formatOutputDate]="formatOutputDateRange" [relativeDateModel]="relativeDateModel">
+  <path d="M0 0h24v24H0z" fill="none" />
+  <path
+    d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z" />
+</svg>
 ```
 
 #### Properties
@@ -179,24 +170,20 @@ example:
 add `compackDatePickerHost`  directive to element <br> or create `<compack-date-picker></compack-date-picker>` in code
 Example:
 
-        <svg compackDatePickerHost class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" 
-		[locale]="'en'" [type]="'icon'" [maxChoseDay]="5" 
-		[max]="max" [min]="min" 
-		(selectLastDateEvent)="selectLastDateEvent($event)">
-          <path d="M0 0h24v24H0z" fill="none" />
-          <path
-            d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z" />
-        </svg>
-		
-	 <compack-date-picker 
-	 [locale]="'en'"  [type]="'icon'"  [maxChoseDay]="5" 
-	 [max]="max" [min]="min">
-	 </compack-date-picker>
-	 
-	 <compack-date-picker 
-	 [type]="'line'" [maxChoseDay]="5"
-	 [max]="max" [min]="min">
-	 </compack-date-picker>
+```html
+<svg compackDatePickerHost class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" [locale]="'en'"
+  [type]="'icon'" [maxChoseDay]="5" [max]="max" [min]="min" (selectLastDateEvent)="selectLastDateEvent($event)">
+  <path d="M0 0h24v24H0z" fill="none" />
+  <path
+    d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z" />
+</svg>
+
+<compack-date-picker [locale]="'en'" [type]="'icon'" [maxChoseDay]="5" [max]="max" [min]="min">
+</compack-date-picker>
+
+<compack-date-picker [type]="'line'" [maxChoseDay]="5" [max]="max" [min]="min">
+</compack-date-picker>
+```
 
 #### Properties
 

@@ -37,7 +37,6 @@ export class CompackToastComponent implements OnInit, OnDestroy {
       .subscribe((next: ToastConfig) => {
         if (next !== null) {
           const newIndex = +(new Date());
-          console.log(newIndex);
           const newToast = this.ctms.mergeToastConfig(next, newIndex);
           if (newToast != null) {
             this.listMessages.push(newToast);

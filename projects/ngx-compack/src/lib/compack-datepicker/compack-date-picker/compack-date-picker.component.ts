@@ -1,268 +1,200 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, SimpleChange, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
-import { Moment } from 'moment';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { CompackDatePickerService } from '../compack-date-picker.service';
+import { DateFormatService } from '../date-format.service';
 import { CalendarPicker } from '../model/calendar';
 import { CalendarDayPicker } from '../model/calendar-day';
 import { MonthSelect } from '../model/month-select';
 import { CalendareError } from '../model/type-picker-error';
-import { CompackDatePickerService } from './compack-date-picker.service';
-
-import * as moment_ from 'moment';
-const moment = moment_;
 
 @Component({
   selector: 'compack-date-picker',
   templateUrl: './compack-date-picker.component.html',
   styleUrls: ['./compack-date-picker.component.scss']
 })
-export class CompackDatePickerComponent implements OnInit, AfterViewInit {
+export class CompackDatePickerComponent implements OnInit, OnDestroy {
+
+  // settings dialog
+  public isDialog = false;
+  public isOpen = false;
+  public handlerRef: ElementRef | undefined = undefined;
+  private onDocClickEv: (() => void) | undefined;
+  public left: string;
+  public top: string;
+
   // inner configs
   public error = new CalendareError();
-  private baseDateInputFormat = 'DD.MM.YYYY';
-  private baseTimeInputFormat = 'HH:mm';
   // events
   @Output() selectLastDateEvent = new EventEmitter<string[]>();
   // input config
-  @Input() rangeMode: boolean = false;
-  @Input() type: string = 'block'; /* block line icon */
-  @Input() viewFieldSelectedDate: boolean = false;
-  @Input() formatOutputDate: string | undefined = 'DD.MM.YYYYTHH:mm';
-  @Input() useTime: boolean = false;
-  @Input() autoSelect: boolean = false;
-  public canAutoSelect: boolean = false;
-  @Input() maxChoseDay: number | undefined;
-  @Input() max: Moment | undefined;
-  @Input() min: Moment | undefined;
   @Input() locale: string = 'en';
   @Input() disabled: boolean = false;
-  @Input() setDate: EventEmitter<string[]> | undefined;
+  @Input() rangeMode: boolean = false;
+  @Input() viewFieldSelectedDate: boolean = false;
+  @Input() useTime: boolean = false;
+  @Input() autoSelect: boolean = false;
+  @Input() maxChoseDay: number | undefined;
+  @Input() max: Date | undefined;
+  @Input() min: Date | undefined;
+  @Input() formatOutputDate: string = `dd.mm.yyyy'T'HH:MM`;
+  @Input() setDateEvent: EventEmitter<Date[]> | undefined;
+
+  public canAutoSelect: boolean = false;
   public viewErrorMessage: boolean = false;
   // @Input() initialSelectedDate: string[] | undefined;
-  // type template
-  @ViewChild('lineTemplate', { static: false }) lineTemplate!: TemplateRef<any>;
-  @ViewChild('blockTemplate', { static: false }) blockTemplate!: TemplateRef<any>;
-  @ViewChild('iconTemplate', { static: false }) iconTemplate!: TemplateRef<any>;
-  @ViewChild('picker', { static: false }) picker!: TemplateRef<any>;
   // view
   public fieldPlaceHolder = 'from/to';
   public acceptBtn = 'View';
   public cancelBtn = 'Reset';
-  selectedMonth = moment().month() + 1;
-  selectedYear = moment().year();
-  nameMonth = '';
-  public choseTemplate = this.blockTemplate;
-  public menuIsVisiblr = false;
+  private selectedMonth = new Date().getMonth();
+  public selectedYear = new Date().getFullYear();
+  public nameMonth = '';
   public menuMonthIsVisible = false;
+  @ViewChild('monthSelector') monthSelector: ElementRef | undefined;
+  @ViewChild('monthTitle') monthTitle: ElementRef | undefined;
   // data
   public allMonth: MonthSelect[] = [];
-  calendar: CalendarPicker[] = [];
-  calendarWeekName: string[] = [];
+  public calendar: CalendarPicker[] = [];
+  public calendarWeekName: string[] = [];
   // select;
-  selectStartDate: CalendarDayPicker | undefined;
-  selectStartDateStr: string | undefined;
-  selectStartTimeStr: string | undefined;
+  public selectStartDate: CalendarDayPicker | undefined;
+  public selectStartDateStr: string | undefined;
+  public selectStartTimeStr: string | undefined;
 
-  selectLastDate: CalendarDayPicker | undefined;
-  selectLastDateStr: string | undefined;
-  selectLastTimeStr: string | undefined;
+  public selectLastDate: CalendarDayPicker | undefined;
+  public selectLastDateStr: string | undefined;
+  public selectLastTimeStr: string | undefined;
 
   // subs
-  private setDateSubs: Subscription | undefined;
+  private setDateEventSubs: Subscription | undefined;
 
   constructor(
     private el: ElementRef,
-    private cdr: ChangeDetectorRef,
-    private crdp: CompackDatePickerService) {
-
-    console.log('constructor', this.setDate);
-    if (this.setDate) {
-      if (this.setDateSubs) this.setDateSubs.unsubscribe();
-      this.setDateSubs = this.setDate
-        .subscribe((next: string[]) => {
-          console.log(next);
-        });
-    }
-  }
-
-  ngAfterViewInit() {
-    this.loadCalendarTemplate(this.type);
-    // console.log(this.initialSelectedDate);
-    // if(this.initialSelectedDate){
-    //   console.log('start set initial');
-    //   if(this.initialSelectedDate.length ==2){
-    //     if(this.rangeMode){
-
-    //     }else{
-    //       this.selectSingleDay(this.initialSelectedDate[0]);
-    //     }
-    //   }
-    // }
-  }
+    private dfs: DateFormatService,
+    private crdp: CompackDatePickerService,
+    private renderer: Renderer2) { }
 
   ngOnInit() {
-    this.checkCanAutoSelect();
-    this.clearCalendarSelected();
-    this.calendarWeekName = this.crdp.getNameDayOfWeek(this.locale);
-    this.setViewFormat();
+
+    if (this.setDateEvent) {
+      if (this.setDateEventSubs) this.setDateEventSubs.unsubscribe();
+      this.setDateEventSubs = this.setDateEvent.subscribe((next: Date[]) => {
+        if (next.length != 2) { console.error('length initial date array != 2'); return; }
+        for (const date of next)
+          if (date.toString() === 'Invalid Date') { console.error('initial date invalide'); return; }
+        if (this.rangeMode) {
+          this.selectStartTimeStr = this.dfs.dateFormat(next[0], 'HH:MM');
+          this.selectedMonth = next[0].getMonth();
+          this.selectedYear = next[0].getFullYear();
+          this.loadMonthData();
+          const dayStart = this.crdp.getDayByDate(next[0], this.calendar);
+          if (dayStart) this.selectDay(dayStart, true);
+
+          this.selectLastTimeStr = this.dfs.dateFormat(next[1], 'HH:MM');
+          this.selectedMonth = next[1].getMonth();
+          this.selectedYear = next[1].getFullYear();
+          this.loadMonthData();
+          const dayEnd = this.crdp.getDayByDate(next[1], this.calendar);
+          if (dayEnd) this.selectDay(dayEnd, true);
+        } else {
+          this.selectStartTimeStr = this.dfs.dateFormat(next[0], 'HH:MM');
+          this.selectedMonth = next[0].getMonth();
+          this.selectedYear = next[0].getFullYear();
+          this.loadMonthData();
+          const day = this.crdp.getDayByDate(next[0], this.calendar);
+          if (day) this.selectDay(day, true);
+        }
+      });
+    }
+
+    if (this.isDialog) {
+      if (this.onDocClickEv) this.onDocClickEv();
+      this.onDocClickEv = this.renderer.listen('document', 'click', (event) => {
+        if ((this.handlerRef && !this.handlerRef.nativeElement.contains(event.target) && !this.el.nativeElement.contains(event.target)))
+          this.isOpen = false;
+        if (this.monthSelector && !this.monthSelector.nativeElement.contains(event.target) && this.monthTitle && !this.monthTitle.nativeElement.contains(event.target))
+          this.menuMonthIsVisible = false;
+      });
+    }
+
+    try { new Date().toLocaleString(this.locale, { month: 'long' }); }
+    catch (error) {
+      this.locale = 'en';
+      console.error(`invalide locale '${this.locale}' - used 'en'`);
+    }
+
+    this.canAutoSelect = this.autoSelect ? !this.useTime : false
+
+    this.cleareStartDay();
+    this.cleareEndDay();
+    this.crdp.cleareRnge(this.calendar);
     this.loadMonthData();
+
+    this.setViewFormat();
     this.setFields();
     this.error = new CalendareError();
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.setDate) {
-      console.log('changes.setDate', changes.setDate);
-      if (this.setDate) {
-        if (this.setDateSubs) this.setDateSubs.unsubscribe();
-        this.setDateSubs = this.setDate
-          .subscribe((next: string[]) => {
-            if (this.rangeMode) {
-              const start = moment(next[0], this.formatOutputDate);
-              this.selectedMonth = start.month() + 1;
-              this.loadMonthData();
-              const searchStart = this.crdp.getDayByDate(start, this.calendar);
-              if (searchStart) this.selectDay(searchStart, true);
-
-              const end = moment(next[1], this.formatOutputDate);
-              this.selectedMonth = end.month() + 1;
-              this.loadMonthData();
-              const searchEnd = this.crdp.getDayByDate(end, this.calendar);
-              if (searchEnd) this.selectDay(searchEnd, true);
-
-              if (this.useTime) {
-                this.selectStartTimeStr = start.format(this.baseTimeInputFormat);
-                this.onChangeSelectedStartTime();
-
-                this.selectLastTimeStr = end.format(this.baseTimeInputFormat);
-                this.onChangeSelectedLastTime();
-              }
-
-            } else {
-              const date = moment(next[0], this.formatOutputDate);
-              this.selectedMonth = date.month() + 1;
-              this.loadMonthData();
-              const search = this.crdp.getDayByDate(date, this.calendar);
-              if (search) this.selectDay(search, true);
-
-              if (this.useTime) {
-                this.selectStartTimeStr = date.format(this.baseTimeInputFormat);
-                this.onChangeSelectedStartTime();
-              }
-
-            }
-            console.log(next);
-          });
-      }
-    }
-
-    if (changes.autoSelect != undefined) {
-      this.checkCanAutoSelect();
-    }
-    if (changes.type != undefined) {
-      this.loadCalendarTemplate(this.type);
-    }
-    if (changes.locale != undefined) {
-      this.ngOnInit();
-    }
-    if (changes.min != undefined) {
-      this.loadMonthData();
-    }
-    if (changes.max != undefined) {
-      this.loadMonthData();
-    }
-    if (changes.rangeMode != undefined) {
-      this.setFields();
-      this.cleareEndDayStr();
-      this.cleareStartDayStr();
-      this.clearCalendarSelected();
-      // this.loadMonthData();
-    }
-    if (changes.formatOutputDate != undefined) {
-      this.setViewFormat();
-    }
-    if (changes.useTime != undefined) {
-      this.cleareEndDayStr();
-      this.cleareStartDayStr();
-      this.clearCalendarSelected();
-      this.checkCanAutoSelect();
-    }
+  ngOnDestroy() {
+    if (this.onDocClickEv) this.onDocClickEv();
+    if (this.setDateEventSubs) this.setDateEventSubs.unsubscribe();
   }
 
-  private checkCanAutoSelect() {
-    this.canAutoSelect = this.autoSelect ? !this.useTime : false
-    //console.log(this.canAutoSelect);
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['locale']) {
+      if (changes['locale'].currentValue == '') this.locale = 'en';
+      this.ngOnInit();
+    }
+    if (changes['rangeMode']) this.ngOnInit();
+    if (changes['useTime']) this.ngOnInit();
+    if (changes['autoSelect']) this.canAutoSelect = this.autoSelect ? !this.useTime : false;
+    if (changes['max']) this.loadMonthData();
+    if (changes['min']) this.loadMonthData();
+    if (changes['formatOutputDate']) this.setViewFormat();
+    if (changes['setDate']) {
+      // if (this.setDateEvent) {
+      //   if (this.setDateEventSubs) this.setDateEventSubs.unsubscribe();
+      //   this.setDateEventSubs = this.setDateEvent.subscribe((next: Date[]) => { console.error(next); });
+      // }
+    }
   }
 
   public onChangeSelectedStartTime() {
-    if (this.selectStartTimeStr) {
-      const mDate = moment(this.selectStartTimeStr, this.baseTimeInputFormat);
-      const hour = mDate.hour();
-      const min = mDate.minute();
-      if (hour != NaN && min != NaN) {
-        // console.log(this.selectStartDate);
-        this.selectStartDate?.fulDate?.hour(hour).minute(min);
-      }
-    }
+    if (!this.selectStartTimeStr || !this.selectStartDate) return;
+    this.selectStartDate.fulDate.setHours(this.crdp.getHourFromTimeStr(this.selectStartTimeStr));
+    this.selectStartDate.fulDate.setMinutes(this.crdp.getMinFromTimeStr(this.selectStartTimeStr));
   }
-
   public onChangeSelectedStartDate() {
-    if (this.selectStartDateStr) {
+    if (!this.selectStartDateStr) return;
 
-      // console.log('this.selectStartDateStr', this.selectStartDateStr);
+    var date = this.crdp.getDateFromInputDateStr(this.selectStartDateStr);
+    if (!date) return;
 
-      const mDate = moment(this.selectStartDateStr, this.baseDateInputFormat);
-      const year = mDate.year();
-      const month = mDate.month();
+    this.selectedMonth = date.getMonth();
+    this.selectedYear = date.getFullYear();
+    this.loadMonthData();
 
-      if (year && month) {
-        this.selectedMonth = month + 1;
-        this.selectedYear = year;
-        this.loadMonthData();
-        const day = this.crdp.getDayByDate(mDate, this.calendar);
-        // console.log(day);
-
-        if (day != null) {
-          // if (!day.isOutOfMaxMin) {
-          if (this.rangeMode)
-            this.selectStartDayInRange(day, false);
-          else
-            this.selectSingleDay(day, false);
-          // }
-        }
-      }
-    }
+    const day = this.crdp.getDayByDate(date, this.calendar);
+    if (day) this.selectDay(day, false);
   }
 
   public onChangeSelectedLastTime() {
-    if (this.selectLastTimeStr) {
-      const mDate = moment(this.selectLastTimeStr, this.baseTimeInputFormat);
-      const hour = mDate.hour();
-      const min = mDate.minute();
-      if (hour != NaN && min != NaN) {
-        // console.log(this.selectStartDate);
-        this.selectLastDate?.fulDate?.hour(hour).minute(min);
-      }
-    }
+    if (!this.selectLastTimeStr || !this.selectLastDate) return;
+    this.selectLastDate.fulDate.setHours(this.crdp.getHourFromTimeStr(this.selectLastTimeStr));
+    this.selectLastDate.fulDate.setMinutes(this.crdp.getMinFromTimeStr(this.selectLastTimeStr));
   }
-
   public onChangeSelectedLastDate() {
-    if (this.selectLastDateStr) {
+    if (!this.selectLastDateStr) return;
 
-      const mDate = moment(this.selectLastDateStr, this.baseDateInputFormat);
-      const year = mDate.year();
-      const month = mDate.month();
+    var date = this.crdp.getDateFromInputDateStr(this.selectLastDateStr);
+    if (!date) return;
 
-      if (year && month) {
-        this.selectedMonth = month + 1;
-        this.selectedYear = year;
-        this.loadMonthData();
-        const day = this.crdp.getDayByDate(mDate, this.calendar);
-        if (day != null) {
-          //if (!day.isOutOfMaxMin)
-          this.selectLastDayInRange(day, false);
-        }
-      }
-    }
+    this.selectedMonth = date.getMonth();
+    this.selectedYear = date.getFullYear();
+    this.loadMonthData();
+
+    const day = this.crdp.getDayByDate(date, this.calendar);
+    if (day) this.selectDay(day, false);
   }
 
   private setFields() {
@@ -279,88 +211,45 @@ export class CompackDatePickerComponent implements OnInit, AfterViewInit {
   }
 
   private setViewFormat() {
-    if (this.useTime && this.formatOutputDate == undefined)
-      this.formatOutputDate = 'DD.MM.YYYY HH:mm';
-    if (!this.useTime && this.formatOutputDate == undefined)
-      this.formatOutputDate = 'DD.MM.YYYY';
+    if (!this.formatOutputDate) this.formatOutputDate = this.useTime ? `dd.mm.yyyy'T'HH:MM` : `dd.mm.yyyy`;
   }
 
   private loadMonthData() {
     this.nameMonth = this.crdp.getNameMonth(this.selectedMonth, this.locale);
-    this.calendar = this.crdp.getWeeksForCalendar(this.selectedMonth, this.selectedYear,
-      this.locale, this.selectStartDate, this.selectLastDate, this.max, this.min);
+    this.calendar = this.crdp.getWeeksForCalendar(this.selectedMonth, this.selectedYear, this.locale, this.selectStartDate, this.selectLastDate, this.max, this.min);
+    this.calendarWeekName = this.crdp.getNameDayOfWeek(this.calendar[0].week, this.locale);
   }
 
-  @HostListener('document:click', ['$event'])
-  public onClick(event: Event) {
-    if (!this.el.nativeElement.contains(event.target))
-      this.menuIsVisiblr = false;
-  }
+  public changeDialogState() {
+    this.isOpen = !this.isOpen;
+    if (!this.isOpen) return;
+    if (!this.handlerRef) return;
+    const native = this.handlerRef.nativeElement;
+    const rec: DOMRect = native.getBoundingClientRect();
 
-  public loadCalendarTemplate(type: string) {
-    switch (type) {
-      case 'block': {
-        this.choseTemplate = this.blockTemplate;
-        break;
-      }
-      case 'line': {
-        this.choseTemplate = this.lineTemplate;
-        break;
-      }
-      case 'icon': {
-        this.choseTemplate = this.iconTemplate;
-        break;
-      }
-      default: {
-        this.loadCalendarTemplate('block');
-        break;
-      }
+    const dialogHeight = 330;
+    const dialogWidth = 300;
+
+    // не влез снизу
+    if (window.innerHeight - rec.bottom < 10) {
+      this.top = `${rec.top - dialogWidth - 5}px`;
+    } else {
+      this.top = `${rec.top + rec.height + 5}px`;
     }
-    this.cdr.detectChanges();
-  }
 
-  public openMenuPicker(element: HTMLElement) {
-    if (!this.disabled) {
-      this.menuIsVisiblr = !this.menuIsVisiblr;
-      if (this.menuIsVisiblr) {
-        element.style.cssText = 'display: block;'
-        const rec = element?.getBoundingClientRect()
-        // console.log(rec);
-
-        const offsetLeft = element?.offsetLeft;
-        const offsetTop = element?.offsetTop;
-        const offsetHeight = element?.offsetHeight;
-        const offsetWidth = element?.offsetWidth;
-
-        // console.log('offsetLeft', offsetLeft, 'offsetTop', offsetTop, 'offsetHeight', offsetHeight, 'offsetWidth', offsetWidth);
-
-        const innerHeight = window.innerHeight;
-        const innerWidth = window.innerWidth;
-
-        // console.log('innerHeight', innerHeight, 'innerWidth', innerWidth);
-
-        // не влез снизу
-        if (innerHeight - rec.bottom < 10) {
-          const offset = rec.height + 10 + offsetTop;
-          element.style.cssText = 'transform: translateY(-' + offset + 'px);'
-        }
-
-        // не влез справа
-        if (innerWidth - rec.right < 10) {
-          const offset = Math.abs(innerWidth - rec.right) + 25;
-          const prevValue = element.style.transform;
-          element.style.cssText = 'transform: ' + prevValue + ' translateX(-' + offset + 'px);'
-        }
-
-      }
+    // не влез справа
+    if (rec.left + dialogHeight > window.innerWidth) {
+      const offset = Math.abs(rec.left + dialogHeight - window.innerWidth) + 25;
+      this.left = `${rec.left - offset}px`;
+    } else {
+      this.left = `${rec.left}px`;
     }
   }
 
   public openMonthSelector() {
-    if (!this.disabled) {
-      this.allMonth = this.crdp.getMonths(this.locale);
-      this.menuMonthIsVisible = !this.menuMonthIsVisible;
-    }
+    if (this.disabled) return;
+    this.allMonth = this.crdp.getMonths(this.locale);
+    this.menuMonthIsVisible = !this.menuMonthIsVisible;
   }
   public selectMonth(order: number) {
     this.selectedMonth = order;
@@ -368,227 +257,190 @@ export class CompackDatePickerComponent implements OnInit, AfterViewInit {
     this.loadMonthData();
   }
 
-  public nextMonth() {
-    this.selectedMonth++;
-    if (this.selectedMonth === 13) {
-      this.selectedMonth = 1;
-      this.selectedYear++;
+  public onViewPrevMonthClick() {
+    this.selectedMonth--;
+    if (this.selectedMonth === -1) {
+      this.selectedMonth = 11;
+      this.selectedYear--;
     }
     this.loadMonthData();
   }
-
-  public previewMonth() {
-    this.selectedMonth--;
-    if (this.selectedMonth === 0) {
-      this.selectedMonth = 12;
-      this.selectedYear--;
+  public onViewNextMonthClick() {
+    this.selectedMonth++;
+    if (this.selectedMonth === 12) {
+      this.selectedMonth = 0;
+      this.selectedYear++;
     }
     this.loadMonthData();
   }
 
   acceptNewDate() {
     if (this.rangeMode) {
-      if (this.selectStartDate !== undefined && this.selectLastDate !== undefined) {
+      if (this.selectStartDate && this.selectLastDate) {
         this.error = this.crdp.checkInputError(this.selectStartDate, this.selectLastDate, this.locale, this.maxChoseDay);
         if (this.error.isError) {
-          this.cleareRange();
+          this.crdp.cleareRnge(this.calendar);
           return;
         }
         this.selectLastDateEvent.emit([
-          moment(this.selectStartDate.fulDate).format(this.formatOutputDate),
-          moment(this.selectLastDate.fulDate).format(this.formatOutputDate)
+          this.dfs.dateFormat(this.selectStartDate.fulDate, this.formatOutputDate),
+          this.dfs.dateFormat(this.selectLastDate.fulDate, this.formatOutputDate)
         ]);
       }
-    } else {
-      if (this.selectStartDate !== undefined) {
-        this.selectLastDateEvent.emit([moment(this.selectStartDate.fulDate).format(this.formatOutputDate)]);
-      }
-    }
-    this.menuIsVisiblr = !this.menuIsVisiblr;
+    } else
+      if (this.selectStartDate)
+        this.selectLastDateEvent.emit([this.dfs.dateFormat(this.selectStartDate.fulDate, this.formatOutputDate)]);
+    if (this.isDialog)
+      this.changeDialogState();
   }
 
   clearCalendar() {
-    this.error = new CalendareError();
-    this.cleareEndDayStr();
-    this.cleareStartDayStr();
     this.ngOnInit();
     this.selectLastDateEvent.emit(['reset', 'reset']);
+    if (this.isDialog)
+      this.changeDialogState();
+
+    this.selectStartTimeStr = undefined;
+    this.selectStartDateStr = undefined;
+
+    this.selectLastTimeStr = undefined;
+    this.selectLastDateStr = undefined;
   }
 
   selectDay(day: CalendarDayPicker, setStr: boolean) {
-    if (!this.disabled) {
-      if (this.rangeMode)
-        this.selectRangeDay(day, setStr);
-      else
-        this.selectSingleDay(day, setStr);
-    }
+    if (this.disabled) return;
+    if (this.rangeMode) this.selectRangeDay(day, setStr);
+    else this.selectSingleDay(day, setStr);
   }
 
+  private selectRangeDay(day: CalendarDayPicker, fromCalendar: boolean) {
+    if (!day.isDayThisMonth || day.isOutOfMaxMin) return;
+    if (this.selectStartDate !== undefined && this.selectLastDate !== undefined) {
+      this.cleareEndDay();
+      this.selectStartDayInRange(day, fromCalendar);
+    }
+    else
+      if (!this.selectStartDate) this.selectStartDayInRange(day, fromCalendar);
+      else this.selectLastDayInRange(day, fromCalendar);
+  }
   private selectStartDayInRange(day: CalendarDayPicker, fromCalendar: boolean) {
     this.cleareStartDay();
-    this.cleareRange();
+    this.crdp.cleareRnge(this.calendar);
     day.isSelected = true;
     this.selectStartDate = JSON.parse(JSON.stringify(day));
-    if (this.selectStartDate) {
-      this.selectStartDate.fulDate = moment(day.fulDate);
-      if (this.useTime) {
-        if (!this.selectStartTimeStr) {
-          this.selectStartTimeStr = '00:00';
-          this.selectStartDate.fulDate.hour(0).minute(0);
-        }
-        else {
-          const hm = moment(this.selectStartTimeStr, this.baseTimeInputFormat);
-          this.selectStartDate.fulDate.hour(hm.hour()).minute(hm.minute());
-        }
+    if (!this.selectStartDate) throw new Error('error on day select');
+    this.selectStartDate.fulDate = new Date(day.fulDate);
+    if (this.useTime) {
+      if (!this.selectStartTimeStr) {
+        this.selectStartTimeStr = '00:00';
+        this.selectStartDate.fulDate.setHours(0);
+        this.selectStartDate.fulDate.setMinutes(0);
       }
-      if (fromCalendar)
-        this.selectStartDateStr = this.selectStartDate.fulDate.format(this.baseDateInputFormat);
-      this.selectRowIncludeInRange();
+      else {
+        this.selectStartDate.fulDate.setHours(this.crdp.getHourFromTimeStr(this.selectStartTimeStr));
+        this.selectStartDate.fulDate.setMinutes(this.crdp.getMinFromTimeStr(this.selectStartTimeStr));
+      }
     }
-  }
+    if (fromCalendar)
+      this.selectStartDateStr = this.dfs.dateFormat(this.selectStartDate.fulDate, `dd.mm.yyyy`);
 
+    this.crdp.updateCalendarState(this.calendar, this.selectStartDate, this.selectLastDate, this.max, this.min);
+  }
   private selectLastDayInRange(day: CalendarDayPicker, fromCalendar: boolean) {
     this.cleareEndDay();
-    this.cleareRange();
+    this.crdp.cleareRnge(this.calendar);
     day.isSelected = true;
     this.selectLastDate = JSON.parse(JSON.stringify(day));
-    if (this.selectLastDate) {
-      this.selectLastDate.fulDate = moment(day.fulDate);
-      if (this.useTime) {
-        if (!this.selectLastTimeStr) {
-          this.selectLastTimeStr = '23:59';
-          this.selectLastDate.fulDate.hour(23).minute(59);
-        }
-        else {
-          const hm = moment(this.selectLastTimeStr, this.baseTimeInputFormat);
-          this.selectLastDate.fulDate.hour(hm.hour()).minute(hm.minute());
-        }
+    if (!this.selectLastDate) throw new Error('error on day select');
+    this.selectLastDate.fulDate = new Date(day.fulDate);
+    if (this.useTime) {
+      if (!this.selectLastTimeStr) {
+        this.selectLastTimeStr = '23:59';
+        this.selectLastDate.fulDate.setHours(23);
+        this.selectLastDate.fulDate.setMinutes(59);
       }
-      if (fromCalendar)
-        this.selectLastDateStr = this.selectLastDate.fulDate.format(this.baseDateInputFormat);
-      this.selectRowIncludeInRange();
+      else {
+        this.selectLastDate.fulDate.setHours(this.crdp.getHourFromTimeStr(this.selectLastTimeStr));
+        this.selectLastDate.fulDate.setMinutes(this.crdp.getMinFromTimeStr(this.selectLastTimeStr));
+      }
     }
+    if (fromCalendar)
+      this.selectLastDateStr = this.dfs.dateFormat(this.selectLastDate.fulDate, `dd.mm.yyyy`);
+
+    this.crdp.updateCalendarState(this.calendar, this.selectStartDate, this.selectLastDate, this.max, this.min);
+
+    if (this.selectStartDate) {
+      this.error = this.crdp.checkInputError(this.selectStartDate, this.selectLastDate, this.locale, this.maxChoseDay);
+      if (this.error.isError) {
+        this.crdp.cleareRnge(this.calendar);
+        return;
+      }
+    }
+
     if (this.canAutoSelect)
       this.acceptNewDate();
   }
 
-
-
-  private selectRangeDay(day: CalendarDayPicker, fromCalendar: boolean) {
-    if (day.isDayThisMonth && !day.isOutOfMaxMin) {
-      if (this.selectStartDate !== undefined && this.selectLastDate !== undefined) {
-        this.cleareEndDayStr();
-        this.clearCalendarSelected();
-        this.selectStartDayInRange(day, fromCalendar);
-      }
-      else
-        if (this.selectStartDate === undefined)
-          this.selectStartDayInRange(day, fromCalendar);
-        else
-          this.selectLastDayInRange(day, fromCalendar);
-    }
-  }
-
   private selectSingleDay(day: CalendarDayPicker, fromCalendar: boolean) {
-    if (day.isDayThisMonth && !day.isOutOfMaxMin) {
-      if (this.selectStartDate !== undefined) {
-        this.cleareStartDay();
-        this.selectSingleDay(day, fromCalendar);
-      } else {
-        day.isSelected = true;
-        this.selectStartDate = JSON.parse(JSON.stringify(day));
-        if (this.selectStartDate) {
-          this.selectStartDate.fulDate = moment(day.fulDate);
-          if (this.useTime) {
-            if (!this.selectStartTimeStr) {
-              this.selectStartTimeStr = '00:00';
-              this.selectStartDate.fulDate.hour(0).minute(0);
-            }
-            else {
-              const hm = moment(this.selectStartTimeStr, this.baseTimeInputFormat);
-              this.selectStartDate.fulDate.hour(hm.hour()).minute(hm.minute());
-            }
-          }
-          if (fromCalendar) {
-            this.selectStartDateStr = this.selectStartDate.fulDate.format(this.baseDateInputFormat);
-          }
-        }
-        if (this.canAutoSelect)
-          this.acceptNewDate();
-      }
-    }
-  }
+    if (!day.isDayThisMonth || day.isOutOfMaxMin) return;
+    if (this.selectStartDate) {
+      this.cleareStartDay();
+      this.selectSingleDay(day, fromCalendar);
+    } else {
+      day.isSelected = true;
+      this.selectStartDate = JSON.parse(JSON.stringify(day));
+      if (!this.selectStartDate) throw new Error('selected day error');
+      this.selectStartDate.fulDate = new Date(day.fulDate);
 
-  private selectRowIncludeInRange() {
-    if (this.selectStartDate && this.selectLastDate) {
-      this.error = this.crdp.checkInputError(this.selectStartDate, this.selectLastDate, this.locale, this.maxChoseDay);
-      if (this.error.isError) {
-        this.cleareRange();
-        return;
+      if (this.useTime) {
+        if (!this.selectStartTimeStr) {
+          this.selectStartTimeStr = '00:00';
+          this.selectStartDate.fulDate.setHours(0);
+          this.selectStartDate.fulDate.setMinutes(0);
+        } else {
+          this.selectStartDate.fulDate.setHours(this.crdp.getHourFromTimeStr(this.selectStartTimeStr));
+          this.selectStartDate.fulDate.setMinutes(this.crdp.getMinFromTimeStr(this.selectStartTimeStr))
+        }
       }
-      this.calendar = this.crdp.selectAllRowIncludeInRange(this.calendar, this.selectStartDate, this.selectLastDate, false);
+      if (fromCalendar)
+        this.selectStartDateStr = this.dfs.dateFormat(this.selectStartDate.fulDate, `dd.mm.yyyy`);
+
+      if (this.canAutoSelect)
+        this.acceptNewDate();
     }
   }
 
   public cleareTempSelected() {
-    for (const cal of this.calendar)
-      for (const day of cal.week)
-        day.isIncludeTempoRage = false;
+    this.crdp.cleareTempoRange(this.calendar);
   }
-
   public TempSelectEndPeriod(day: CalendarDayPicker) {
     if (this.rangeMode)
-      if (this.selectStartDate && !this.selectLastDate)
-        if (this.selectStartDate.numberDay != day.numberDay)
-          if (day.isDayThisMonth && !day.isOutOfMaxMin) {
-            this.cleareRange();
-            this.calendar = this.crdp.selectAllRowIncludeInRange(this.calendar, this.selectStartDate, day, true);
-          }
+      if (this.selectStartDate && !this.selectLastDate && this.selectStartDate.numberDay != day.numberDay && day.isDayThisMonth && !day.isOutOfMaxMin && !this.disabled)
+        this.crdp.selectAllRowIncludeInTempoRange(this.calendar, this.selectStartDate, day);
   }
 
-  private cleareStartDayStr() {
-    this.selectStartTimeStr = undefined;
-    this.selectStartDateStr = undefined;
-  }
   private cleareStartDay() {
     if (this.selectStartDate) {
-      const numberDay = this.selectStartDate.fulDate?.format('D');
+      const numberDay = this.selectStartDate.fulDate.getDate();
       for (let row of this.calendar) {
         for (let cell of row.week) {
-          if (cell.numberDay == +(numberDay as string) && cell.isDayThisMonth)
+          if (cell.numberDay == numberDay && cell.isDayThisMonth)
             cell.isSelected = false;
         }
       }
     }
     this.selectStartDate = undefined;
   }
-
-  private cleareEndDayStr() {
-    this.selectLastTimeStr = undefined;
-    this.selectLastDateStr = undefined;
-  }
   private cleareEndDay() {
     if (this.selectLastDate) {
-      const numberDay = this.selectLastDate.fulDate?.format('D');
+      const numberDay = this.selectLastDate.fulDate.getDate();
       for (let row of this.calendar) {
         for (let cell of row.week) {
-          if (cell.numberDay == +(numberDay as string) && cell.isDayThisMonth)
+          if (cell.numberDay == numberDay && cell.isDayThisMonth)
             cell.isSelected = false;
         }
       }
     }
     this.selectLastDate = undefined;
   }
-
-  private cleareRange() {
-    for (const cal of this.calendar)
-      for (const day of cal.week)
-        day.isIncludeRage = false;
-  }
-  private clearCalendarSelected() {
-    this.cleareStartDay();
-    this.cleareEndDay();
-    this.cleareRange();
-  }
-
 }

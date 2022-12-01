@@ -1,66 +1,20 @@
-<ng-template [ngTemplateOutlet]="choseTemplate">
-</ng-template>
-
-<ng-template #lineTemplate>
-
-  <div class="calendar_container">
-
-    <input class="input" [ngClass]="{'short':!useTime, 'long':useTime }" [disabled]="disabled"
-      (click)="openMenuPicker(menu)" readonly
-      [value]="[selectStartDate, selectLastDate] | displayPeriodDate: rangeMode : fieldPlaceHolder: useTime">
-
-    <label class="mark" for="dropdownForm3"></label>
-
-    <div #menu class="menu_calendar" [ngClass]="{'visible_menu': menuIsVisiblr, 'hidden_menu': !menuIsVisiblr}">
-      <ng-container *ngTemplateOutlet="picker"></ng-container>
-    </div>
-
-  </div>
-
-</ng-template>
-
-<ng-template #blockTemplate>
-
-  <ng-container *ngTemplateOutlet="picker"></ng-container>
-
-</ng-template>
-
-<ng-template #iconTemplate>
-
-  <div class="calendar_container">
-
-    <svg xmlns="http://www.w3.org/2000/svg" [ngClass]="{'disabled':disabled}" viewBox="0 0 24 24"
-      (click)="openMenuPicker(menu)">
-      <path d="M0 0h24v24H0z" fill="none" />
-      <path
-        d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z" />
-    </svg>
-
-    <div #menu class="menu_calendar" [ngClass]="{'visible_menu': menuIsVisiblr, 'hidden_menu': !menuIsVisiblr}">
-      <ng-container *ngTemplateOutlet="picker"></ng-container>
-    </div>
-
-  </div>
-
-</ng-template>
-
-
-<ng-template #picker>
+<div class="calendar_container" [style.top]="top" [style.left]="left"
+  [ngClass]="{'dialog': isDialog, 'block': !isDialog, 'open': isOpen && isDialog, 'close': !isOpen && isDialog}">
 
   <div class="calendar">
 
     <div class="title">
 
-      <div class="titile_name" (click)="openMonthSelector()">
+      <div #monthTitle class="titile_name" (click)="openMonthSelector()">
         {{nameMonth}} {{selectedYear}}
       </div>
 
       <div class="titile_tool">
-        <button (click)="previewMonth()" [disabled]="disabled">&lt;</button>
-        <button (click)="nextMonth()" [disabled]="disabled">&gt;</button>
+        <button (click)="onViewPrevMonthClick()" [disabled]="disabled">&lt;</button>
+        <button (click)="onViewNextMonthClick()" [disabled]="disabled">&gt;</button>
       </div>
 
-      <div class="month_selector" [ngClass]="{'visible':menuMonthIsVisible}">
+      <div #monthSelector class="month_selector" [ngClass]="{'visible':menuMonthIsVisible}">
         <div class="month" *ngFor="let month of allMonth" (click)="selectMonth(month.order)">
           {{month.name}}
         </div>
@@ -71,6 +25,7 @@
     <div class="body" [ngClass]="{'disabled':disabled}">
 
       <table class="my-table">
+
         <thead>
           <tr>
             <th *ngFor="let name of calendarWeekName">
@@ -90,11 +45,7 @@
               'day_in_range': day.isIncludeRage || day.isIncludeTempoRage
               }" (click)="selectDay(day, true)" (mouseover)="TempSelectEndPeriod(day)">
               <div class="cell">
-                <div class="dot" *ngIf="!day.isDayThisMonth; else DigitalBlock"></div>
-                <ng-template #DigitalBlock>
-                  {{day.numberDay}}
-                </ng-template>
-                <span></span>
+                {{day.numberDay}}
               </div>
             </td>
           </tr>
@@ -163,7 +114,7 @@
 
       </div>
 
-      <div class="footer">
+      <div class="calendar_row_tool">
         <button class="btn" [disabled]='error.isError || disabled' (click)="acceptNewDate()">{{acceptBtn}}</button>
         <button class="btn" [disabled]="disabled" (click)="clearCalendar()">{{cancelBtn}}</button>
       </div>
@@ -171,4 +122,4 @@
     </div>
   </div>
 
-</ng-template>
+</div>

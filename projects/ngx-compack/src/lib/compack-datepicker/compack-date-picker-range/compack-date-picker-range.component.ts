@@ -1,0 +1,289 @@
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, Renderer2, SimpleChanges } from '@angular/core';
+import { CompackDatePickerService } from '../compack-date-picker.service';
+import { DateFormatService } from '../date-format.service';
+import { CalendarPicker } from '../model/calendar';
+import { CalendarDayPicker } from '../model/calendar-day';
+import { CompackRelativeDateModel } from '../model/compack-relative-date-model';
+
+@Component({
+  selector: 'compack-date-picker-range',
+  templateUrl: './compack-date-picker-range.component.html',
+  styleUrls: ['./compack-date-picker-range.component.scss']
+})
+export class CompackDatePickerRangeComponent implements OnInit, OnDestroy {
+
+  // events
+  @Output() selectLastDateEvent = new EventEmitter<string[]>();
+  // input config
+  @Input() locale: string = 'en';
+  @Input() disabled: boolean = false;
+  @Input() formatOutputDate: string = `dd.mm.yyyy`;
+  @Input() relativeDateModel: CompackRelativeDateModel[] | undefined = undefined;
+  // settings dialog
+  public isDialog = false;
+  public isOpen = false;
+  public handlerRef: ElementRef | undefined = undefined;
+  private onDocClickEv: (() => void) | undefined;
+  public left: string;
+  public top: string;
+  // view
+  public acceptBtn = 'View';
+  public cancelBtn = 'Reset';
+  // data start
+  public nameMonthStart = '';
+  private selectedMonthStart = new Date().getMonth();
+  public selectedYearStart = new Date().getFullYear();
+  public calendarStart: CalendarPicker[] = [];
+  public calendarStartWeekName: string[] = [];
+  public selectStartDate: CalendarDayPicker | undefined;
+  public selectStartDateStr: string | undefined;
+  // data end
+  public nameMonthEnd = '';
+  private selectedMonthEnd = new Date().getMonth();
+  public selectedYearEnd = new Date().getFullYear();
+  public calendarEnd: CalendarPicker[] = [];
+  public calendarEndWeekName: string[] = [];
+  public selectEndDate: CalendarDayPicker | undefined;
+  public selectEndDateStr: string | undefined;
+
+  constructor(
+    private el: ElementRef,
+    private renderer: Renderer2,
+    private dfs: DateFormatService,
+    private crdp: CompackDatePickerService) { }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['locale'] != undefined) {
+      if (changes['locale'].currentValue == '') this.locale = 'en';
+      this.ngOnInit();
+    }
+  }
+
+  ngOnInit() {
+
+    if (this.isDialog) {
+      if (this.onDocClickEv) this.onDocClickEv();
+      this.onDocClickEv = this.renderer.listen('document', 'click', (event) => {
+        if ((this.handlerRef && !this.handlerRef.nativeElement.contains(event.target) && !this.el.nativeElement.contains(event.target)))
+          this.isOpen = false;
+      });
+    }
+
+    try { new Date().toLocaleString(this.locale, { month: 'long' }); }
+    catch (error) {
+      this.locale = 'en';
+      console.error(`invalide locale '${this.locale}' - used 'en'`);
+    }
+
+    if (!this.relativeDateModel)
+      this.relativeDateModel = this.crdp.getDefaoultRelativeDates(this.locale);
+
+    this.acceptBtn = this.locale.toLowerCase().includes('ru') ? 'Принять' : 'View';
+    this.cancelBtn = this.locale.toLowerCase().includes('ru') ? 'Сбросить' : 'Reset';
+
+    this.cleareStartDay();
+    this.cleareEndDay();
+    this.crdp.cleareRnge(this.calendarEnd);
+    this.crdp.cleareRnge(this.calendarStart);
+    this.loadMonthStartData();
+    this.loadMonthEndData();
+  }
+
+  ngOnDestroy() {
+    if (this.onDocClickEv) this.onDocClickEv();
+  }
+
+  private loadMonthStartData() {
+    this.nameMonthStart = this.crdp.getNameMonth(this.selectedMonthStart, this.locale);
+    this.calendarStart = this.crdp.getWeeksForCalendar(this.selectedMonthStart, this.selectedYearStart, this.locale, this.selectStartDate, this.selectEndDate, this.selectEndDate?.fulDate, undefined);
+    this.calendarStartWeekName = this.crdp.getNameDayOfWeek(this.calendarStart[0].week, this.locale);
+  }
+
+  private loadMonthEndData() {
+    this.nameMonthEnd = this.crdp.getNameMonth(this.selectedMonthEnd, this.locale);
+    this.calendarEnd = this.crdp.getWeeksForCalendar(this.selectedMonthEnd, this.selectedYearEnd, this.locale, this.selectStartDate, this.selectEndDate, undefined, this.selectStartDate?.fulDate);
+    this.calendarEndWeekName = this.crdp.getNameDayOfWeek(this.calendarEnd[0].week, this.locale);
+  }
+
+  public onViewPrevMonthStartClick() {
+    this.selectedMonthStart--;
+    if (this.selectedMonthStart === -1) {
+      this.selectedMonthStart = 11;
+      this.selectedYearStart--;
+    }
+    this.loadMonthStartData();
+  }
+  public onViewNextMonthStartClick() {
+    this.selectedMonthStart++;
+    if (this.selectedMonthStart === 12) {
+      this.selectedMonthStart = 0;
+      this.selectedYearStart++;
+    }
+    this.loadMonthStartData();
+  }
+
+  public onViewPrevMonthEndClick() {
+    this.selectedMonthEnd--;
+    if (this.selectedMonthEnd === -1) {
+      this.selectedMonthEnd = 11;
+      this.selectedYearEnd--;
+    }
+    this.loadMonthEndData();
+  }
+  public onViewNextMonthEndClick() {
+    this.selectedMonthEnd++;
+    if (this.selectedMonthEnd === 12) {
+      this.selectedMonthEnd = 0;
+      this.selectedYearEnd++;
+    }
+    this.loadMonthEndData();
+  }
+
+  public selectStartDay(day: CalendarDayPicker) {
+    if (this.disabled) return;
+    if (!day.isDayThisMonth || day.isOutOfMaxMin) return;
+
+    if (this.selectStartDate) this.cleareStartDay();
+
+    day.isSelected = true;
+    this.selectStartDate = JSON.parse(JSON.stringify(day));
+    if (!this.selectStartDate) throw new Error('error on day select');
+    this.selectStartDate.fulDate = new Date(day.fulDate);
+    this.selectStartDateStr = this.dfs.dateFormat(this.selectStartDate.fulDate, `dd.mm.yyyy`);
+
+    if (this.selectEndDate && this.selectStartDate.fulDate > this.selectEndDate.fulDate)
+      this.cleareEndDay();
+
+    this.crdp.updateCalendarState(this.calendarStart, this.selectStartDate, this.selectEndDate, this.selectEndDate?.fulDate, undefined);
+    this.crdp.updateCalendarState(this.calendarEnd, this.selectStartDate, this.selectEndDate, undefined, this.selectStartDate.fulDate);
+
+
+  }
+  public selectEndDay(day: CalendarDayPicker) {
+    if (this.disabled) return;
+    if (!day.isDayThisMonth || day.isOutOfMaxMin) return;
+
+    if (this.selectEndDate) this.cleareEndDay();
+
+    day.isSelected = true;
+    this.selectEndDate = JSON.parse(JSON.stringify(day));
+    if (!this.selectEndDate) throw new Error('error on day select');
+    this.selectEndDate.fulDate = new Date(day.fulDate);
+    this.selectEndDateStr = this.dfs.dateFormat(this.selectEndDate.fulDate, `dd.mm.yyyy`);
+
+    if (this.selectStartDate && this.selectEndDate.fulDate < this.selectStartDate.fulDate)
+      this.cleareStartDay();
+
+    this.crdp.updateCalendarState(this.calendarStart, this.selectStartDate, this.selectEndDate, this.selectEndDate.fulDate, undefined);
+    this.crdp.updateCalendarState(this.calendarEnd, this.selectStartDate, this.selectEndDate, undefined, this.selectStartDate?.fulDate);
+  }
+
+  public acceptNewDate() {
+    if (this.selectStartDate !== undefined && this.selectEndDate !== undefined) {
+      this.selectLastDateEvent.emit([
+        this.dfs.dateFormat(this.selectStartDate.fulDate, this.formatOutputDate),
+        this.dfs.dateFormat(this.selectEndDate.fulDate, this.formatOutputDate)
+      ]);
+    }
+    if (this.isDialog)
+      this.changeDialogState();
+  }
+
+  public cleareTempSelected() {
+    this.crdp.cleareTempoRange(this.calendarEnd);
+    this.crdp.cleareTempoRange(this.calendarStart);
+  }
+  public tempSelectEndPeriod(day: CalendarDayPicker) {
+    if (this.selectStartDate && this.selectStartDate.numberDay != day.numberDay && day.isDayThisMonth && !day.isOutOfMaxMin && !this.disabled)
+      this.crdp.selectAllRowIncludeInTempoRange(this.calendarEnd, this.selectStartDate, day);
+  }
+  public tempSelectStartPeriod(day: CalendarDayPicker) {
+    if (this.selectEndDate && this.selectEndDate.numberDay != day.numberDay && day.isDayThisMonth && !day.isOutOfMaxMin && !this.disabled)
+      this.crdp.selectAllRowIncludeInTempoRange(this.calendarStart, day, this.selectEndDate);
+  }
+
+  private cleareStartDay() {
+    if (this.selectStartDate) {
+      const numberDay = this.selectStartDate.fulDate.getDate();
+      for (let row of this.calendarStart) {
+        for (let cell of row.week) {
+          if (cell.numberDay == numberDay && cell.isDayThisMonth)
+            cell.isSelected = false;
+        }
+      }
+    }
+    this.selectStartDate = undefined;
+    this.selectStartDateStr = undefined;
+  }
+  private cleareEndDay() {
+    if (this.selectEndDate) {
+      const numberDay = this.selectEndDate.fulDate.getDate();
+      for (let row of this.calendarEnd) {
+        for (let cell of row.week) {
+          if (cell.numberDay == numberDay && cell.isDayThisMonth)
+            cell.isSelected = false;
+        }
+      }
+    }
+    this.selectEndDate = undefined;
+    this.selectEndDateStr = undefined;
+  }
+
+  public clearCalendar() {
+    this.ngOnInit();
+    this.selectLastDateEvent.emit(['reset', 'reset']);
+    if (this.isDialog)
+      this.changeDialogState();
+  }
+
+  public onRelativeDateClick(relativeDate: CompackRelativeDateModel) {
+    if (!this.disabled) {
+
+      this.cleareStartDay();
+      this.cleareEndDay();
+      this.crdp.cleareRnge(this.calendarEnd);
+      this.crdp.cleareRnge(this.calendarStart);
+
+      const startDate = relativeDate.dateStartFunc();
+      this.selectedMonthStart = startDate.getMonth();
+      this.selectedYearStart = startDate.getFullYear();
+      this.loadMonthStartData();
+      const dayStart = this.crdp.getDayByDate(startDate, this.calendarStart);
+      if (dayStart) this.selectStartDay(dayStart);
+
+      const endDate = relativeDate.dateEndFunc();
+      this.selectedMonthEnd = endDate.getMonth();
+      this.selectedYearEnd = endDate.getFullYear();
+      this.loadMonthEndData();
+      const dayEnd = this.crdp.getDayByDate(endDate, this.calendarEnd);
+      if (dayEnd) this.selectEndDay(dayEnd);
+    }
+  }
+
+  public changeDialogState() {
+    this.isOpen = !this.isOpen;
+    if (!this.isOpen) return;
+    if (!this.handlerRef) return;
+    const native = this.handlerRef.nativeElement;
+    const rec: DOMRect = native.getBoundingClientRect();
+
+    const dialogHeight = 770;
+    const dialogWidth = 330;
+
+    // не влез снизу
+    if (window.innerHeight - rec.bottom < 10) {
+      this.top = `${rec.top - dialogWidth - 5}px`;
+    } else {
+      this.top = `${rec.top + rec.height + 5}px`;
+    }
+
+    // не влез справа
+    if (rec.left + dialogHeight > window.innerWidth) {
+      const offset = Math.abs(rec.left + dialogHeight - window.innerWidth) + 25;
+      this.left = `${rec.left - offset}px`;
+    } else {
+      this.left = `${rec.left}px`;
+    }
+  }
+
+}

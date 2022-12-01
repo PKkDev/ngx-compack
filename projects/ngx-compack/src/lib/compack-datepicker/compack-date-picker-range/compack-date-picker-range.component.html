@@ -1,0 +1,149 @@
+<div class="calendar_container" [style.top]="top" [style.left]="left"
+  [ngClass]="{'dialog': isDialog, 'block': !isDialog, 'open': isOpen && isDialog, 'close': !isOpen && isDialog}">
+
+  <div class="clendar_panel">
+
+    <div class="calendar_row">
+
+      <div class="relative_date_container" [ngClass]="{'disabled':disabled}"
+        *ngIf="relativeDateModel && relativeDateModel.length > 0">
+
+        <div class="relative_date" *ngFor="let date of relativeDateModel" (click)="onRelativeDateClick(date)">
+          {{date.title}}
+        </div>
+
+      </div>
+
+      <div class="calendar">
+
+        <div class="title">
+
+          <div class="titile_name">
+            {{nameMonthStart}} {{selectedYearStart}}
+          </div>
+
+          <div class="titile_tool">
+            <button (click)="onViewPrevMonthStartClick()" [disabled]="disabled">&lt;</button>
+            <button (click)="onViewNextMonthStartClick()" [disabled]="disabled">&gt;</button>
+          </div>
+
+        </div>
+
+        <div class="body" [ngClass]="{'disabled':disabled}">
+
+          <table class="my-table">
+
+            <thead>
+              <tr>
+                <th *ngFor="let name of calendarStartWeekName">
+                  <div>{{name}}</div>
+                </th>
+              </tr>
+            </thead>
+
+            <tbody (mouseout)="cleareTempSelected()">
+              <tr *ngFor="let cal of calendarStart">
+                <td *ngFor="let day of cal.week" [ngClass]="{
+                  'now_month': day.isDayThisMonth,
+                  'not_now_month': !day.isDayThisMonth,
+                  'now_day': day.isDayToday && day.isDayThisMonth,
+                  'select_day': day.isSelected,
+                  'out_max_mim': day.isOutOfMaxMin,
+                  'day_in_range': day.isIncludeRage || day.isIncludeTempoRage
+                  }" (click)="selectStartDay(day)" (mouseover)="tempSelectStartPeriod(day)">
+                  <div class="cell">
+                    {{day.numberDay}}
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+
+          </table>
+
+          <div class="field_selected_date">
+
+            <span class="field_container">
+              <input maxlength="10" class="field large_date" [(ngModel)]="selectStartDateStr" [disabled]="disabled"
+                [readonly]="true" placeholder="dd.MM.yyyy">
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="separate_line"></div>
+
+      <div class="calendar">
+
+        <div class="title">
+
+          <div class="titile_name">
+            {{nameMonthEnd}} {{selectedYearEnd}}
+          </div>
+
+          <div class="titile_tool">
+            <button (click)="onViewPrevMonthEndClick()" [disabled]="disabled">&lt;</button>
+            <button (click)="onViewNextMonthEndClick()" [disabled]="disabled">&gt;</button>
+          </div>
+
+        </div>
+
+        <div class="body" [ngClass]="{'disabled':disabled}">
+
+          <table class="my-table">
+
+            <thead>
+              <tr>
+                <th *ngFor="let name of calendarEndWeekName">
+                  <div>{{name}}</div>
+                </th>
+              </tr>
+            </thead>
+
+            <tbody (mouseout)="cleareTempSelected()">
+              <tr *ngFor="let cal of calendarEnd">
+                <td *ngFor="let day of cal.week" [ngClass]="{
+                  'now_month': day.isDayThisMonth,
+                  'not_now_month': !day.isDayThisMonth,
+                  'now_day': day.isDayToday && day.isDayThisMonth,
+                  'select_day': day.isSelected,
+                  'out_max_mim': day.isOutOfMaxMin,
+                  'day_in_range': day.isIncludeRage || day.isIncludeTempoRage
+                  }" (click)="selectEndDay(day)" (mouseover)="tempSelectEndPeriod(day)">
+                  <div class="cell">
+                    {{day.numberDay}}
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+
+          </table>
+
+          <div class="field_selected_date">
+
+            <span class="field_container">
+              <input maxlength="10" class="field large_date" [(ngModel)]="selectEndDateStr" [disabled]="disabled"
+                [readonly]="true" placeholder="dd.MM.yyyy">
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="calendar_row_tool">
+
+      <button class="btn" [disabled]='disabled' (click)="acceptNewDate()">{{acceptBtn}}</button>
+
+      <button class="btn" [disabled]="disabled" (click)="clearCalendar()">{{cancelBtn}}</button>
+
+    </div>
+
+  </div>
+
+</div>

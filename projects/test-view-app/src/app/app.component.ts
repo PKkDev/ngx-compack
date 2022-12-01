@@ -1,12 +1,11 @@
 import { ChangeDetectorRef, Component, EventEmitter, TemplateRef, ViewChild } from '@angular/core';
-import { CompackBannerService, CompackToastService, TypeMessage, TypePositionMessage, TypeToast } from 'ngx-compack';
-import * as moment from 'moment';
-import { Moment } from 'moment';
+import { CompackBannerService, CompackRelativeDateModel, CompackToastService, TypeMessage, TypePositionMessage, TypeToast } from 'ngx-compack';
 
 export enum TypeViewComponent {
-  Picker = 0,
-  Toast = 1,
-  Banner = 2
+  PickerRange = 0,
+  Picker = 1,
+  Toast = 2,
+  Banner = 3
 }
 
 @Component({
@@ -16,9 +15,9 @@ export enum TypeViewComponent {
 })
 export class AppComponent {
 
-
   public viewComponent = TypeViewComponent.Picker;
   selectedTemplate: TemplateRef<any> | null = null;
+  @ViewChild('pickerRange') pickerRange: TemplateRef<any> | undefined;
   @ViewChild('picker') picker: TemplateRef<any> | undefined;
   @ViewChild('toast') toast: TemplateRef<any> | undefined;
   @ViewChild('banner') banner: TemplateRef<any> | undefined;
@@ -41,37 +40,71 @@ export class AppComponent {
   public loadTemplate(newView: TypeViewComponent) {
     this.viewComponent = newView;
     switch (newView) {
-      case TypeViewComponent.Picker:
-        this.selectedTemplate = this.picker ?? null;
-        break;
-      case TypeViewComponent.Toast:
-        this.selectedTemplate = this.toast ?? null;
-        break;
-      case TypeViewComponent.Banner:
-        this.selectedTemplate = this.banner ?? null;
-        break;
-      default:
-        this.selectedTemplate = this.picker ?? null;
-        break;
+      case TypeViewComponent.PickerRange: this.selectedTemplate = this.pickerRange ?? null; break;
+      case TypeViewComponent.Picker: this.selectedTemplate = this.picker ?? null; break;
+      case TypeViewComponent.Toast: this.selectedTemplate = this.toast ?? null; break;
+      case TypeViewComponent.Banner: this.selectedTemplate = this.banner ?? null; break;
+      default: this.selectedTemplate = this.picker ?? null; break;
     }
     this.cdr.detectChanges();
   }
 
-  public setDateEvent: EventEmitter<string[]> = new EventEmitter<string[]>();
-  public OnSetDate() {
-    this.setDateEvent.next(['08.07.2022T05:45', '18.07.2022T15:55']);
+  public relativeDateModel: CompackRelativeDateModel[] = [
+    {
+      title: 'last 7 day',
+      dateStartFunc: () => {
+        const date = new Date(new Date().setHours(0, 0, 0, 0));
+        date.setDate(date.getDate() - 7);
+        return date;
+      },
+      dateEndFunc: () => new Date(new Date().setHours(0, 0, 0, 0))
+    },
+  ];
+  public formatOutputDateRange = `dd.mm.yyyy`;
+  public localeRange = 'en';
+  public disabledRange = false;
+  public selectedDateOneStrRange: string = 'none';
+  public selectedDateTwoStrRange: string = 'none'
+  public selectLastDateEventRange(selected: string[]) {
+    this.selectedDateOneStrRange = 'none';
+    this.selectedDateTwoStrRange = 'none';
+    if (selected.length == 1) {
+      this.selectedDateOneStrRange = selected[0];
+      return;
+    }
+    if (selected.length == 2) {
+      this.selectedDateOneStrRange = selected[0];
+      this.selectedDateTwoStrRange = selected[1];
+      return;
+    }
+    this.selectedDateOneStrRange = 'error';
+    this.selectedDateTwoStrRange = 'error';
   }
-  public type = 'block';
-  public formatOutputDate = 'DD.MM.YYYYTHH:mm';
-  public locale = 'ru';
+
+
+
+  public setDateEvent: EventEmitter<Date[]> = new EventEmitter<Date[]>();
+  public OnSetDate() {
+
+    const dateS = new Date(new Date().setHours(0, 0, 0, 0));
+    dateS.setDate(dateS.getDate() - 7);
+    dateS.setHours(15);
+    dateS.setMinutes(20);
+    const dateE = new Date(new Date().setHours(0, 0, 0, 0));
+    dateE.setHours(5);
+    dateE.setMinutes(15);
+    this.setDateEvent.next([dateS, dateE]);
+  }
+  public formatOutputDate = `dd.mm.yyyy'T'HH:MM`;
+  public locale = 'en';
   public useTime = true;
   public rangeMode = false;
   public disabled = false;
   public autoSelect = false;
   public viewFieldSelectedDate = true;
   public maxChoseDay = 5;
-  public min: Moment | undefined = undefined;
-  public max: Moment | undefined = undefined;
+  public min: Date | undefined = undefined;
+  public max: Date | undefined = undefined;
   public selectedDateOneStr: string = 'none';
   public selectedDateTwoStr: string = 'none'
   // public initialSelectedDate: string[] | undefined = ['asd'];
@@ -91,10 +124,10 @@ export class AppComponent {
     this.selectedDateTwoStr = 'error';
   }
   public selectMinDateEvent(selected: string[]) {
-    this.min = moment(selected[0], 'DD.MM.YYYY');
+    this.min = new Date(selected[0]);
   }
   public selectMaxDateEvent(selected: string[]) {
-    this.max = moment(selected[0], 'DD.MM.YYYY');
+    this.max = new Date(selected[0]);
   }
 
   public toastType: number = 0;

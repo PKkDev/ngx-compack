@@ -13,7 +13,9 @@ export * from './lib/compack-toast/model/toast-config';
 
 export * from './lib/compack-datepicker/compack-datepicker.module';
 export * from './lib/compack-datepicker/compack-date-picker/compack-date-picker.component';
-export * from './lib/compack-datepicker/pipe/display-period-date.pipe';
-export * from './lib/compack-datepicker/pipe/display-date.pipe';
+export * from './lib/compack-datepicker/compack-date-picker/compack-date-picker-host.directive';
+export * from './lib/compack-datepicker/compack-date-picker-range/compack-date-picker-range.component';
+export * from './lib/compack-datepicker/compack-date-picker-range/compack-date-picker-range-host.directive';
 export * from './lib/compack-datepicker/directive/date-mask.directive';
 export * from './lib/compack-datepicker/directive/time-mask.directive';
+export * from './lib/compack-datepicker/model/compack-relative-date-model';

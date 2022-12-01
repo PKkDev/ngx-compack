@@ -1,3 +1,4 @@
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
   "compileOnSave": false,
   "compilerOptions": {
@@ -5,9 +6,16 @@
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "sourceMap": true,
+    "paths": {
+      "ngx-compack": [
+        "dist/ngx-compack"
+      ]
+    },
     "declaration": false,
     "downlevelIteration": true,
     "experimentalDecorators": true,
@@ -16,31 +24,16 @@
     "target": "es2020",
     "module": "es2020",
     "lib": [
-      "es2018",
+      "es2020",
       "dom"
     ],
-    "paths": {
-      "kr-notif-lib": [
-        "dist/kr-notif-lib/kr-notif-lib",
-        "dist/kr-notif-lib"
-      ],
-      "kr-banner-lib": [
-        "dist/kr-banner-lib/kr-banner-lib",
-        "dist/kr-banner-lib"
-      ],
-      "ngx-compack": [
-        "dist/ngx-compack/ngx-compack",
-        "dist/ngx-compack"
-      ],
-      "test-lib": [
-        "dist/test-lib"
-      ]
-    }
+    "strictPropertyInitialization": false,
+    "allowJs": true
   },
   "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
-    "strictTemplates": true,
-    //"enableIvy": false
+    "strictTemplates": true
   }
 }

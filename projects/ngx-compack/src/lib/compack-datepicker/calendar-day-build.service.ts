@@ -1,8 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Moment } from 'moment';
-
-import * as moment_ from 'moment';
-const moment = moment_;
 
 @Injectable({
   providedIn: 'root'
@@ -11,63 +7,84 @@ export class CalendarDayBuildService {
 
   constructor() { }
 
-  // получение дней в выбранном месяце
-  public static getAllDayMonth(month: number, year: number, locale: string,): Moment[] {
-    moment.locale(locale);
+  /**
+   * get all dayes in month
+   * @param month number of month
+   * @param year number of year
+   * @param locale locale
+   * @returns 
+   */
+  public static getAllDayMonth(month: number, year: number, locale: string): Date[] {
 
-    let result: Moment[] = [];
+    let result: Date[] = [];
 
-    // const year = moment(month, 'M').year();
-    const dateStart = moment().year(year).month(month).date(0).startOf('month');
-    const dateEnd = moment().year(year).month(month).date(0).endOf('month').hour(0).minute(0).second(0);
-    // console.log('first day of month', dateStart);
-    // console.log('last day of month', dateEnd);
+    let start = new Date(year, month, 1);
+    let end = new Date(year, month + 1, 0);
 
-    result = this.recursAddAllDayOfStartWeek(result, moment(dateStart));
+    let numberOfDays = end.getDate() - start.getDate();
+    numberOfDays = numberOfDays >= 1 ? numberOfDays + 1 : numberOfDays;
 
-    const numberOfDays = moment.duration(dateEnd.diff(dateStart)).days();
-    // console.log('count days in month', numberOfDays);
+    const indexStartWeek = locale == 'ru' ? 1 : 0;
+    let prevStart = new Date(start);
+    prevStart.setDate(prevStart.getDate() - 1);
+    result = this.recursAddAllDayOfStartWeek(result, prevStart, indexStartWeek);
 
     let i = 1;
-    while (i < numberOfDays) {
-      result.push(moment(dateStart.add(1, 'day')));
+    while (i <= numberOfDays) {
+      const tempoDate = new Date(year, month, i);
+      result.push(tempoDate);
       i++;
     }
 
-    result = this.recursAddAllDayOfEndWeek(result, moment(dateEnd));
+    const indexEndWeek = locale == 'ru' ? 0 : 6;
+
+    let nextEnd = new Date(end);
+    nextEnd.setDate(nextEnd.getDate() + 1);
+    result = this.recursAddAllDayOfEndWeek(result, nextEnd, indexEndWeek);
 
     while (result.length < 42) {
-      result = this.recursAddAllDayOfEndWeek(result, moment(result[result.length - 1]).add(1, 'day'));
+      let nextEnd = new Date(result[result.length - 1]);
+      nextEnd.setDate(nextEnd.getDate() + 1);
+      result = this.recursAddAllDayOfEndWeek(result, nextEnd, indexEndWeek);
     }
 
-    // console.log('res arr day', result);
     return result;
+
   }
 
-
-
-  // рекурсивное получение дней нчала месяца
-  public static recursAddAllDayOfStartWeek(arr: Moment[], date: Moment): Moment[] {
-    if (date.weekday() !== 0) {
-      arr.unshift(moment(date));
-      arr = this.recursAddAllDayOfStartWeek(arr, moment(date.add(-1, 'day')));
-    } else {
-      arr.unshift(moment(date));
+  /**
+ * recursively getting the days of the start of the month
+ * @param arr Date[]
+ * @param date Date
+ * @param indexStartWeek number
+ * @returns Date[]
+ */
+  public static recursAddAllDayOfStartWeek(arr: Date[], date: Date, indexStartWeek: number): Date[] {
+    if (date.getDay() !== indexStartWeek) {
+      arr.unshift(date);
+      let prev = new Date(date);
+      prev.setDate(prev.getDate() - 1);
+      arr = this.recursAddAllDayOfStartWeek(arr, prev, indexStartWeek);
     }
+    else arr.unshift(date);
     return arr;
   }
 
-
-  // рекурсивное получение дней конца месяца
-  public static recursAddAllDayOfEndWeek(arr: Moment[], date: Moment): Moment[] {
-    if (date.weekday() !== 6) {
-      arr.push(moment(date));
-      arr = this.recursAddAllDayOfEndWeek(arr, moment(date.add(1, 'day')));
-    } else {
-      arr.push(moment(date));
+  /**
+ * recursively getting the days of the end of the month
+ * @param arr Date[]
+ * @param date Date
+ * @param indexEndWeek number
+ * @returns Date[]
+ */
+  public static recursAddAllDayOfEndWeek(arr: Date[], date: Date, indexEndWeek: number): Date[] {
+    if (date.getDay() !== indexEndWeek) {
+      arr.push(date);
+      let next = new Date(date);
+      next.setDate(next.getDate() + 1);
+      arr = this.recursAddAllDayOfEndWeek(arr, next, indexEndWeek);
     }
+    else arr.push(date);
     return arr;
   }
-
-
 }

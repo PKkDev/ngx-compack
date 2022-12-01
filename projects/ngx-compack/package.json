@@ -1,6 +1,6 @@
 {
   "name": "ngx-compack",
-  "version": "1.4.5",
+  "version": "2.0.0",
   "license": "MIT",
   "author": {
     "name": "Kirill",
@@ -13,9 +13,8 @@
     "url": "https://github.com/PKkDev/ngx-compack"
   },
   "peerDependencies": {
-    "@angular/common": "^14.1.0",
-    "@angular/core": "^14.1.0",
-    "moment": "^2.29.1"
+    "@angular/common": "^14.0.0",
+    "@angular/core": "^14.0.0"
   },
   "dependencies": {
     "tslib": "^2.3.0"

@@ -86,8 +86,6 @@ export class CompackToastMergeService {
       }
     }
 
-
-    // console.log('message', result);
     return result;
   }
 

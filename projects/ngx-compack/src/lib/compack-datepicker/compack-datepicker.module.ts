@@ -1,11 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CompackDatePickerComponent } from './compack-date-picker/compack-date-picker.component';
-import { DisplayDatePipe } from './pipe/display-date.pipe';
-import { DisplayPeriodDatePipe } from './pipe/display-period-date.pipe';
 import { FormsModule } from '@angular/forms';
-import { TimeMaskDirective } from './directive/time-mask.directive';
+// directive
 import { DateMaskDirective } from './directive/date-mask.directive';
+import { TimeMaskDirective } from './directive/time-mask.directive';
+import { CompackDatePickerRangeHostDirective } from './compack-date-picker-range/compack-date-picker-range-host.directive';
+// components
+import { CompackDatePickerComponent } from './compack-date-picker/compack-date-picker.component';
+import { CompackDatePickerRangeComponent } from './compack-date-picker-range/compack-date-picker-range.component';
+import { CompackDatePickerHostDirective } from './compack-date-picker/compack-date-picker-host.directive';
 
 @NgModule({
   imports: [
@@ -15,16 +18,18 @@ import { DateMaskDirective } from './directive/date-mask.directive';
   declarations: [
     DateMaskDirective,
     TimeMaskDirective,
-    DisplayPeriodDatePipe,
-    DisplayDatePipe,
-    CompackDatePickerComponent
+    CompackDatePickerRangeHostDirective,
+    CompackDatePickerHostDirective,
+    CompackDatePickerComponent,
+    CompackDatePickerRangeComponent
   ],
   exports: [
     DateMaskDirective,
     TimeMaskDirective,
-    DisplayPeriodDatePipe,
-    DisplayDatePipe,
-    CompackDatePickerComponent
+    CompackDatePickerRangeHostDirective,
+    CompackDatePickerHostDirective,
+    CompackDatePickerComponent,
+    CompackDatePickerRangeComponent
   ]
 })
 export class CompackDatepickerModule { }

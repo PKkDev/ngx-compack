@@ -1,15 +1,13 @@
-import { Moment } from "moment";
-
 export class CalendarDay {
     public numberDay: number;
-    public fulDate: Moment | null;
+    public fulDate: Date;
     public isDayToday: boolean;
     public isDayThisMonth: boolean;
     public isDayThisYear: boolean;
 
     constructor() {
         this.numberDay = 0;
-        this.fulDate = null;
+        this.fulDate = new Date();
         this.isDayToday = false;
         this.isDayThisMonth = false;
         this.isDayThisYear = false;

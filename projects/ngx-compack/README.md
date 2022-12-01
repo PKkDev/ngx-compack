@@ -47,9 +47,9 @@ You can view  [live example](https://pkkdev.github.io/ngx-compack/ "live example
 
 ### compack-date-picker-range
 
-<div style="display: flex; flex-direction:row; justify-content: space-between">
-  <img height="250px" width="377px" style="text-align: center;" src="https://raw.githubusercontent.com/PKkDev/ngx-compack/main/examples_icon/cdpr_1.png">
-  <img height="177px" width="377px"  style="text-align: center;" src="https://raw.githubusercontent.com/PKkDev/ngx-compack/main/examples_icon/cdpr_2.png">
+<div style="display: flex; flex-direction:row; justify-content: space-between; flex-wrap:wrap">
+  <img  style="text-align: center;" src="https://raw.githubusercontent.com/PKkDev/ngx-compack/main/examples_icon/cdpr_1.png">
+  <img style="text-align: center;" src="https://raw.githubusercontent.com/PKkDev/ngx-compack/main/examples_icon/cdpr_2.png">
 </div>
 
 #### Import in project

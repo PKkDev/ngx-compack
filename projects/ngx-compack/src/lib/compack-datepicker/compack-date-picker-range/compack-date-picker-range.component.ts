@@ -1,3 +1,4 @@
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, Renderer2, SimpleChanges } from '@angular/core';
 import { CompackDatePickerService } from '../compack-date-picker.service';
 import { DateFormatService } from '../date-format.service';
@@ -8,9 +9,36 @@ import { CompackRelativeDateModel } from '../model/compack-relative-date-model';
 @Component({
   selector: 'compack-date-picker-range',
   templateUrl: './compack-date-picker-range.component.html',
-  styleUrls: ['./compack-date-picker-range.component.scss']
+  styleUrls: ['./compack-date-picker-range.component.scss'],
+  animations: [
+    trigger('calendarStartUpdate', [
+      state('hidden', style({ opacity: 0 })),
+      state('visible', style({ opacity: 1 })),
+      transition('hidden <=> visible', animate('0.2s')),
+    ]),
+    trigger('calendarEndUpdate', [
+      state('hidden', style({ opacity: 0 })),
+      state('visible', style({ opacity: 1 })),
+      transition('hidden <=> visible', animate('0.2s')),
+    ])
+  ]
 })
 export class CompackDatePickerRangeComponent implements OnInit, OnDestroy {
+
+  public calendarStartUpdateState: string = 'visible';
+  public calendarEndUpdateState: string = 'visible';
+  public whencalendarStartAnimate(event: any) {
+    if (event.toState == 'hidden') {
+      this.loadMonthStartData();
+      this.calendarStartUpdateState = 'visible';
+    }
+  }
+  public whencalendarEndAnimate(event: any) {
+    if (event.toState == 'hidden') {
+      this.loadMonthEndData();
+      this.calendarEndUpdateState = 'visible';
+    }
+  }
 
   // events
   @Output() selectLastDateEvent = new EventEmitter<string[]>();
@@ -85,6 +113,9 @@ export class CompackDatePickerRangeComponent implements OnInit, OnDestroy {
     this.cleareEndDay();
     this.crdp.cleareRnge(this.calendarEnd);
     this.crdp.cleareRnge(this.calendarStart);
+
+    // this.calendarStartUpdateState = 'hidden';
+    // this.calendarEndUpdateState = 'hidden';
     this.loadMonthStartData();
     this.loadMonthEndData();
   }
@@ -111,7 +142,7 @@ export class CompackDatePickerRangeComponent implements OnInit, OnDestroy {
       this.selectedMonthStart = 11;
       this.selectedYearStart--;
     }
-    this.loadMonthStartData();
+    this.calendarStartUpdateState = 'hidden';
   }
   public onViewNextMonthStartClick() {
     this.selectedMonthStart++;
@@ -119,7 +150,7 @@ export class CompackDatePickerRangeComponent implements OnInit, OnDestroy {
       this.selectedMonthStart = 0;
       this.selectedYearStart++;
     }
-    this.loadMonthStartData();
+    this.calendarStartUpdateState = 'hidden';
   }
 
   public onViewPrevMonthEndClick() {
@@ -128,7 +159,7 @@ export class CompackDatePickerRangeComponent implements OnInit, OnDestroy {
       this.selectedMonthEnd = 11;
       this.selectedYearEnd--;
     }
-    this.loadMonthEndData();
+    this.calendarEndUpdateState = 'hidden';
   }
   public onViewNextMonthEndClick() {
     this.selectedMonthEnd++;
@@ -136,7 +167,7 @@ export class CompackDatePickerRangeComponent implements OnInit, OnDestroy {
       this.selectedMonthEnd = 0;
       this.selectedYearEnd++;
     }
-    this.loadMonthEndData();
+    this.calendarEndUpdateState = 'hidden';
   }
 
   public selectStartDay(day: CalendarDayPicker) {
@@ -247,6 +278,11 @@ export class CompackDatePickerRangeComponent implements OnInit, OnDestroy {
       const startDate = relativeDate.dateStartFunc();
       this.selectedMonthStart = startDate.getMonth();
       this.selectedYearStart = startDate.getFullYear();
+      // this.calendarStartUpdateState = 'hidden';
+      // setTimeout(() => {
+      //   const dayStart = this.crdp.getDayByDate(startDate, this.calendarStart);
+      //   if (dayStart) this.selectStartDay(dayStart);
+      // }, 200);
       this.loadMonthStartData();
       const dayStart = this.crdp.getDayByDate(startDate, this.calendarStart);
       if (dayStart) this.selectStartDay(dayStart);
@@ -254,6 +290,11 @@ export class CompackDatePickerRangeComponent implements OnInit, OnDestroy {
       const endDate = relativeDate.dateEndFunc();
       this.selectedMonthEnd = endDate.getMonth();
       this.selectedYearEnd = endDate.getFullYear();
+      // this.calendarEndUpdateState = 'hidden';
+      // setTimeout(() => {
+      //   const dayEnd = this.crdp.getDayByDate(endDate, this.calendarEnd);
+      //   if (dayEnd) this.selectEndDay(dayEnd);
+      // }, 200);
       this.loadMonthEndData();
       const dayEnd = this.crdp.getDayByDate(endDate, this.calendarEnd);
       if (dayEnd) this.selectEndDay(dayEnd);

@@ -1,3 +1,4 @@
+import { animate, keyframes, state, style, transition, trigger } from '@angular/animations';
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CompackDatePickerService } from '../compack-date-picker.service';
@@ -10,9 +11,24 @@ import { CalendareError } from '../model/type-picker-error';
 @Component({
   selector: 'compack-date-picker',
   templateUrl: './compack-date-picker.component.html',
-  styleUrls: ['./compack-date-picker.component.scss']
+  styleUrls: ['./compack-date-picker.component.scss'],
+  animations: [
+    trigger('menuMonthState', [
+      state('hidden', style({ zIndex: -1, opacity: 0 })),
+      state('visible', style({ zIndex: 1, opacity: 1, })),
+      transition('hidden => visible', animate('0.2s')),
+      transition('visible => hidden', animate('0.2s')),
+    ]),
+    trigger('calendarUpdate', [
+      state('hidden', style({ opacity: 0 })),
+      state('visible', style({ opacity: 1 })),
+      transition('hidden <=> visible', animate('0.2s')),
+    ]),
+  ]
 })
 export class CompackDatePickerComponent implements OnInit, OnDestroy {
+
+  public calendarUpdateState: string = 'visible';
 
   // settings dialog
   public isDialog = false;
@@ -128,6 +144,8 @@ export class CompackDatePickerComponent implements OnInit, OnDestroy {
     this.cleareStartDay();
     this.cleareEndDay();
     this.crdp.cleareRnge(this.calendar);
+
+    // this.calendarUpdateState = 'hidden';
     this.loadMonthData();
 
     this.setViewFormat();
@@ -263,7 +281,7 @@ export class CompackDatePickerComponent implements OnInit, OnDestroy {
       this.selectedMonth = 11;
       this.selectedYear--;
     }
-    this.loadMonthData();
+    this.calendarUpdateState = 'hidden';
   }
   public onViewNextMonthClick() {
     this.selectedMonth++;
@@ -271,7 +289,15 @@ export class CompackDatePickerComponent implements OnInit, OnDestroy {
       this.selectedMonth = 0;
       this.selectedYear++;
     }
-    this.loadMonthData();
+    this.calendarUpdateState = 'hidden';
+  }
+
+  public whencalendarAnimate(event: any) {
+    if (event.toState == 'hidden') {
+      this.loadMonthData();
+      this.calendarUpdateState = 'visible';
+    }
+    // if (event.toState == 'visible') { console.log('done hidden->visible', event); }
   }
 
   acceptNewDate() {

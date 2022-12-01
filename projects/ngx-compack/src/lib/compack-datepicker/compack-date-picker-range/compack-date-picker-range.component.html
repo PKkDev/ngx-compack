@@ -41,7 +41,8 @@
               </tr>
             </thead>
 
-            <tbody (mouseout)="cleareTempSelected()">
+            <tbody (mouseout)="cleareTempSelected()" [@calendarStartUpdate]="calendarStartUpdateState"
+              (@calendarStartUpdate.done)="whencalendarStartAnimate($event)">
               <tr *ngFor="let cal of calendarStart">
                 <td *ngFor="let day of cal.week" [ngClass]="{
                   'now_month': day.isDayThisMonth,
@@ -102,7 +103,8 @@
               </tr>
             </thead>
 
-            <tbody (mouseout)="cleareTempSelected()">
+            <tbody (mouseout)="cleareTempSelected()" [@calendarEndUpdate]="calendarEndUpdateState"
+              (@calendarEndUpdate.done)="whencalendarEndAnimate($event)">
               <tr *ngFor="let cal of calendarEnd">
                 <td *ngFor="let day of cal.week" [ngClass]="{
                   'now_month': day.isDayThisMonth,

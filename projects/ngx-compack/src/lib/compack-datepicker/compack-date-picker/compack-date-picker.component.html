@@ -14,7 +14,7 @@
         <button (click)="onViewNextMonthClick()" [disabled]="disabled">&gt;</button>
       </div>
 
-      <div #monthSelector class="month_selector" [ngClass]="{'visible':menuMonthIsVisible}">
+      <div #monthSelector class="month_selector" [@menuMonthState]="menuMonthIsVisible ? 'visible' : 'hidden'">
         <div class="month" *ngFor="let month of allMonth" (click)="selectMonth(month.order)">
           {{month.name}}
         </div>
@@ -34,7 +34,8 @@
           </tr>
         </thead>
 
-        <tbody (mouseout)="cleareTempSelected()">
+        <tbody (mouseout)="cleareTempSelected()" [@calendarUpdate]="calendarUpdateState"
+          (@calendarUpdate.done)="whencalendarAnimate($event)">
           <tr *ngFor="let cal of calendar">
             <td *ngFor="let day of cal.week" [ngClass]="{
               'now_month': day.isDayThisMonth,

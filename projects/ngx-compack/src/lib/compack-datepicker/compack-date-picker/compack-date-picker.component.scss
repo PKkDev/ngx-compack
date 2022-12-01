@@ -92,14 +92,13 @@
                 flex-direction: row;
                 flex-wrap: wrap;
                 width: 19em;
-                z-index: -1;
-                opacity: 0;
                 background-color: #fff;
                 border: thin solid #a9a9a9;
                 box-sizing: border-box;
-                height: 7em;
                 padding: 0.4em;
                 border-radius: 6px;
+                height: 7em;
+                overflow: hidden;
 
                 .month {
                     display: flex;
@@ -113,17 +112,13 @@
                     box-sizing: border-box;
                     height: 33.33%;
                     cursor: pointer;
+                    height: 2.333em;
 
                     &:hover {
                         background-color: #e53935;
                         color: white;
                     }
                 }
-            }
-
-            .visible {
-                z-index: 1;
-                opacity: 1;
             }
         }
 
@@ -325,9 +320,17 @@
 .day_in_range {
     background-color: #ff7673;
     color: white;
+
+    :before {
+        color: white;
+    }
 }
 
 .select_day {
     background-color: #e9041e;
     color: white;
+
+    :before {
+        color: white;
+    }
 }

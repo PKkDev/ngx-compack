@@ -1,0 +1,117 @@
+<div class="picker_container">
+
+  <div class="col view_col">
+
+    <div class="view_col_item">
+
+      <div class="code-toolbar" codeSnippet [code]="snippet1" [language]="'html'"></div>
+
+      <compack-date-picker [rangeMode]="rangeMode" [disabled]="disabled" [setDateEvent]="setDateEvent"
+        [viewFieldSelectedDate]="viewFieldSelectedDate" [formatOutputDate]="format" [useTime]="useTime"
+        [maxChoseDay]="maxChoseDay" [locale]="locale" [max]="max" [min]="min" [autoSelect]="autoSelect"
+        (selectLastDateEvent)="selectDateEvent($event)">
+      </compack-date-picker>
+
+    </div>
+
+    <div class="view_col_item">
+
+      <div class="code-toolbar" codeSnippet [code]="snippet2" [language]="'html'"></div>
+
+      <input compackDatePickerHost style="margin: 10px 0 ;" placeholder="click me" [rangeMode]="rangeMode"
+        [disabled]="disabled" [setDateEvent]="setDateEvent" [viewFieldSelectedDate]="viewFieldSelectedDate"
+        [formatOutputDate]="format" [useTime]="useTime" [maxChoseDay]="maxChoseDay" [locale]="locale" [max]="max"
+        [min]="min" [autoSelect]="autoSelect" (selectLastDateEvent)="selectDateEvent($event)" />
+
+    </div>
+
+    <div class="view_col_item">
+
+      <div class="code-toolbar" codeSnippet [code]="snippet3" [language]="'html'"></div>
+
+      <div compackDatePickerHost style="border: thin solid black; border-radius: 6px;" [rangeMode]="rangeMode"
+        [disabled]="disabled" [setDateEvent]="setDateEvent" [viewFieldSelectedDate]="viewFieldSelectedDate"
+        [formatOutputDate]="format" [useTime]="useTime" [maxChoseDay]="maxChoseDay" [locale]="locale" [max]="max"
+        [min]="min" [autoSelect]="autoSelect" (selectLastDateEvent)="selectDateEvent($event)">
+        click me
+      </div>
+
+    </div>
+
+    <div class="view_col_item">
+
+      <div class="code-toolbar" codeSnippet [code]="snippet4" [language]="'html'"></div>
+
+      <svg compackDatePickerHost xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+        style="margin: 10px 0;width: 30px;height: 30px;" [rangeMode]="rangeMode" [disabled]="disabled"
+        [setDateEvent]="setDateEvent" [viewFieldSelectedDate]="viewFieldSelectedDate" [formatOutputDate]="format"
+        [useTime]="useTime" [maxChoseDay]="maxChoseDay" [locale]="locale" [max]="max" [min]="min"
+        [autoSelect]="autoSelect" (selectLastDateEvent)="selectDateEvent($event)">
+        <path d="M0 0h24v24H0z" fill="none" />
+        <path
+          d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z" />
+      </svg>
+
+    </div>
+
+  </div>
+
+  <div class="col param_col">
+
+    <div class="field_group">
+      locale: <input type="text" [(ngModel)]="locale" />
+    </div>
+
+    <div class="field_group">
+      auto select: <input type="checkbox" [(ngModel)]="autoSelect">
+    </div>
+
+    <div class="field_group">
+      use time: <input type="checkbox" [(ngModel)]="useTime">
+    </div>
+
+    <div class="field_group">
+      disabled: <input type="checkbox" [(ngModel)]="disabled">
+    </div>
+
+    <div class="field_group">
+      rangeMode: <input type="checkbox" [(ngModel)]="rangeMode">
+    </div>
+
+    <div class="field_group">
+      viewFieldSelectedDate: <input type="checkbox" [(ngModel)]="viewFieldSelectedDate">
+    </div>
+
+    <div class="field_group">
+      maxChooseDay: <input type="number" [(ngModel)]="maxChoseDay" />
+    </div>
+
+    <div class="field_group">
+      format: <input type="text" [(ngModel)]="format" />
+    </div>
+
+    <div class="field_group">
+      <button (click)="OnSetDate()">setDate</button>
+    </div>
+
+    <div class="field_group col_view">
+      min:
+      <input compackDatePickerHost placeholder="min date" [formatOutputDate]="'yyyy-mm-dd'"
+        (selectLastDateEvent)="selectMinDateEvent($event)" [autoSelect]="true">
+    </div>
+
+    <div class="field_group col_view">
+      max:
+      <input compackDatePickerHost placeholder="max date" [formatOutputDate]="'yyyy-mm-dd'"
+        (selectLastDateEvent)="selectMaxDateEvent($event)" [autoSelect]="true">
+    </div>
+
+    <div class="field_group col_view">
+      selected:
+      <span>{{selectedDateOneStr}}</span>
+      <span>{{selectedDateTwoStr}}</span>
+    </div>
+
+  </div>
+
+</div>

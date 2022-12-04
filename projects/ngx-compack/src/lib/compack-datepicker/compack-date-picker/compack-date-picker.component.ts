@@ -248,16 +248,18 @@ export class CompackDatePickerComponent implements OnInit, OnDestroy {
     const dialogHeight = 330;
     const dialogWidth = 300;
 
+    debugger;
     // не влез снизу
-    if (window.innerHeight - rec.bottom < 10) {
-      this.top = `${rec.top - dialogWidth - 5}px`;
+    if (rec.top + dialogHeight > window.innerHeight) {
+      const offset = Math.abs(rec.top + dialogHeight - window.innerHeight) + 25;
+      this.top = `${rec.top - offset - 5}px`;
     } else {
       this.top = `${rec.top + rec.height + 5}px`;
     }
 
     // не влез справа
-    if (rec.left + dialogHeight > window.innerWidth) {
-      const offset = Math.abs(rec.left + dialogHeight - window.innerWidth) + 25;
+    if (rec.left + dialogWidth > window.innerWidth) {
+      const offset = Math.abs(rec.left + dialogWidth - window.innerWidth) + 25;
       this.left = `${rec.left - offset}px`;
     } else {
       this.left = `${rec.left}px`;

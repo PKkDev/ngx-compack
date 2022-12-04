@@ -1,0 +1,64 @@
+.picker_container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    @media (max-width: 830px) {
+        flex-wrap: wrap;
+
+        .col {
+            margin: 15px 15px 10px 0 !important;
+        }
+    }
+
+    .col {
+        border-color: #fff;
+        background-color: #fff;
+        height: fit-content;
+    }
+
+    .view_col {
+        .view_col_item {
+            padding: 5px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            box-shadow: 0 2px 5px 0 rgb(0 0 0 / 20%), 0 2px 10px 0 rgb(0 0 0 / 10%);
+            border-radius: 6px;
+            display: flex;
+            align-items: flex-start;
+            width: 100%;
+
+            .code-toolbar {
+                margin-right: 10px;
+            }
+        }
+    }
+
+    .param_col {
+        margin-left: 10px;
+        padding: 5px;
+        box-sizing: border-box;
+        position: sticky;
+        top: 0;
+        box-shadow: 0 2px 5px 0 rgb(0 0 0 / 20%), 0 2px 10px 0 rgb(0 0 0 / 10%);
+        border-radius: 6px;
+
+        .field_group {
+            display: flex;
+            justify-content: space-between;
+            margin: 8px 0;
+            font-size: 20px;
+            width: 100%;
+            text-align: left;
+
+            .max_container {
+                display: flex;
+                justify-content: flex-start;
+            }
+        }
+
+        .col_view {
+            flex-direction: column;
+        }
+    }
+}

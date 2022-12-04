@@ -1,0 +1,62 @@
+.banner_container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    .banner_settings {
+        padding: 11px 22px;
+        display: flex;
+        flex-direction: column;
+        background-color: #fff;
+        border-color: #fff;
+        box-shadow: 0 2px 5px 0 rgb(0 0 0 / 20%), 0 2px 10px 0 rgb(0 0 0 / 10%);
+        border-radius: 6px;
+
+        .field_group {
+            display: flex;
+            justify-content: space-between;
+            margin: 8px 0;
+            font-size: 20px;
+            width: 100%;
+            text-align: left;
+
+            textarea {
+                width: 100%;
+            }
+
+            button {
+                cursor: pointer;
+                margin: 5px;
+
+                background-color: #616161;
+                padding: 10px 20px;
+                border-radius: 0.25rem;
+                font-size: 15px;
+                line-height: 1;
+                font-weight: 500;
+                color: #fff;
+                box-shadow: 0 2px 5px 0 rgb(0 0 0 / 20%), 0 2px 10px 0 rgb(0 0 0 / 10%);
+                outline: none;
+                border: none;
+
+                &:hover {
+                    background-color: #27ae60;
+                    opacity: 0.9;
+                }
+            }
+        }
+
+        .color {
+            position: relative;
+
+            input {
+                padding: 0;
+                border: none;
+            }
+        }
+
+        .col_view {
+            flex-direction: column;
+        }
+    }
+}

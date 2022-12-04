@@ -4,13 +4,23 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
-
+// display
+import { DisplayBComponent } from './display/display-b/display-b.component';
+import { DisplayDpComponent } from './display/display-dp/display-dp.component';
+import { DisplayDprComponent } from './display/display-dpr/display-dpr.component';
+import { DisplayTComponent } from './display/display-t/display-t.component';
 // compack
 import { CompackBannerModule, CompackToastModule, CompackDatepickerModule } from 'ngx-compack';
+import { CodeSnippetDirective } from './code-snippet.directive';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    CodeSnippetDirective,
+    DisplayBComponent,
+    DisplayDpComponent,
+    DisplayDprComponent,
+    DisplayTComponent
   ],
   imports: [
     BrowserModule,

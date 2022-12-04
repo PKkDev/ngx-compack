@@ -3,8 +3,9 @@ import { ChangeDetectorRef, Component, EventEmitter, TemplateRef, ViewChild } fr
 export enum TypeViewComponent {
   PickerRange = 0,
   Picker = 1,
-  Toast = 2,
-  Banner = 3
+  DateFormat = 2,
+  Toast = 3,
+  Banner = 4
 }
 
 @Component({
@@ -20,6 +21,7 @@ export class AppComponent {
   @ViewChild('picker') picker: TemplateRef<any> | undefined;
   @ViewChild('toast') toast: TemplateRef<any> | undefined;
   @ViewChild('banner') banner: TemplateRef<any> | undefined;
+  @ViewChild('dateFormat') dateFormat: TemplateRef<any> | undefined;
 
   constructor(private cdr: ChangeDetectorRef) { }
 
@@ -38,6 +40,7 @@ export class AppComponent {
     switch (newView) {
       case TypeViewComponent.PickerRange: this.selectedTemplate = this.pickerRange ?? null; break;
       case TypeViewComponent.Picker: this.selectedTemplate = this.picker ?? null; break;
+      case TypeViewComponent.DateFormat: this.selectedTemplate = this.dateFormat ?? null; break;
       case TypeViewComponent.Toast: this.selectedTemplate = this.toast ?? null; break;
       case TypeViewComponent.Banner: this.selectedTemplate = this.banner ?? null; break;
       default: this.selectedTemplate = this.picker ?? null; break;

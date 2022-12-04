@@ -4,10 +4,8 @@ export type tplotOptions = {
   [key: string]: () => {}
 }
 
-@Injectable({
-  providedIn: 'root'
-})
-export class DateFormatService {
+@Injectable()
+export class CompackDateFormatService {
 
   private token = /d{1,4}|D{3,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|W{1,2}|[LlopSZN]|"[^"]*"|'[^']*'/g;
   private timezone = /\b(?:[A-Z]{1,3}[A-Z][TC])(?:[-+]\d{4})?|((?:Australian )?(?:Pacific|Mountain|Central|Eastern|Atlantic) (?:Standard|Daylight|Prevailing) Time)\b/g;

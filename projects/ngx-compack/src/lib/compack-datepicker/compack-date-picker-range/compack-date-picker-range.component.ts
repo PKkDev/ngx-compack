@@ -1,7 +1,7 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, Renderer2, SimpleChanges } from '@angular/core';
 import { CompackDatePickerService } from '../compack-date-picker.service';
-import { DateFormatService } from '../date-format.service';
+import { CompackDateFormatService } from '../compack-date-format.service';
 import { CalendarPicker } from '../model/calendar';
 import { CalendarDayPicker } from '../model/calendar-day';
 import { CompackRelativeDateModel } from '../model/compack-relative-date-model';
@@ -77,7 +77,7 @@ export class CompackDatePickerRangeComponent implements OnInit, OnDestroy {
   constructor(
     private el: ElementRef,
     private renderer: Renderer2,
-    private dfs: DateFormatService,
+    private dfs: CompackDateFormatService,
     private crdp: CompackDatePickerService) { }
 
   ngOnChanges(changes: SimpleChanges) {

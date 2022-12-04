@@ -9,6 +9,9 @@ import { CompackDatePickerRangeHostDirective } from './compack-date-picker-range
 import { CompackDatePickerComponent } from './compack-date-picker/compack-date-picker.component';
 import { CompackDatePickerRangeComponent } from './compack-date-picker-range/compack-date-picker-range.component';
 import { CompackDatePickerHostDirective } from './compack-date-picker/compack-date-picker-host.directive';
+import { CompackDatePickerService } from './compack-date-picker.service';
+import { CompackDateFormatService } from './compack-date-format.service';
+import { CalendarDayBuildService } from './calendar-day-build.service';
 
 @NgModule({
   imports: [
@@ -30,6 +33,7 @@ import { CompackDatePickerHostDirective } from './compack-date-picker/compack-da
     CompackDatePickerHostDirective,
     CompackDatePickerComponent,
     CompackDatePickerRangeComponent
-  ]
+  ],
+  providers: [CalendarDayBuildService, CompackDateFormatService, CompackDatePickerService]
 })
 export class CompackDatepickerModule { }

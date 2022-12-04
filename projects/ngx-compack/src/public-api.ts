@@ -19,3 +19,4 @@ export * from './lib/compack-datepicker/compack-date-picker-range/compack-date-p
 export * from './lib/compack-datepicker/directive/date-mask.directive';
 export * from './lib/compack-datepicker/directive/time-mask.directive';
 export * from './lib/compack-datepicker/model/compack-relative-date-model';
+export * from './lib/compack-datepicker/compack-date-format.service';

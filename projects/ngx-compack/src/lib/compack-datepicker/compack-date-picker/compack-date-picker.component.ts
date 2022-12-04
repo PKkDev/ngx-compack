@@ -2,7 +2,7 @@ import { animate, keyframes, state, style, transition, trigger } from '@angular/
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CompackDatePickerService } from '../compack-date-picker.service';
-import { DateFormatService } from '../date-format.service';
+import { CompackDateFormatService } from '../compack-date-format.service';
 import { CalendarPicker } from '../model/calendar';
 import { CalendarDayPicker } from '../model/calendar-day';
 import { MonthSelect } from '../model/month-select';
@@ -86,7 +86,7 @@ export class CompackDatePickerComponent implements OnInit, OnDestroy {
 
   constructor(
     private el: ElementRef,
-    private dfs: DateFormatService,
+    private dfs: CompackDateFormatService,
     private crdp: CompackDatePickerService,
     private renderer: Renderer2) { }
 

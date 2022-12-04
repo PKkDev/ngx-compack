@@ -1,21 +1,15 @@
 import { Injectable } from '@angular/core';
 import { CalendarDayBuildService } from './calendar-day-build.service';
-import { DateFormatService } from './date-format.service';
 import { CalendarPicker } from './model/calendar';
 import { CalendarDayPicker } from './model/calendar-day';
 import { CompackRelativeDateModel } from './model/compack-relative-date-model';
 import { MonthSelect } from './model/month-select';
 import { CalendareError, TypePickerError } from './model/type-picker-error';
 
-
-import dateFormat from './test'
-
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class CompackDatePickerService {
 
-  constructor(private dfs: DateFormatService) { }
+  constructor() { }
 
   /**
    * get month name

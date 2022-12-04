@@ -9,6 +9,7 @@ import { DisplayBComponent } from './display/display-b/display-b.component';
 import { DisplayDpComponent } from './display/display-dp/display-dp.component';
 import { DisplayDprComponent } from './display/display-dpr/display-dpr.component';
 import { DisplayTComponent } from './display/display-t/display-t.component';
+import { DisplayDfsComponent } from './display/display-dfs/display-dfs.component';
 // compack
 import { CompackBannerModule, CompackToastModule, CompackDatepickerModule } from 'ngx-compack';
 import { CodeSnippetDirective } from './code-snippet.directive';
@@ -20,7 +21,8 @@ import { CodeSnippetDirective } from './code-snippet.directive';
     DisplayBComponent,
     DisplayDpComponent,
     DisplayDprComponent,
-    DisplayTComponent
+    DisplayTComponent,
+    DisplayDfsComponent
   ],
   imports: [
     BrowserModule,

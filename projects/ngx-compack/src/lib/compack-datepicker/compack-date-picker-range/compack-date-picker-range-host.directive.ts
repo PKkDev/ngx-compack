@@ -76,8 +76,12 @@ export class CompackDatePickerRangeHostDirective implements OnInit, OnDestroy {
 
         this.newDateSubs = this.calendar.instance.selectLastDateEvent
           .subscribe(next => {
-            if (this.el.nativeElement instanceof HTMLInputElement)
-              this.renderer.setProperty(this.el.nativeElement, 'value', next[0] == 'reset' ? '' : `${next[0]} - ${next[1]}`);
+            if (this.el.nativeElement instanceof HTMLInputElement) {
+              const text = next[0] == 'reset'
+                ? ''
+                : `${next[0]} - ${next[1]}`;
+              this.renderer.setProperty(this.el.nativeElement, 'value', text);
+            }
             this.selectLastDateEvent.emit(next);
           });
 

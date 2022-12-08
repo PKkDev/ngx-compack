@@ -1,4 +1,4 @@
-import { animate, keyframes, state, style, transition, trigger } from '@angular/animations';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CompackDatePickerService } from '../compack-date-picker.service';
@@ -16,13 +16,13 @@ import { CalendareError } from '../model/type-picker-error';
     trigger('menuMonthState', [
       state('hidden', style({ zIndex: -1, opacity: 0 })),
       state('visible', style({ zIndex: 1, opacity: 1, })),
-      transition('hidden => visible', animate('0.2s')),
-      transition('visible => hidden', animate('0.2s')),
+      transition('hidden => visible', animate('0.1s')),
+      transition('visible => hidden', animate('0.1s')),
     ]),
     trigger('calendarUpdate', [
       state('hidden', style({ opacity: 0 })),
       state('visible', style({ opacity: 1 })),
-      transition('hidden <=> visible', animate('0.2s')),
+      transition('hidden <=> visible', animate('0.1s')),
     ]),
   ]
 })
@@ -54,6 +54,8 @@ export class CompackDatePickerComponent implements OnInit, OnDestroy {
   @Input() min: Date | undefined;
   @Input() formatOutputDate: string = `dd.mm.yyyy'T'HH:MM`;
   @Input() setDateEvent: EventEmitter<Date[]> | undefined;
+
+  private formatViewDate: string = `dd.mm.yyyy`;
 
   public canAutoSelect: boolean = false;
   public viewErrorMessage: boolean = false;
@@ -245,10 +247,9 @@ export class CompackDatePickerComponent implements OnInit, OnDestroy {
     const native = this.handlerRef.nativeElement;
     const rec: DOMRect = native.getBoundingClientRect();
 
-    const dialogHeight = 330;
+    const dialogHeight = 370;
     const dialogWidth = 300;
 
-    debugger;
     // не влез снизу
     if (rec.top + dialogHeight > window.innerHeight) {
       const offset = Math.abs(rec.top + dialogHeight - window.innerHeight) + 25;
@@ -370,7 +371,7 @@ export class CompackDatePickerComponent implements OnInit, OnDestroy {
       }
     }
     if (fromCalendar)
-      this.selectStartDateStr = this.dfs.dateFormat(this.selectStartDate.fulDate, `dd.mm.yyyy`);
+      this.selectStartDateStr = this.dfs.dateFormat(this.selectStartDate.fulDate, this.formatViewDate);
 
     this.crdp.updateCalendarState(this.calendar, this.selectStartDate, this.selectLastDate, this.max, this.min);
   }
@@ -393,7 +394,7 @@ export class CompackDatePickerComponent implements OnInit, OnDestroy {
       }
     }
     if (fromCalendar)
-      this.selectLastDateStr = this.dfs.dateFormat(this.selectLastDate.fulDate, `dd.mm.yyyy`);
+      this.selectLastDateStr = this.dfs.dateFormat(this.selectLastDate.fulDate, this.formatViewDate);
 
     this.crdp.updateCalendarState(this.calendar, this.selectStartDate, this.selectLastDate, this.max, this.min);
 
@@ -431,7 +432,7 @@ export class CompackDatePickerComponent implements OnInit, OnDestroy {
         }
       }
       if (fromCalendar)
-        this.selectStartDateStr = this.dfs.dateFormat(this.selectStartDate.fulDate, `dd.mm.yyyy`);
+        this.selectStartDateStr = this.dfs.dateFormat(this.selectStartDate.fulDate, this.formatViewDate);
 
       if (this.canAutoSelect)
         this.acceptNewDate();

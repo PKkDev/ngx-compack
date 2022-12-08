@@ -1,25 +1,32 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, Renderer2, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
 import { CompackDatePickerService } from '../compack-date-picker.service';
 import { CompackDateFormatService } from '../compack-date-format.service';
 import { CalendarPicker } from '../model/calendar';
 import { CalendarDayPicker } from '../model/calendar-day';
 import { CompackRelativeDateModel } from '../model/compack-relative-date-model';
+import { MonthSelect } from '../model/month-select';
 
 @Component({
   selector: 'compack-date-picker-range',
   templateUrl: './compack-date-picker-range.component.html',
   styleUrls: ['./compack-date-picker-range.component.scss'],
   animations: [
+    trigger('menuMonthState', [
+      state('hidden', style({ zIndex: -1, opacity: 0 })),
+      state('visible', style({ zIndex: 1, opacity: 1, })),
+      transition('hidden => visible', animate('0.1s')),
+      transition('visible => hidden', animate('0.1s')),
+    ]),
     trigger('calendarStartUpdate', [
       state('hidden', style({ opacity: 0 })),
       state('visible', style({ opacity: 1 })),
-      transition('hidden <=> visible', animate('0.2s')),
+      transition('hidden <=> visible', animate('0.1s')),
     ]),
     trigger('calendarEndUpdate', [
       state('hidden', style({ opacity: 0 })),
       state('visible', style({ opacity: 1 })),
-      transition('hidden <=> visible', animate('0.2s')),
+      transition('hidden <=> visible', animate('0.1s')),
     ])
   ]
 })
@@ -47,6 +54,9 @@ export class CompackDatePickerRangeComponent implements OnInit, OnDestroy {
   @Input() disabled: boolean = false;
   @Input() formatOutputDate: string = `dd.mm.yyyy`;
   @Input() relativeDateModel: CompackRelativeDateModel[] | undefined = undefined;
+
+  private formatViewDate: string = `dd.mm.yyyy`;
+
   // settings dialog
   public isDialog = false;
   public isOpen = false;
@@ -57,6 +67,14 @@ export class CompackDatePickerRangeComponent implements OnInit, OnDestroy {
   // view
   public acceptBtn = 'View';
   public cancelBtn = 'Reset';
+  // data month
+  public allMonth: MonthSelect[] = [];
+  public menuStartMonthIsVisible = false;
+  @ViewChild('monthStartSelector') monthStartSelector: ElementRef | undefined;
+  @ViewChild('monthStartTitle') monthStartTitle: ElementRef | undefined;
+  public menuEndMonthIsVisible = false;
+  @ViewChild('monthEndSelector') monthEndSelector: ElementRef | undefined;
+  @ViewChild('monthEndTitle') monthEndTitle: ElementRef | undefined;
   // data start
   public nameMonthStart = '';
   private selectedMonthStart = new Date().getMonth();
@@ -94,6 +112,10 @@ export class CompackDatePickerRangeComponent implements OnInit, OnDestroy {
       this.onDocClickEv = this.renderer.listen('document', 'click', (event) => {
         if ((this.handlerRef && !this.handlerRef.nativeElement.contains(event.target) && !this.el.nativeElement.contains(event.target)))
           this.isOpen = false;
+        if (this.monthStartSelector && !this.monthStartSelector.nativeElement.contains(event.target) && this.monthStartTitle && !this.monthStartTitle.nativeElement.contains(event.target))
+          this.menuStartMonthIsVisible = false;
+        if (this.monthEndSelector && !this.monthEndSelector.nativeElement.contains(event.target) && this.monthEndTitle && !this.monthEndTitle.nativeElement.contains(event.target))
+          this.menuEndMonthIsVisible = false;
       });
     }
 
@@ -122,6 +144,28 @@ export class CompackDatePickerRangeComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     if (this.onDocClickEv) this.onDocClickEv();
+  }
+
+  public openStartMonthSelector() {
+    if (this.disabled) return;
+    this.allMonth = this.crdp.getMonths(this.locale);
+    this.menuStartMonthIsVisible = !this.menuStartMonthIsVisible;
+  }
+  public selectStartMonth(order: number) {
+    this.selectedMonthStart = order;
+    this.menuStartMonthIsVisible = !this.menuStartMonthIsVisible;
+    this.calendarStartUpdateState = 'hidden';
+  }
+
+  public openEndMonthSelector() {
+    if (this.disabled) return;
+    this.allMonth = this.crdp.getMonths(this.locale);
+    this.menuEndMonthIsVisible = !this.menuEndMonthIsVisible;
+  }
+  public selectEndMonth(order: number) {
+    this.selectedMonthEnd = order;
+    this.menuEndMonthIsVisible = !this.menuEndMonthIsVisible;
+    this.calendarEndUpdateState = 'hidden';
   }
 
   private loadMonthStartData() {
@@ -180,7 +224,7 @@ export class CompackDatePickerRangeComponent implements OnInit, OnDestroy {
     this.selectStartDate = JSON.parse(JSON.stringify(day));
     if (!this.selectStartDate) throw new Error('error on day select');
     this.selectStartDate.fulDate = new Date(day.fulDate);
-    this.selectStartDateStr = this.dfs.dateFormat(this.selectStartDate.fulDate, `dd.mm.yyyy`);
+    this.selectStartDateStr = this.dfs.dateFormat(this.selectStartDate.fulDate, this.formatViewDate);
 
     if (this.selectEndDate && this.selectStartDate.fulDate > this.selectEndDate.fulDate)
       this.cleareEndDay();
@@ -200,7 +244,7 @@ export class CompackDatePickerRangeComponent implements OnInit, OnDestroy {
     this.selectEndDate = JSON.parse(JSON.stringify(day));
     if (!this.selectEndDate) throw new Error('error on day select');
     this.selectEndDate.fulDate = new Date(day.fulDate);
-    this.selectEndDateStr = this.dfs.dateFormat(this.selectEndDate.fulDate, `dd.mm.yyyy`);
+    this.selectEndDateStr = this.dfs.dateFormat(this.selectEndDate.fulDate, this.formatViewDate);
 
     if (this.selectStartDate && this.selectEndDate.fulDate < this.selectStartDate.fulDate)
       this.cleareStartDay();
@@ -298,6 +342,8 @@ export class CompackDatePickerRangeComponent implements OnInit, OnDestroy {
       this.loadMonthEndData();
       const dayEnd = this.crdp.getDayByDate(endDate, this.calendarEnd);
       if (dayEnd) this.selectEndDay(dayEnd);
+
+      this.acceptNewDate();
     }
   }
 

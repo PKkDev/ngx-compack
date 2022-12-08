@@ -18,13 +18,20 @@
 
         <div class="title">
 
-          <div class="titile_name">
+          <div #monthStartTitle class="titile_name" (click)="openStartMonthSelector()">
             {{nameMonthStart}} {{selectedYearStart}}
           </div>
 
           <div class="titile_tool">
             <button (click)="onViewPrevMonthStartClick()" [disabled]="disabled">&lt;</button>
             <button (click)="onViewNextMonthStartClick()" [disabled]="disabled">&gt;</button>
+          </div>
+
+          <div #monthStartSelector class="month_selector"
+            [@menuMonthState]="menuStartMonthIsVisible ? 'visible' : 'hidden'">
+            <div class="month" *ngFor="let month of allMonth" (click)="selectStartMonth(month.order)">
+              {{month.name}}
+            </div>
           </div>
 
         </div>
@@ -80,13 +87,20 @@
 
         <div class="title">
 
-          <div class="titile_name">
+          <div #monthEndTitle class="titile_name" (click)="openEndMonthSelector()">
             {{nameMonthEnd}} {{selectedYearEnd}}
           </div>
 
           <div class="titile_tool">
             <button (click)="onViewPrevMonthEndClick()" [disabled]="disabled">&lt;</button>
             <button (click)="onViewNextMonthEndClick()" [disabled]="disabled">&gt;</button>
+          </div>
+
+          <div #monthEndSelector class="month_selector"
+            [@menuMonthState]="menuEndMonthIsVisible ? 'visible' : 'hidden'">
+            <div class="month" *ngFor="let month of allMonth" (click)="selectEndMonth(month.order)">
+              {{month.name}}
+            </div>
           </div>
 
         </div>

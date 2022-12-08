@@ -1,5 +1,6 @@
 import { ComponentRef, Directive, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, Renderer2, SimpleChanges, ViewContainerRef } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { CompackDateFormatService } from '../compack-date-format.service';
 import { CompackDatePickerComponent } from './compack-date-picker.component';
 
 @Directive({
@@ -31,7 +32,8 @@ export class CompackDatePickerHostDirective implements OnInit, OnDestroy {
   constructor(
     private renderer: Renderer2,
     private el: ElementRef,
-    public viewContainerRef: ViewContainerRef) { }
+    public viewContainerRef: ViewContainerRef,
+    private dfs: CompackDateFormatService) { }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['locale']) {
@@ -118,7 +120,15 @@ export class CompackDatePickerHostDirective implements OnInit, OnDestroy {
         this.newDateSubs = this.calendar.instance.selectLastDateEvent
           .subscribe(next => {
             if (this.el.nativeElement instanceof HTMLInputElement) {
-              const text = next[0] == 'reset' ? '' : this.rangeMode ? `${next[0]} - ${next[1]}` : `${next[0]}`;
+              const text = next[0] == 'reset'
+                ? ''
+                : this.rangeMode
+                  ? this.useTime
+                    ? `${this.calendar?.instance.selectStartDateStr} ${this.calendar?.instance.selectStartTimeStr} - ${this.calendar?.instance.selectLastDateStr} ${this.calendar?.instance.selectLastTimeStr}`
+                    : `${this.calendar?.instance.selectStartDateStr} - ${this.calendar?.instance.selectLastDateStr}`
+                  : this.useTime
+                    ? `${this.calendar?.instance.selectStartDateStr} ${this.calendar?.instance.selectStartTimeStr}`
+                    : `${this.calendar?.instance.selectStartDateStr}`;
               this.renderer.setProperty(this.el.nativeElement, 'value', text);
             }
             this.selectLastDateEvent.emit(next);

@@ -1,29 +1,59 @@
 import { AfterViewInit, Directive, ElementRef, Input, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 
+export class CompackCodeSnippetModel {
+  public title: string;
+  public code: string;
+  constructor(title: string, code: string) {
+    this.title = title,
+      this.code = code;
+  }
+}
+
+export class CompackCodeSnippetInnerModel {
+  public id: number;
+  public title: string;
+  public code: string;
+  public tabTemplate: any | undefined;
+  public onClickEv: (() => void) | undefined;
+  constructor(id: number, title: string, code: string) {
+    this.id = id;
+    this.title = title;
+    this.code = code;
+    this.tabTemplate = undefined;
+    this.onClickEv = undefined;
+  }
+}
+
 @Directive({
   selector: '[codeSnippet]'
 })
 export class CodeSnippetDirective implements OnInit, AfterViewInit, OnDestroy {
 
-  @Input() code: string = '';
-  @Input() language: string | undefined = undefined;
+  @Input() snippets: CompackCodeSnippetModel[] = [];
+  private innerSnippets: CompackCodeSnippetInnerModel[] = [];
+  private nowCode: string | undefined = undefined;
 
   private preTemplate: any;
   private codeTemplate: any;
   private toolBarTemplate: any;
+  private spanContainerTemplate: any;
 
   private lines: number;
 
-  private onClickEv: (() => void) | undefined;
+  private onCopyClickEv: (() => void) | undefined;
 
   constructor(
     private renderer: Renderer2,
     private el: ElementRef) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.snippets.map((value, index) => this.innerSnippets.push(new CompackCodeSnippetInnerModel(index, value.title, value.code)));
+  }
 
   ngOnDestroy() {
-    if (this.onClickEv) this.onClickEv();
+    if (this.onCopyClickEv) this.onCopyClickEv();
+    for (const snippet of this.innerSnippets)
+      if (snippet.onClickEv) snippet.onClickEv();
   }
 
   ngAfterViewInit() {
@@ -31,7 +61,8 @@ export class CodeSnippetDirective implements OnInit, AfterViewInit, OnDestroy {
     this.createToolBar();
     this.createTabs();
     this.createCopyButton();
-    this.createCodeBlock();
+    if (this.innerSnippets.length > 0)
+      this.innerSnippets[0].tabTemplate.click();
   }
 
   private createToolBar() {
@@ -46,7 +77,7 @@ export class CodeSnippetDirective implements OnInit, AfterViewInit, OnDestroy {
     const tabs = this.renderer.createElement('div');
     this.renderer.appendChild(this.toolBarTemplate, tabs);
 
-    if (this.language) {
+    for (const snippet of this.innerSnippets) {
       const button = this.renderer.createElement('button');
       this.renderer.setStyle(button, 'background-color', '#616161');
       this.renderer.setStyle(button, 'padding', '10px 20px');
@@ -59,7 +90,22 @@ export class CodeSnippetDirective implements OnInit, AfterViewInit, OnDestroy {
       this.renderer.setStyle(button, 'box-shadow', '0 2px 5px 0 rgb(0 0 0 / 20%), 0 2px 10px 0 rgb(0 0 0 / 10%)');
       this.renderer.setStyle(button, 'outline', 'none');
       this.renderer.setStyle(button, 'border', 'none');
-      this.renderer.appendChild(button, this.renderer.createText(this.language.toUpperCase()));
+
+      this.renderer.setStyle(button, 'cursor', 'pointer');
+      snippet.onClickEv = this.renderer.listen(button, 'click', (event) => {
+        for (const savedSnippet of this.innerSnippets) {
+          if (savedSnippet.tabTemplate) {
+            if (savedSnippet.id == snippet.id)
+              this.renderer.setStyle(savedSnippet.tabTemplate, 'background-color', '#27ae60');
+            else
+              this.renderer.setStyle(savedSnippet.tabTemplate, 'background-color', '#616161');
+          }
+        }
+        this.createCodeBlockFromModel(snippet);
+      });
+      snippet.tabTemplate = button;
+
+      this.renderer.appendChild(button, this.renderer.createText(snippet.title.toUpperCase()));
       this.renderer.appendChild(tabs, button);
     }
   }
@@ -80,40 +126,61 @@ export class CodeSnippetDirective implements OnInit, AfterViewInit, OnDestroy {
     this.renderer.appendChild(copyButton, this.renderer.createText('copy'));
     this.renderer.appendChild(this.toolBarTemplate, copyButton);
 
-    if (this.onClickEv) this.onClickEv();
-    this.onClickEv = this.renderer.listen(copyButton, 'click', (event) => {
-      copyTextToClipboard(this.code);
+    if (this.onCopyClickEv) this.onCopyClickEv();
+    this.onCopyClickEv = this.renderer.listen(copyButton, 'click', (event) => {
+      if (this.nowCode)
+        copyTextToClipboard(this.nowCode);
     });
   }
 
-  private createCodeBlock() {
-    this.codeTemplate = this.renderer.createElement('code');
-    this.renderer.appendChild(this.codeTemplate, this.renderer.createText(this.code));
-    this.renderer.setStyle(this.codeTemplate, 'line-height', '20px');
-    this.renderer.setStyle(this.codeTemplate, 'position', 'relative');
+  private createCodeBlockFromModel(model: CompackCodeSnippetModel) {
+    if (!this.preTemplate) this.cretePreBlok();
 
-    const spanContainer = this.renderer.createElement('span');
-    this.renderer.setStyle(spanContainer, 'position', 'absolute');
-    this.renderer.setStyle(spanContainer, 'pointer-events', 'none');
-    this.renderer.setStyle(spanContainer, 'top', '0');
-    this.renderer.setStyle(spanContainer, 'font-size', '100%');
-    this.renderer.setStyle(spanContainer, 'left', '-3.8em');
-    this.renderer.setStyle(spanContainer, 'width', '3em');
-    this.renderer.setStyle(spanContainer, 'letter-spacing', '-1px');
-    this.renderer.setStyle(spanContainer, 'border-right', '1px solid #999');
-    this.renderer.setStyle(spanContainer, ' user-select', 'none');
-    this.renderer.appendChild(this.codeTemplate, spanContainer);
+    if (this.codeTemplate) {
+      this.renderer.removeChild(this.preTemplate, this.codeTemplate);
+      this.codeTemplate = undefined;
+    }
+    this.creteCodeBlock();
+    this.renderer.appendChild(this.codeTemplate, this.renderer.createText(model.code));
+    this.nowCode = model.code;
 
+
+    if (this.spanContainerTemplate) {
+      this.renderer.removeChild(this.codeTemplate, this.spanContainerTemplate);
+      this.spanContainerTemplate = undefined;
+    }
+    this.createSpanContainerTemplateBlock();
+    this.createCodeLines();
+  }
+  private cretePreBlok() {
     this.preTemplate = this.renderer.createElement('pre');
     this.renderer.setStyle(this.preTemplate, 'max-height', '450px');
     this.renderer.setStyle(this.preTemplate, 'padding', '5px 0 5px 3.8em');
     this.renderer.setStyle(this.preTemplate, 'background', '#f5f2f0');
     this.renderer.setStyle(this.preTemplate, 'margin', '0');
     this.renderer.setStyle(this.preTemplate, 'overflow', 'auto');
-    this.renderer.appendChild(this.preTemplate, this.codeTemplate);
-
     this.renderer.appendChild(this.el.nativeElement, this.preTemplate);
-
+  }
+  private creteCodeBlock() {
+    this.codeTemplate = this.renderer.createElement('code');
+    this.renderer.setStyle(this.codeTemplate, 'line-height', '20px');
+    this.renderer.setStyle(this.codeTemplate, 'position', 'relative');
+    this.renderer.appendChild(this.preTemplate, this.codeTemplate);
+  }
+  private createSpanContainerTemplateBlock() {
+    this.spanContainerTemplate = this.renderer.createElement('span');
+    this.renderer.setStyle(this.spanContainerTemplate, 'position', 'absolute');
+    this.renderer.setStyle(this.spanContainerTemplate, 'pointer-events', 'none');
+    this.renderer.setStyle(this.spanContainerTemplate, 'top', '0');
+    this.renderer.setStyle(this.spanContainerTemplate, 'font-size', '100%');
+    this.renderer.setStyle(this.spanContainerTemplate, 'left', '-3.8em');
+    this.renderer.setStyle(this.spanContainerTemplate, 'width', '3em');
+    this.renderer.setStyle(this.spanContainerTemplate, 'letter-spacing', '-1px');
+    this.renderer.setStyle(this.spanContainerTemplate, 'border-right', '1px solid #999');
+    this.renderer.setStyle(this.spanContainerTemplate, ' user-select', 'none');
+    this.renderer.appendChild(this.codeTemplate, this.spanContainerTemplate);
+  }
+  private createCodeLines() {
     var divHeight = this.codeTemplate.offsetHeight
     var lineHeight = parseInt(this.codeTemplate.style.lineHeight);
     this.lines = divHeight / lineHeight;
@@ -125,7 +192,7 @@ export class CodeSnippetDirective implements OnInit, AfterViewInit, OnDestroy {
       this.renderer.setStyle(span, 'text-align', 'center');
       this.renderer.appendChild(span, this.renderer.createText(`${index + 1}`));
 
-      this.renderer.appendChild(spanContainer, span);
+      this.renderer.appendChild(this.spanContainerTemplate, span);
     }
   }
 

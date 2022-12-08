@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CompackDateFormatService } from 'ngx-compack';
+import { CompackCodeSnippetModel } from '../../code-snippet.directive';
 
 export class MaskDescription {
   public mask: string;
@@ -37,6 +38,10 @@ export class DisplayDfsComponent implements OnInit {
 constructor(private cdfs: CompackDateFormatService) { }
       
 this.cdfs.dateFormat(new Date(), 'yyyy-mm-dd')`;
+  public snippetModel: CompackCodeSnippetModel[] = [
+    new CompackCodeSnippetModel('app.module.ts', this.snippet1),
+    new CompackCodeSnippetModel('component.ts', this.snippet2)
+  ]
 
   public maskDescription: MaskDescription[] = [
     new MaskDescription('d', 'Day of the month as digits; no leading zero for single-digit days'),

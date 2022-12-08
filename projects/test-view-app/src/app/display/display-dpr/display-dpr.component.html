@@ -4,7 +4,7 @@
 
     <div class="view_col_item">
 
-      <div class="code-toolbar" codeSnippet [code]="snippet1" [language]="'html'"></div>
+      <div class="code-toolbar" codeSnippet [snippets]="snippet1"></div>
 
       <compack-date-picker-range [locale]="locale" [disabled]="disabled" [formatOutputDate]="format"
         (selectLastDateEvent)="selectDateEvent($event)">
@@ -14,7 +14,7 @@
 
     <div class="view_col_item">
 
-      <div class="code-toolbar" codeSnippet [code]="snippet2" [language]="'html'"></div>
+      <div class="code-toolbar" codeSnippet [snippets]="snippet2"></div>
 
       <input compackDatePickerRangeHost [locale]="locale" style="margin: 10px 0 ;"
         (selectLastDateEvent)="selectDateEvent($event)" [disabled]="disabled" [formatOutputDate]="format"
@@ -24,7 +24,7 @@
 
     <div class="view_col_item">
 
-      <div class="code-toolbar" codeSnippet [code]="snippet3" [language]="'html'"></div>
+      <div class="code-toolbar" codeSnippet [snippets]="snippet3"></div>
 
       <div style="border: thin solid black; border-radius: 6px;" compackDatePickerRangeHost [locale]="locale"
         (selectLastDateEvent)="selectDateEvent($event)" [disabled]="disabled" [formatOutputDate]="format"
@@ -36,7 +36,7 @@
 
     <div class="view_col_item">
 
-      <div class="code-toolbar" codeSnippet [code]="snippet4" [language]="'html'"></div>
+      <div class="code-toolbar" codeSnippet [snippets]="snippet4"></div>
 
       <svg style="margin: 10px 0;width: 30px;height: 30px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
         compackDatePickerRangeHost [locale]="locale" (selectLastDateEvent)="selectDateEvent($event)"

@@ -1,6 +1,6 @@
 import { EventEmitter } from '@angular/core';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, ReplaySubject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { DisplayMessage } from './model/display-message';
 import { DisplayMessageConfig } from './model/display-message-config';
 import { TypeMessage } from './model/type-message';

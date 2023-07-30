@@ -219,7 +219,7 @@ export class CompackDateFormatService {
     // Number of weeks between target Thursday and first Thursday
     const weekDiff = (targetThursday.getTime() - firstThursday.getTime()) / (86400000 * 7);
     return 1 + Math.floor(weekDiff);
-  };
+  }
 
   private getDayOfWeek(date: any) {
     let dow = date.getDay();
@@ -227,7 +227,7 @@ export class CompackDateFormatService {
       dow = 7;
     }
     return dow;
-  };
+  }
 
   // private formatTimezone(date: any) {
   //   return (String(date).match(timezone) || [""])

@@ -116,13 +116,13 @@ export class TimeMaskDirective {
     const arr = newTime.split(':');
     // console.log('splited arr: ', arr);
 
-    let hour = arr[0];
+    const hour = arr[0];
     let newHour = hour ?? '';
     if (hour)
       if (+hour > 23)
         newHour = '23';
 
-    let min = arr[1];
+    const min = arr[1];
     let newMin = min ?? '';
     if (min) {
       if (+min > 59)

@@ -92,7 +92,7 @@ export class CodeSnippetDirective implements OnInit, AfterViewInit, OnDestroy {
       this.renderer.setStyle(button, 'border', 'none');
 
       this.renderer.setStyle(button, 'cursor', 'pointer');
-      snippet.onClickEv = this.renderer.listen(button, 'click', (event) => {
+      snippet.onClickEv = this.renderer.listen(button, 'click', () => {
         for (const savedSnippet of this.innerSnippets) {
           if (savedSnippet.tabTemplate) {
             if (savedSnippet.id == snippet.id)
@@ -127,7 +127,7 @@ export class CodeSnippetDirective implements OnInit, AfterViewInit, OnDestroy {
     this.renderer.appendChild(this.toolBarTemplate, copyButton);
 
     if (this.onCopyClickEv) this.onCopyClickEv();
-    this.onCopyClickEv = this.renderer.listen(copyButton, 'click', (event) => {
+    this.onCopyClickEv = this.renderer.listen(copyButton, 'click', () => {
       if (this.nowCode)
         copyTextToClipboard(this.nowCode);
     });

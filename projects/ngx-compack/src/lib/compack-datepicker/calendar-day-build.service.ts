@@ -21,7 +21,7 @@ export class CalendarDayBuildService {
     numberOfDays = numberOfDays >= 1 ? numberOfDays + 1 : numberOfDays;
 
     const indexStartWeek = locale == 'ru' ? 1 : 0;
-    let prevStart = new Date(start);
+    const prevStart = new Date(start);
     prevStart.setDate(prevStart.getDate() - 1);
     result = this.recursAddAllDayOfStartWeek(result, prevStart, indexStartWeek);
 
@@ -34,12 +34,12 @@ export class CalendarDayBuildService {
 
     const indexEndWeek = locale == 'ru' ? 0 : 6;
 
-    let nextEnd = new Date(end);
+    const nextEnd = new Date(end);
     nextEnd.setDate(nextEnd.getDate() + 1);
     result = this.recursAddAllDayOfEndWeek(result, nextEnd, indexEndWeek);
 
     while (result.length < 42) {
-      let nextEnd = new Date(result[result.length - 1]);
+      const nextEnd = new Date(result[result.length - 1]);
       nextEnd.setDate(nextEnd.getDate() + 1);
       result = this.recursAddAllDayOfEndWeek(result, nextEnd, indexEndWeek);
     }
@@ -58,7 +58,7 @@ export class CalendarDayBuildService {
   public static recursAddAllDayOfStartWeek(arr: Date[], date: Date, indexStartWeek: number): Date[] {
     if (date.getDay() !== indexStartWeek) {
       arr.unshift(date);
-      let prev = new Date(date);
+      const prev = new Date(date);
       prev.setDate(prev.getDate() - 1);
       arr = this.recursAddAllDayOfStartWeek(arr, prev, indexStartWeek);
     }
@@ -76,7 +76,7 @@ export class CalendarDayBuildService {
   public static recursAddAllDayOfEndWeek(arr: Date[], date: Date, indexEndWeek: number): Date[] {
     if (date.getDay() !== indexEndWeek) {
       arr.push(date);
-      let next = new Date(date);
+      const next = new Date(date);
       next.setDate(next.getDate() + 1);
       arr = this.recursAddAllDayOfEndWeek(arr, next, indexEndWeek);
     }

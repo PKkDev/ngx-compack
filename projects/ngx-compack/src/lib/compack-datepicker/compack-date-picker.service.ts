@@ -9,8 +9,6 @@ import { CalendareError, TypePickerError } from './model/type-picker-error';
 @Injectable()
 export class CompackDatePickerService {
 
-  constructor() { }
-
   /**
    * get month name
    * @param month 
@@ -20,7 +18,7 @@ export class CompackDatePickerService {
   public getNameMonth(month: number, locale: string): string {
     const now = new Date();
     const nowYear = now.getFullYear();
-    let date = new Date(nowYear, month, 1);
+    const date = new Date(nowYear, month, 1);
     return date.toLocaleString(locale, { month: 'long' });
   }
 
@@ -54,8 +52,8 @@ export class CompackDatePickerService {
 
   public getDayByDate(mDate: Date, calendar: CalendarPicker[]): CalendarDayPicker | null {
     const numberDay = mDate.getDate();
-    for (let row of calendar)
-      for (let cell of row.week)
+    for (const row of calendar)
+      for (const cell of row.week)
         if (cell.numberDay == numberDay && cell.isDayThisMonth)
           return cell;
     return null;
@@ -71,7 +69,7 @@ export class CompackDatePickerService {
     const now = new Date(year, month, 1);
     const nowYear = now.getFullYear();
 
-    let calendar: CalendarPicker[] = [];
+    const calendar: CalendarPicker[] = [];
     let y = 0;
     for (let i = 0; i < 6; i++) {
       calendar.push({ week: [] });
@@ -100,8 +98,8 @@ export class CompackDatePickerService {
   }
 
   public updateCalendarState(calendar: CalendarPicker[], selectStartDate?: CalendarDayPicker, selectLastDate?: CalendarDayPicker, max?: Date, min?: Date) {
-    for (let row of calendar) {
-      for (let cell of row.week) {
+    for (const row of calendar) {
+      for (const cell of row.week) {
         const date = cell.fulDate;
         cell.isSelected = this.checkSelectedDate(date, cell.isDayThisMonth, selectStartDate, selectLastDate);
         cell.isIncludeRage = this.checkDayInRange(date, selectStartDate, selectLastDate) && cell.isDayThisMonth;

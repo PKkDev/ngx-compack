@@ -32,8 +32,8 @@ import { MonthSelect } from '../model/month-select';
 })
 export class CompackDatePickerRangeComponent implements OnInit, OnDestroy {
 
-  public calendarStartUpdateState: string = 'visible';
-  public calendarEndUpdateState: string = 'visible';
+  public calendarStartUpdateState = 'visible';
+  public calendarEndUpdateState = 'visible';
   public whencalendarStartAnimate(event: any) {
     if (event.toState == 'hidden') {
       this.loadMonthStartData();
@@ -50,12 +50,12 @@ export class CompackDatePickerRangeComponent implements OnInit, OnDestroy {
   // events
   @Output() selectLastDateEvent = new EventEmitter<string[]>();
   // input config
-  @Input() locale: string = 'en';
-  @Input() disabled: boolean = false;
-  @Input() formatOutputDate: string = `dd.mm.yyyy`;
+  @Input() locale = 'en';
+  @Input() disabled = false;
+  @Input() formatOutputDate = `dd.mm.yyyy`;
   @Input() relativeDateModel: CompackRelativeDateModel[] | undefined = undefined;
 
-  private formatViewDate: string = `dd.mm.yyyy`;
+  private formatViewDate = `dd.mm.yyyy`;
 
   // settings dialog
   public isDialog = false;
@@ -280,8 +280,8 @@ export class CompackDatePickerRangeComponent implements OnInit, OnDestroy {
   private cleareStartDay() {
     if (this.selectStartDate) {
       const numberDay = this.selectStartDate.fulDate.getDate();
-      for (let row of this.calendarStart) {
-        for (let cell of row.week) {
+      for (const row of this.calendarStart) {
+        for (const cell of row.week) {
           if (cell.numberDay == numberDay && cell.isDayThisMonth)
             cell.isSelected = false;
         }
@@ -293,8 +293,8 @@ export class CompackDatePickerRangeComponent implements OnInit, OnDestroy {
   private cleareEndDay() {
     if (this.selectEndDate) {
       const numberDay = this.selectEndDate.fulDate.getDate();
-      for (let row of this.calendarEnd) {
-        for (let cell of row.week) {
+      for (const row of this.calendarEnd) {
+        for (const cell of row.week) {
           if (cell.numberDay == numberDay && cell.isDayThisMonth)
             cell.isSelected = false;
         }

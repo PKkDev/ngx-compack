@@ -187,7 +187,7 @@ export class CompackDatePickerComponent implements OnInit, OnDestroy {
   public onChangeSelectedStartDate() {
     if (!this.selectStartDateStr) return;
 
-    var date = this.crdp.getDateFromInputDateStr(this.selectStartDateStr);
+    const date = this.crdp.getDateFromInputDateStr(this.selectStartDateStr);
     if (!date) return;
 
     this.selectedMonth = date.getMonth();
@@ -206,7 +206,7 @@ export class CompackDatePickerComponent implements OnInit, OnDestroy {
   public onChangeSelectedLastDate() {
     if (!this.selectLastDateStr) return;
 
-    var date = this.crdp.getDateFromInputDateStr(this.selectLastDateStr);
+    const date = this.crdp.getDateFromInputDateStr(this.selectLastDateStr);
     if (!date) return;
 
     this.selectedMonth = date.getMonth();
@@ -451,8 +451,8 @@ export class CompackDatePickerComponent implements OnInit, OnDestroy {
   private cleareStartDay() {
     if (this.selectStartDate) {
       const numberDay = this.selectStartDate.fulDate.getDate();
-      for (let row of this.calendar) {
-        for (let cell of row.week) {
+      for (const row of this.calendar) {
+        for (const cell of row.week) {
           if (cell.numberDay == numberDay && cell.isDayThisMonth)
             cell.isSelected = false;
         }
@@ -463,8 +463,8 @@ export class CompackDatePickerComponent implements OnInit, OnDestroy {
   private cleareEndDay() {
     if (this.selectLastDate) {
       const numberDay = this.selectLastDate.fulDate.getDate();
-      for (let row of this.calendar) {
-        for (let cell of row.week) {
+      for (const row of this.calendar) {
+        for (const cell of row.week) {
           if (cell.numberDay == numberDay && cell.isDayThisMonth)
             cell.isSelected = false;
         }

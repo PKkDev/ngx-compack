@@ -11,9 +11,9 @@ export class CompackDatePickerRangeHostDirective implements OnInit, OnDestroy {
   // events
   @Output() selectLastDateEvent = new EventEmitter<string[]>();
   // input config
-  @Input() locale: string = 'en';
-  @Input() disabled: boolean = false;
-  @Input() formatOutputDate: string = `dd.mm.yyyy`;
+  @Input() locale = 'en';
+  @Input() disabled = false;
+  @Input() formatOutputDate = `dd.mm.yyyy`;
   @Input() relativeDateModel: CompackRelativeDateModel[] | undefined = undefined;
 
   private onClickEv: (() => void) | undefined;

@@ -1,0 +1,16 @@
+{
+    "version": "0.2",
+    "ignorePaths": [],
+    "dictionaryDefinitions": [],
+    "dictionaries": [],
+    "words": [
+        "Compack",
+        "devkit",
+        "openapi",
+        "oper",
+        "ymaps"
+    ],
+    "ignoreWords": [],
+    "import": [],
+    "language": "en, ru"
+}

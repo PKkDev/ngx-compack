@@ -42,7 +42,7 @@ export class DateMaskDirective {
     const oldValue = this._el.nativeElement.value;
     const arr = oldValue.split('.');
     if (arr[0] && arr[1] && arr[2]) {
-      let caretPosition = this._el.nativeElement.selectionStart;
+      const caretPosition = this._el.nativeElement.selectionStart;
       const deletedSymbol = this._el.nativeElement.value[caretPosition - 1];
       if (deletedSymbol == '.')
         evt.preventDefault();

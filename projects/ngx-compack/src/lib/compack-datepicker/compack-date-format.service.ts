@@ -1,17 +1,11 @@
 import { Injectable } from '@angular/core';
 
-export type tplotOptions = {
-  [key: string]: () => {}
-}
-
 @Injectable()
 export class CompackDateFormatService {
 
   private token = /d{1,4}|D{3,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|W{1,2}|[LlopSZN]|"[^"]*"|'[^']*'/g;
   private timezone = /\b(?:[A-Z]{1,3}[A-Z][TC])(?:[-+]\d{4})?|((?:Australian )?(?:Pacific|Mountain|Central|Eastern|Atlantic) (?:Standard|Daylight|Prevailing) Time)\b/g;
   private timezoneClip = /[^-+\dA-Z]/g;
-
-  constructor() { }
 
   public dateFormat(date: any, mask: string): string {
 
@@ -31,7 +25,7 @@ export class CompackDateFormatService {
     const W = () => this.getWeek(date);
     const N = () => this.getDayOfWeek(date);
 
-    const flags: tplotOptions = {
+    const flags: Record<string, () => any> = {
       d: () => d(),
       dd: () => this.pad(d()),
       ddd: () => this.i18n.dayNames[D()],
@@ -106,12 +100,12 @@ export class CompackDateFormatService {
       N: () => N(),
     };
 
-    var res = mask.replace(this.token, (match: any) => {
+    const res = mask.replace(this.token, (match: any) => {
       if (match in flags) {
-        var inm = flags[match as keyof typeof flags]()
+        const inm = flags[match as keyof typeof flags]()
         return inm;
       }
-      var ninm = match.slice(1, match.length - 1);
+      const ninm = match.slice(1, match.length - 1);
       return ninm;
     });
 
@@ -166,7 +160,7 @@ export class CompackDateFormatService {
     timeNames: ["a", "p", "am", "pm", "A", "P", "AM", "PM"],
   };
 
-  private pad(val: any, len: number = 2): string { return String(val).padStart(len, '0'); }
+  private pad(val: any, len = 2): string { return String(val).padStart(len, '0'); }
 
   // private getDayName({ y, m, d, _, dayName, short = false }) {
   //   const today = new Date();

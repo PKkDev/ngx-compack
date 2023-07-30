@@ -1,4 +1,4 @@
-<div id="notif-container" class="notif-container" [ngClass]="{'empty-container': listMessages.length == 0}">
+<div id="notif-container" class="notif-container" [ngClass]="{'empty-container': listMessages.length === 0}">
   <div [@flyInOut] *ngFor="let mess of listMessages; let i = index">
     <ng-template [ngTemplateOutlet]="loadTemplate(mess)" [ngTemplateOutletContext]="{ $implicit: mess}">
     </ng-template>

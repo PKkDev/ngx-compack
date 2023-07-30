@@ -43,7 +43,7 @@ export class CompackToastService {
     const componentRef = compFactory.create(this.injector);
     this.applicationRef.attachView(componentRef.hostView);
     const body = document.getElementsByTagName('body')[0];
-    let div = document.createElement('div');
+    const div = document.createElement('div');
     body.appendChild(div);
     div.appendChild(componentRef.location.nativeElement);
   }

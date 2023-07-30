@@ -1,11 +1,11 @@
 <div class="container">
 
   <div class="menu">
-    <button class="btn" (click)="loadTemplate(0)" [class.active]="viewComponent==0">picker range</button>
-    <button class="btn" (click)="loadTemplate(1)" [class.active]="viewComponent==1">picker</button>
-    <button class="btn" (click)="loadTemplate(2)" [class.active]="viewComponent==2">date format</button>
-    <button class="btn" (click)="loadTemplate(3)" [class.active]="viewComponent==3">Toast</button>
-    <button class="btn" (click)="loadTemplate(4)" [class.active]="viewComponent==4">Banner</button>
+    <button class="btn" (click)="loadTemplate(0)" [class.active]="viewComponent===0">picker range</button>
+    <button class="btn" (click)="loadTemplate(1)" [class.active]="viewComponent===1">picker</button>
+    <button class="btn" (click)="loadTemplate(2)" [class.active]="viewComponent===2">date format</button>
+    <button class="btn" (click)="loadTemplate(3)" [class.active]="viewComponent===3">Toast</button>
+    <button class="btn" (click)="loadTemplate(4)" [class.active]="viewComponent===4">Banner</button>
   </div>
 
   <div class="view_container">

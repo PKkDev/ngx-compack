@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CompackBannerService, TypeMessage, TypePositionMessage } from 'ngx-compack';
 
 @Component({
@@ -6,15 +6,17 @@ import { CompackBannerService, TypeMessage, TypePositionMessage } from 'ngx-comp
   templateUrl: './display-b.component.html',
   styleUrls: ['./display-b.component.scss']
 })
-export class DisplayBComponent implements OnInit {
+export class DisplayBComponent {
 
-  public bannerViewTime: number = 10;
-  public bannerTitle: string = '';
-  public bannerMessage: string = '';
-  public bannerPosition: number = 0;
-  public bannerType: number = 0;
-  public bannerErrorColor: string = '#ff5252';
-  public bannerInfoColor: string = '#2196f3';
+  public bannerViewTime = 10;
+  public bannerTitle = '';
+  public bannerMessage = '';
+  public bannerPosition = 0;
+  public bannerType = 0;
+  public bannerErrorColor = '#ff5252';
+  public bannerInfoColor = '#2196f3';
+
+  constructor(private cbs: CompackBannerService) { }
 
   public setBannerErrorColor() {
     if (!this.bannerErrorColor.includes('#'))
@@ -33,11 +35,6 @@ export class DisplayBComponent implements OnInit {
   }
   public removeBanner() {
     this.cbs.removeBanner()
-  }
-
-  constructor(private cbs: CompackBannerService) { }
-
-  ngOnInit() {
   }
 
 }

@@ -12,11 +12,9 @@ const mapColor: Map<string, string> = new Map<string, string>()
 @Injectable()
 export class CompackToastMergeService {
 
-  private timeToDel: number = 15;
+  private timeToDel = 15;
 
   public notifEmite$: ReplaySubject<ToastConfig> = new ReplaySubject<ToastConfig>(30);
-
-  constructor() { }
 
   public setInfoColor(newInfoColor: string) {
     if (mapColor.has('info'))

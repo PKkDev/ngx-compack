@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CompackToastService, TypeToast } from 'ngx-compack';
 
 @Component({
@@ -6,15 +6,17 @@ import { CompackToastService, TypeToast } from 'ngx-compack';
   templateUrl: './display-t.component.html',
   styleUrls: ['./display-t.component.scss']
 })
-export class DisplayTComponent implements OnInit {
+export class DisplayTComponent {
 
-  public toastType: number = 0;
-  public toastTitle: string = '';
-  public toastText: string = '';
-  public toastTimeToDel: number = 15;
-  public toastErrorColor: string = '#ff5252';
-  public toastInfoColor: string = '#2196f3';
-  public toastSuccessColor: string = '#4caf50';
+  public toastType = 0;
+  public toastTitle = '';
+  public toastText = '';
+  public toastTimeToDel = 15;
+  public toastErrorColor = '#ff5252';
+  public toastInfoColor = '#2196f3';
+  public toastSuccessColor = '#4caf50';
+
+  constructor(private cts: CompackToastService) { }
 
   public setToastErrorColor() {
     if (!this.toastErrorColor.includes('#'))
@@ -37,11 +39,6 @@ export class DisplayTComponent implements OnInit {
   public viewToast() {
     const type: TypeToast = (+this.toastType) as TypeToast;
     this.cts.emitNotife(type, this.toastTitle, this.toastText);
-  }
-
-  constructor(private cts: CompackToastService) { }
-
-  ngOnInit() {
   }
 
 }

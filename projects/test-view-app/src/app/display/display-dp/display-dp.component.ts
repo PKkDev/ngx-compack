@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit } from '@angular/core';
+import { Component, EventEmitter } from '@angular/core';
 import { CompackCodeSnippetModel } from '../../code-snippet.directive';
 
 @Component({
@@ -6,7 +6,7 @@ import { CompackCodeSnippetModel } from '../../code-snippet.directive';
   templateUrl: './display-dp.component.html',
   styleUrls: ['./display-dp.component.scss']
 })
-export class DisplayDpComponent implements OnInit {
+export class DisplayDpComponent {
 
   public snippet1: CompackCodeSnippetModel[] = [new CompackCodeSnippetModel(
     'html',
@@ -66,8 +66,8 @@ export class DisplayDpComponent implements OnInit {
   public maxChoseDay = 5;
   public min: Date | undefined = undefined;
   public max: Date | undefined = undefined;
-  public selectedDateOneStr: string = 'none';
-  public selectedDateTwoStr: string = 'none'
+  public selectedDateOneStr = 'none';
+  public selectedDateTwoStr = 'none'
   // public initialSelectedDate: string[] | undefined = ['asd'];
   public selectDateEvent(selected: string[]) {
     this.selectedDateOneStr = 'none';
@@ -89,11 +89,6 @@ export class DisplayDpComponent implements OnInit {
   }
   public selectMaxDateEvent(selected: string[]) {
     this.max = new Date(selected[0]);
-  }
-
-  constructor() { }
-
-  ngOnInit() {
   }
 
 }

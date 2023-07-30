@@ -17,8 +17,6 @@ export class CompackBannerMergeService {
 
   public removeMessageEvent$: EventEmitter<boolean> = new EventEmitter();
 
-  constructor() { }
-
   public setInfoColor(newInfoColor: string) {
     if (mapColor.has('info'))
       mapColor.set('info', newInfoColor);

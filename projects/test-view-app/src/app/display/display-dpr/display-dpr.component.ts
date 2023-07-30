@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CompackRelativeDateModel } from 'ngx-compack';
 import { CompackCodeSnippetModel } from '../../code-snippet.directive';
 
@@ -7,7 +7,7 @@ import { CompackCodeSnippetModel } from '../../code-snippet.directive';
   templateUrl: './display-dpr.component.html',
   styleUrls: ['./display-dpr.component.scss']
 })
-export class DisplayDprComponent implements OnInit {
+export class DisplayDprComponent {
 
   public snippet1: CompackCodeSnippetModel[] = [new CompackCodeSnippetModel('html',
     `<compack-date-picker-range 
@@ -52,8 +52,8 @@ export class DisplayDprComponent implements OnInit {
   public format = `dd.mm.yyyy`;
   public locale = 'en';
   public disabled = false;
-  public selectedDateOneStrRange: string = 'none';
-  public selectedDateTwoStrRange: string = 'none'
+  public selectedDateOneStrRange = 'none';
+  public selectedDateTwoStrRange = 'none'
   public selectDateEvent(selected: string[]) {
     this.selectedDateOneStrRange = 'none';
     this.selectedDateTwoStrRange = 'none';
@@ -69,9 +69,4 @@ export class DisplayDprComponent implements OnInit {
     this.selectedDateOneStrRange = 'error';
     this.selectedDateTwoStrRange = 'error';
   }
-
-  constructor() { }
-
-  ngOnInit() { }
-
 }

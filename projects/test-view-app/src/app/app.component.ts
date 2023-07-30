@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, TemplateRef, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, TemplateRef, ViewChild } from '@angular/core';
 
 export enum TypeViewComponent {
   PickerRange = 0,
@@ -13,7 +13,7 @@ export enum TypeViewComponent {
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit {
 
   public viewComponent = TypeViewComponent.Picker;
   selectedTemplate: TemplateRef<any> | null = null;
@@ -24,10 +24,6 @@ export class AppComponent {
   @ViewChild('dateFormat') dateFormat: TemplateRef<any> | undefined;
 
   constructor(private cdr: ChangeDetectorRef) { }
-
-  ngOnInit() {
-    // setTimeout(() => this.cbs.viewBanner(TypeMessage.Info, TypePositionMessage.TopRight, 'asdas'), 0)
-  }
 
   ngAfterViewInit() {
     this.viewComponent = TypeViewComponent.Picker;

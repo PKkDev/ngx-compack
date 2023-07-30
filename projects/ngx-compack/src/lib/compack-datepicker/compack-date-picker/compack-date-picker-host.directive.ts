@@ -11,16 +11,16 @@ export class CompackDatePickerHostDirective implements OnInit, OnDestroy {
   // events
   @Output() selectLastDateEvent = new EventEmitter<string[]>();
   // input config
-  @Input() locale: string = 'en';
-  @Input() disabled: boolean = false;
-  @Input() rangeMode: boolean = false;
-  @Input() viewFieldSelectedDate: boolean = false;
-  @Input() useTime: boolean = false;
-  @Input() autoSelect: boolean = false;
+  @Input() locale = 'en';
+  @Input() disabled = false;
+  @Input() rangeMode = false;
+  @Input() viewFieldSelectedDate = false;
+  @Input() useTime = false;
+  @Input() autoSelect = false;
   @Input() maxChoseDay: number | undefined;
   @Input() max: Date | undefined;
   @Input() min: Date | undefined;
-  @Input() formatOutputDate: string = `dd.mm.yyyy'T'HH:MM`;
+  @Input() formatOutputDate = `dd.mm.yyyy'T'HH:MM`;
   @Input() setDateEvent: EventEmitter<Date[]> | undefined;
 
   private onClickEv: (() => void) | undefined;

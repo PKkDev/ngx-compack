@@ -224,8 +224,8 @@ export class CompackDatePickerService {
   public getDateFromInputDateStr(inpuDate: string): Date | null {
     //'dd.mm.yyyy' -> 'yyyy-mm-dd'
     // in Date month start with 0 -> -1
-    var arr = inpuDate.split('.');
-    var date = new Date(+arr[2], +arr[1] - 1, +arr[0], 0, 0, 0, 0);
+    const arr = inpuDate.split('.');
+    const date = new Date(+arr[2], +arr[1] - 1, +arr[0], 0, 0, 0, 0);
     if (date.toString() === 'Invalid Date') return null;
     // if (!!isNaN(date.valueOf())) return null;
     return date;
@@ -273,12 +273,12 @@ export class CompackDatePickerService {
         title: locale.trim().toLocaleLowerCase() == 'ru' ? 'этот месяц' : 'this month',
         dateStartFunc: () => {
           const date = new Date();
-          let start = new Date(date.getFullYear(), date.getMonth(), 1);
+          const start = new Date(date.getFullYear(), date.getMonth(), 1);
           return start;
         },
         dateEndFunc: () => {
           const date = new Date();
-          let end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+          const end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
           return end;
         }
       }

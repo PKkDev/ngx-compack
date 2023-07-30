@@ -181,8 +181,8 @@ export class CodeSnippetDirective implements OnInit, AfterViewInit, OnDestroy {
     this.renderer.appendChild(this.codeTemplate, this.spanContainerTemplate);
   }
   private createCodeLines() {
-    var divHeight = this.codeTemplate.offsetHeight
-    var lineHeight = parseInt(this.codeTemplate.style.lineHeight);
+    const divHeight = this.codeTemplate.offsetHeight
+    const lineHeight = parseInt(this.codeTemplate.style.lineHeight);
     this.lines = divHeight / lineHeight;
 
     for (let index = 0; index < this.lines; index++) {
@@ -229,8 +229,8 @@ export function fallbackCopyTextToClipboard(text: string) {
   textArea.select();
 
   try {
-    var successful = document.execCommand('copy');
-    var msg = successful ? 'successful' : 'unsuccessful';
+    const successful = document.execCommand('copy');
+    const msg = successful ? 'successful' : 'unsuccessful';
     console.log('Copying text command was ' + msg);
   } catch (err) {
     console.log('Oops, unable to copy');

@@ -18,7 +18,7 @@ export class TimeMaskDirective {
 
   @HostListener('mousewheel', ['$event'])
   onMousewheel(evt: WheelEvent) {
-    let value = this._el.nativeElement.value;
+    const value = this._el.nativeElement.value;
     if (value.length > 0) {
       const arr = value.split(':');
       if (arr[0] && arr[1]) {
@@ -46,7 +46,7 @@ export class TimeMaskDirective {
 
         const newMin = min >= 10 ? `${min}` : `0${min}`;
         const newHour = hour >= 10 ? `${hour}` : `0${hour}`;
-        let newTime = `${newHour}:${newMin}`;
+        const newTime = `${newHour}:${newMin}`;
         this._renderer.setProperty(this._el.nativeElement, 'value', newTime);
         this.ngModelChange.emit(newTime);
       }
@@ -56,9 +56,9 @@ export class TimeMaskDirective {
   @HostListener('keydown', ['$event'])
   onKeyDown(evt: KeyboardEvent) {
 
-    let selectionStart = this._el.nativeElement.selectionStart;
-    let selectionEnd = this._el.nativeElement.selectionEnd;
-    let valueLength = this._el.nativeElement.value.length;
+    const selectionStart = this._el.nativeElement.selectionStart;
+    const selectionEnd = this._el.nativeElement.selectionEnd;
+    const valueLength = this._el.nativeElement.value.length;
     if (selectionEnd - selectionStart == valueLength)
       this._el.nativeElement.value = '';
 
@@ -80,7 +80,7 @@ export class TimeMaskDirective {
     const oldValue = this._el.nativeElement.value;
     const arr = oldValue.split(':');
     if (arr[0] && arr[1]) {
-      let caretPosition = this._el.nativeElement.selectionStart;
+      const caretPosition = this._el.nativeElement.selectionStart;
       const deletedSymbol = this._el.nativeElement.value[caretPosition - 1];
       if (deletedSymbol == ':')
         evt.preventDefault();
@@ -116,13 +116,13 @@ export class TimeMaskDirective {
     const arr = newTime.split(':');
     // console.log('splited arr: ', arr);
 
-    var hour = arr[0];
+    let hour = arr[0];
     let newHour = hour ?? '';
     if (hour)
       if (+hour > 23)
         newHour = '23';
 
-    var min = arr[1];
+    let min = arr[1];
     let newMin = min ?? '';
     if (min) {
       if (+min > 59)

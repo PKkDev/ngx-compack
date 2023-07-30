@@ -18,9 +18,9 @@ export class DateMaskDirective {
 
   @HostListener('keydown', ['$event'])
   onKeyDown(evt: KeyboardEvent) {
-    let selectionStart = this._el.nativeElement.selectionStart;
-    let selectionEnd = this._el.nativeElement.selectionEnd;
-    let valueLength = this._el.nativeElement.value.length;
+    const selectionStart = this._el.nativeElement.selectionStart;
+    const selectionEnd = this._el.nativeElement.selectionEnd;
+    const valueLength = this._el.nativeElement.value.length;
     if (selectionEnd - selectionStart == valueLength)
       this._el.nativeElement.value = '';
 
@@ -70,9 +70,9 @@ export class DateMaskDirective {
       }
 
     const arr = newDate.split('.');
-    var day = arr[0];
-    var month = arr[1];
-    var year = arr[2];
+    let day = arr[0];
+    let month = arr[1];
+    let year = arr[2];
 
     if (day) {
       if (day.length == 1)

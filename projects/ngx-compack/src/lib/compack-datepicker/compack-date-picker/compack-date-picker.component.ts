@@ -28,7 +28,7 @@ import { CalendareError } from '../model/type-picker-error';
 })
 export class CompackDatePickerComponent implements OnInit, OnDestroy {
 
-  public calendarUpdateState: string = 'visible';
+  public calendarUpdateState = 'visible';
 
   // settings dialog
   public isDialog = false;
@@ -43,22 +43,22 @@ export class CompackDatePickerComponent implements OnInit, OnDestroy {
   // events
   @Output() selectLastDateEvent = new EventEmitter<string[]>();
   // input config
-  @Input() locale: string = 'en';
-  @Input() disabled: boolean = false;
-  @Input() rangeMode: boolean = false;
-  @Input() viewFieldSelectedDate: boolean = false;
-  @Input() useTime: boolean = false;
-  @Input() autoSelect: boolean = false;
+  @Input() locale = 'en';
+  @Input() disabled = false;
+  @Input() rangeMode = false;
+  @Input() viewFieldSelectedDate = false;
+  @Input() useTime = false;
+  @Input() autoSelect = false;
   @Input() maxChoseDay: number | undefined;
   @Input() max: Date | undefined;
   @Input() min: Date | undefined;
-  @Input() formatOutputDate: string = `dd.mm.yyyy'T'HH:MM`;
+  @Input() formatOutputDate = `dd.mm.yyyy'T'HH:MM`;
   @Input() setDateEvent: EventEmitter<Date[]> | undefined;
 
-  private formatViewDate: string = `dd.mm.yyyy`;
+  private formatViewDate = `dd.mm.yyyy`;
 
-  public canAutoSelect: boolean = false;
-  public viewErrorMessage: boolean = false;
+  public canAutoSelect = false;
+  public viewErrorMessage = false;
   // @Input() initialSelectedDate: string[] | undefined;
   // view
   public fieldPlaceHolder = 'from/to';

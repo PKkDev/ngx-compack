@@ -2,9 +2,7 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class CalendarDayBuildService {
-
-  constructor() { }
-
+ 
   /**
    * get all dayes in month
    * @param month number of month
@@ -16,8 +14,8 @@ export class CalendarDayBuildService {
 
     let result: Date[] = [];
 
-    let start = new Date(year, month, 1);
-    let end = new Date(year, month + 1, 0);
+    const start = new Date(year, month, 1);
+    const end = new Date(year, month + 1, 0);
 
     let numberOfDays = end.getDate() - start.getDate();
     numberOfDays = numberOfDays >= 1 ? numberOfDays + 1 : numberOfDays;

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CompackDateFormatService } from 'ngx-compack';
 import { CompackCodeSnippetModel } from '../../code-snippet.directive';
 
@@ -17,7 +17,7 @@ export class MaskDescription {
   templateUrl: './display-dfs.component.html',
   styleUrls: ['./display-dfs.component.scss']
 })
-export class DisplayDfsComponent implements OnInit {
+export class DisplayDfsComponent {
 
   public snippet1 =
     `import { CompackDatepickerModule } from 'ngx-compack';
@@ -62,25 +62,23 @@ this.cdfs.dateFormat(new Date(), 'yyyy-mm-dd')`;
 
   private dateToParse: Date | undefined = undefined;
 
-  public mask1: string = 'yyyy-mm-dd';
-  public result1: string = '';
+  public mask1 = 'yyyy-mm-dd';
+  public result1 = '';
 
-  public mask2: string = `dd.mm.yyyy'T'HH:MM`;
-  public result2: string = '';
+  public mask2 = `dd.mm.yyyy'T'HH:MM`;
+  public result2 = '';
 
-  public mask3: string = 'mmmm dddd';
-  public result3: string = '';
+  public mask3 = 'mmmm dddd';
+  public result3 = '';
 
-  public mask4: string = 'dd.mm.yy';
-  public result4: string = '';
+  public mask4 = 'dd.mm.yy';
+  public result4 = '';
 
-  public mask5: string = 'HH:MM';
-  public result5: string = '';
+  public mask5 = 'HH:MM';
+  public result5 = '';
 
   constructor(
     private cdfs: CompackDateFormatService) { }
-
-  ngOnInit() { }
 
   public selectMaxDateEvent(selected: string[]) {
     this.dateToParse = new Date(selected[0]);

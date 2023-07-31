@@ -35,7 +35,7 @@ jobs:
         run: npm run test:prod
 
       - name: Run lint
-        run: npm run lint
+        run: npm run lint:prod
 
       - name: Build
         run: npm run build:prod

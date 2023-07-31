@@ -9,7 +9,9 @@
     "start:test-view-app:outside": "ng serve test-view-app --host 0.0.0.0 --disable-host-check",
     "lib:compack:publish": "npm run build:lib:prod && cd dist/ngx-compack && npm pack && npm publish",
     "lint": "ng lint",
-    "test": "ng test"
+    "test": "ng test",
+    "lint:prod": "ng lint",
+    "test:prod": "ng test --browsers=ChromeHeadless --watch=false --code-coverage"
   },
   "private": true,
   "dependencies": {

@@ -38,7 +38,7 @@ export class CodeSnippetDirective implements OnInit, AfterViewInit, OnDestroy {
   private toolBarTemplate: any;
   private spanContainerTemplate: any;
 
-  private lines: number;
+  private lines: number | undefined;
 
   private onCopyClickEv: (() => void) | undefined;
 

@@ -23,19 +23,23 @@ export class DisplayTComponent {
       this.toastErrorColor = `#${this.toastErrorColor}`;
     this.cts.setErrorColor(this.toastErrorColor);
   }
+
   public setToastInfoColor() {
     if (!this.toastInfoColor.includes('#'))
       this.toastInfoColor = `#${this.toastInfoColor}`;
     this.cts.setInfoColor(this.toastInfoColor);
   }
+
   public setToastSuccessColor() {
     if (!this.toastSuccessColor.includes('#'))
       this.toastSuccessColor = `#${this.toastSuccessColor}`;
     this.cts.setSuccessColor(this.toastSuccessColor);
   }
+
   public setToastTimeToDel() {
     this.cts.setTimeToAutoRemove(this.toastTimeToDel);
   }
+  
   public viewToast() {
     const type: TypeToast = (+this.toastType) as TypeToast;
     this.cts.emitNotife(type, this.toastTitle, this.toastText);

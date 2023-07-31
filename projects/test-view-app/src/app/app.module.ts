@@ -14,8 +14,6 @@ import { DisplayDfsComponent } from './display/display-dfs/display-dfs.component
 import { CompackBannerModule, CompackToastModule, CompackDatepickerModule } from 'ngx-compack';
 import { CodeSnippetDirective } from './code-snippet.directive';
 
-import { ForTestComponent } from './display/for-test/for-test.component';
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -24,8 +22,7 @@ import { ForTestComponent } from './display/for-test/for-test.component';
     DisplayDpComponent,
     DisplayDprComponent,
     DisplayTComponent,
-    DisplayDfsComponent,
-    ForTestComponent
+    DisplayDfsComponent
   ],
   imports: [
     BrowserModule,

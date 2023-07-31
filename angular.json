@@ -27,8 +27,11 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/ngx-compack/src/test.ts",
-            "tsConfig": "projects/ngx-compack/tsconfig.spec.json"
+            "tsConfig": "projects/ngx-compack/tsconfig.spec.json",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ]
           }
         },
         "lint": {

@@ -16,6 +16,7 @@ export class DisplayDpComponent {
     [maxChoseDay]="maxChoseDay" [locale]="locale" [max]="max" [min]="min" [autoSelect]="autoSelect"
     (selectLastDateEvent)="selectDateEvent($event)">
 </compack-date-picker>`)];
+
   public snippet2: CompackCodeSnippetModel[] = [new CompackCodeSnippetModel(
     'html',
     `<input compackDatePickerHost style="margin: 10px 0 ;" placeholder="click me" [rangeMode]="rangeMode"
@@ -23,6 +24,7 @@ export class DisplayDpComponent {
     [formatOutputDate]="format" [useTime]="useTime" [maxChoseDay]="maxChoseDay" [locale]="locale"
     [max]="max" [min]="min" [autoSelect]="autoSelect" 
     (selectLastDateEvent)="selectDateEvent($event)" />`)];
+
   public snippet3: CompackCodeSnippetModel[] = [new CompackCodeSnippetModel(
     'html',
     `<div compackDatePickerHost style="border: thin solid black; border-radius: 6px;" [rangeMode]="rangeMode"
@@ -32,6 +34,7 @@ export class DisplayDpComponent {
     (selectLastDateEvent)="selectDateEvent($event)">
     click me
 </div>`)];
+
   public snippet4: CompackCodeSnippetModel[] = [new CompackCodeSnippetModel(
     'html',
     `<svg compackDatePickerHost xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
@@ -45,8 +48,8 @@ export class DisplayDpComponent {
 </svg>`)];
 
   public setDateEvent: EventEmitter<Date[]> = new EventEmitter<Date[]>();
-  public OnSetDate() {
 
+  public OnSetDate() {
     const dateS = new Date(new Date().setHours(0, 0, 0, 0));
     dateS.setDate(dateS.getDate() - 7);
     dateS.setHours(15);
@@ -56,6 +59,7 @@ export class DisplayDpComponent {
     dateE.setMinutes(15);
     this.setDateEvent.emit([dateS, dateE]);
   }
+
   public format = `dd.mm.yyyy'T'HH:MM`;
   public locale = 'en';
   public useTime = true;
@@ -69,6 +73,7 @@ export class DisplayDpComponent {
   public selectedDateOneStr = 'none';
   public selectedDateTwoStr = 'none'
   // public initialSelectedDate: string[] | undefined = ['asd'];
+
   public selectDateEvent(selected: string[]) {
     this.selectedDateOneStr = 'none';
     this.selectedDateTwoStr = 'none';
@@ -84,9 +89,11 @@ export class DisplayDpComponent {
     this.selectedDateOneStr = 'error';
     this.selectedDateTwoStr = 'error';
   }
+
   public selectMinDateEvent(selected: string[]) {
     this.min = new Date(selected[0]);
   }
+
   public selectMaxDateEvent(selected: string[]) {
     this.max = new Date(selected[0]);
   }

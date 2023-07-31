@@ -1,0 +1,39 @@
+name: UI Build + Test
+
+on:
+  push:
+    branches: ["main", "dev/*"]
+  pull_request:
+    branches: ["main", "dev/*"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+          cache-dependency-path: "./package-lock.json"
+
+      - name: Run ci
+        run: npm ci
+
+      - name: Run tests
+        run: npm run test:prod
+
+      - name: Run lint
+        run: npm run lint

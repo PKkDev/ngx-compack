@@ -54,7 +54,7 @@ export class DisplayDpComponent {
     const dateE = new Date(new Date().setHours(0, 0, 0, 0));
     dateE.setHours(5);
     dateE.setMinutes(15);
-    this.setDateEvent.next([dateS, dateE]);
+    this.setDateEvent.emit([dateS, dateE]);
   }
   public format = `dd.mm.yyyy'T'HH:MM`;
   public locale = 'en';

@@ -11,11 +11,6 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "sourceMap": true,
-    "paths": {
-      "ngx-compack": [
-        "dist/ngx-compack"
-      ]
-    },
     "declaration": false,
     "downlevelIteration": true,
     "experimentalDecorators": true,
@@ -24,6 +19,11 @@
     "target": "ES2022",
     "module": "ES2022",
     "useDefineForClassFields": false,
+    "paths": {
+      "ngx-compack": [
+        "dist/ngx-compack"
+      ]
+    },
     "lib": [
       "ES2022",
       "dom"

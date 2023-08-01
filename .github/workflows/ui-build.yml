@@ -44,10 +44,20 @@ jobs:
       - name: Run pages
         run: npm run build:test-view-app:ghpages
 
+      # - name: Push and send notification
+      #   run: |
+      #       COMMIT_MESSAGE="Update pages on $(date +'%Y-%m-%d %H:%M:%S')"
+      #       git diff-index --quiet --cached HEAD -- && echo "No changes!" && exit 0 || echo $COMMIT_MESSAGE
+      #       # Only if repo have changes
+      #       git commit -m "${COMMIT_MESSAGE}"
+      #       git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_ACTOR}/${GITHUB_ACTOR}.github.io.git master
+
       - name: Push and send notification
         run: |
-            COMMIT_MESSAGE="Update pages on $(date +'%Y-%m-%d %H:%M:%S')"
-            git diff-index --quiet --cached HEAD -- && echo "No changes!" && exit 0 || echo $COMMIT_MESSAGE
-            # Only if repo have changes
-            git commit -m "${COMMIT_MESSAGE}"
-            git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_ACTOR}/${GITHUB_ACTOR}.github.io.git master
+            if [[ `git status --porcelain` ]]; then
+              COMMIT_MESSAGE="Update pages on $(date +'%Y-%m-%d %H:%M:%S')"
+              echo $COMMIT_MESSAGE
+              git commit -m "${COMMIT_MESSAGE}"
+              git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_ACTOR}/${GITHUB_ACTOR}.github.io.git master
+            else
+              echo "No changes!"

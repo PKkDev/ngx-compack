@@ -44,11 +44,11 @@ jobs:
       - name: Build pages app
         run: npm run build:test-view-app:ghpages
 
-      # - name: Set git config and add changes
-      #   run: |
-      #       git config --global user.email "${GITHUB_ACTOR}@https://users.noreply.github.com/"
-      #       git config --global user.name "${GITHUB_ACTOR}"
-      #       git add --all
+      - name: Set git config and add changes
+        run: |
+            git config --global user.email "${GITHUB_ACTOR}@https://users.noreply.github.com/"
+            git config --global user.name "${GITHUB_ACTOR}"
+            git add --all
 
       - name: Publish pages app
         run: |

@@ -6,9 +6,16 @@ on:
     branches: ["pages"]
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
+  actions: write
+  checks: write
+  deployments: write
+  discussions: write
+  issues: write 
+  packages: write 
+  statuses: write
 
 concurrency:
   group: "pages"

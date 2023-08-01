@@ -44,19 +44,11 @@ jobs:
       - name: Build pages app
         run: npm run build:test-view-app:ghpages
 
-      # - name: Push and send notification
+      # - name: Set git config and add changes
       #   run: |
-      #       COMMIT_MESSAGE="Update pages on $(date +'%Y-%m-%d %H:%M:%S')"
-      #       git diff-index --quiet --cached HEAD -- && echo "No changes!" && exit 0 || echo $COMMIT_MESSAGE
-      #       # Only if repo have changes
-      #       git commit -m "${COMMIT_MESSAGE}"
-      #       git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_ACTOR}/${GITHUB_ACTOR}.github.io.git master
-
-      - name: Set git config and add changes
-        run: |
-            git config --global user.email "${GITHUB_ACTOR}@https://users.noreply.github.com/"
-            git config --global user.name "${GITHUB_ACTOR}"
-            git add --all
+      #       git config --global user.email "${GITHUB_ACTOR}@https://users.noreply.github.com/"
+      #       git config --global user.name "${GITHUB_ACTOR}"
+      #       git add --all
 
       - name: Publish pages app
         run: |
@@ -64,6 +56,5 @@ jobs:
             echo $COMMIT_MESSAGE
             git commit -m "${COMMIT_MESSAGE}"
             git push origin HEAD:pages --force
-#            git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_ACTOR}/ngx-compack.git pages
-#            git push https://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@github.com/PkkDev/PkkDev.ngx-compack.git pages --force
+
            

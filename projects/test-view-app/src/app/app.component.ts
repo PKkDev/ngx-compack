@@ -15,6 +15,7 @@ export enum TypeViewComponent {
 })
 export class AppComponent implements AfterViewInit {
 
+  // test test
   public viewComponent = TypeViewComponent.Picker;
   selectedTemplate: TemplateRef<any> | null = null;
   @ViewChild('pickerRange') pickerRange: TemplateRef<any> | undefined;

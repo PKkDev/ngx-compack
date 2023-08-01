@@ -32,30 +32,42 @@ jobs:
       - name: Run ci
         run: npm ci
 
-      - name: Run tests
-        run: npm run test:prod
+      # - name: Run tests
+      #   run: npm run test:prod
 
-      - name: Run lint
-        run: npm run lint:prod
+      # - name: Run lint
+      #   run: npm run lint:prod
 
-      - name: Run build lib
-        run: npm run build:lib:prod
+      # - name: Run build lib
+      #   run: npm run build:lib:prod
 
-      - name: Run pages
-        run: npm run build:test-view-app:ghpages
+      # - name: Run pages
+      #   run: npm run build:test-view-app:ghpages
 
   test:
     runs-on: ubuntu-latest
     needs: build
-
     steps:
       - name: Run tests
         run: npm run test:prod
 
-  test2:
+  lint:
     runs-on: ubuntu-latest
-    needs: [test, build]
-    
+    needs: [build, test]
+    steps:
+      - name: Run lint
+        run: npm run lint:prod
+
+  lib:
+    runs-on: ubuntu-latest
+    needs: [build, test, lint]
+    steps:
+      - name: Run build lib
+        run: npm run build:lib:prod
+
+  pages:
+    runs-on: ubuntu-latest
+    needs: [build, test, lint, lib]
     steps:
       - name: Run pages
         run: npm run build:test-view-app:ghpages

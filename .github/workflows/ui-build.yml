@@ -1,4 +1,4 @@
-name: UI Build + Test
+name: Test + Lint + Build
 
 on:
   push:

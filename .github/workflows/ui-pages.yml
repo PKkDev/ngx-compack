@@ -1,4 +1,4 @@
-name: UI Build + Test + Deploy
+name: Test + Lint + Build + Pages
 
 on:
   pull_request_target:

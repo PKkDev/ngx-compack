@@ -33,7 +33,7 @@ jobs:
         run: npm ci
 
       - name: ttas
-        run: if [[ git status --porcelain ]]; then echo "changes" else echo "No changes!"  
+        run: if [[ git status --porcelain ]]; then echo "changes" else echo "No changes!" fi
 
       - name: Run tests
         run: npm run test:prod

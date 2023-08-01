@@ -25,7 +25,7 @@ export class CompackDatePickerHostDirective implements OnInit, OnDestroy {
 
   private onClickEv: (() => void) | undefined;
   private onKeyDownEv: (() => void) | undefined;
-  private newDateSubs: Subscription
+  private newDateSubs?: Subscription
 
   private calendar: ComponentRef<CompackDatePickerComponent> | undefined = undefined;
 
@@ -155,7 +155,7 @@ export class CompackDatePickerHostDirective implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.onClickEv) this.onClickEv();
     if (this.onKeyDownEv) this.onKeyDownEv();
-    if (this.newDateSubs) this.newDateSubs.unsubscribe();
+    this.newDateSubs?.unsubscribe();
     if (this.calendar) {
       this.calendar.destroy();
       this.calendar = undefined;

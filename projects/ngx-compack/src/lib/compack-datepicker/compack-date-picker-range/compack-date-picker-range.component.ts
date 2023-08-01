@@ -62,8 +62,8 @@ export class CompackDatePickerRangeComponent implements OnInit, OnDestroy {
   public isOpen = false;
   public handlerRef: ElementRef | undefined = undefined;
   private onDocClickEv: (() => void) | undefined;
-  public left: string;
-  public top: string;
+  public left: string | undefined;
+  public top: string | undefined;
   // view
   public acceptBtn = 'View';
   public cancelBtn = 'Reset';

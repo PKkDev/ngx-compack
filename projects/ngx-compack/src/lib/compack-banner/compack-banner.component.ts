@@ -23,6 +23,7 @@ import { DisplayMessageConfig } from './model/display-message-config';
 export class CompackBannerComponent implements OnInit, OnDestroy {
   // config position
   public positionClass = 'top';
+
   // data
   public displayMessage: DisplayMessage | null = null;
   private timeOutView: any;

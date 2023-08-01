@@ -23,6 +23,7 @@ import { ToastConfig } from './model/toast-config';
 export class CompackToastComponent implements OnInit, OnDestroy {
   // data
   public listMessages: Toast[] = [];
+
   // type template
   @ViewChild('messageWithFileTemplate', { static: false }) messageWithFileTemplate!: TemplateRef<any>;
   @ViewChild('messageOnlyTextTemplate', { static: false }) messageOnlyTextTemplate!: TemplateRef<any>;

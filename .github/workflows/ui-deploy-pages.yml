@@ -1,10 +1,9 @@
-name: UI Build + Test
+name: UI Build + Test + Deploy
 
 on:
-  push:
-    branches: ["main", "dev"]
-  pull_request:
-    branches: ["main", "dev"]
+  pull_request_target:
+    types: ["closed"]
+    branches: ["pages"]
 
 jobs:
   build:
@@ -42,4 +41,19 @@ jobs:
         run: npm run build:lib:prod
 
       - name: Build pages app
-        run: npm run build:test-view-app:ghpages           
+        run: npm run build:test-view-app:ghpages
+
+      - name: Set git config and add changes
+        run: |
+            git config --global user.email "${GITHUB_ACTOR}@https://users.noreply.github.com/"
+            git config --global user.name "${GITHUB_ACTOR}"
+            git add --all
+
+      - name: Publish pages app
+        run: |
+            COMMIT_MESSAGE="Update pages on $(date +'%Y-%m-%d %H:%M:%S')"
+            echo $COMMIT_MESSAGE
+            git commit -m "${COMMIT_MESSAGE}"
+            git push
+
+#git push origin HEAD:pages --force

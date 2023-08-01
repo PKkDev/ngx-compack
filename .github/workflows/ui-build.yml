@@ -43,3 +43,18 @@ jobs:
 
       - name: Run pages
         run: npm run build:test-view-app:ghpages
+
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Run tests
+        run: npm run test:prod
+
+  test2:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Run pages
+        run: npm run build:test-view-app:ghpages
+      

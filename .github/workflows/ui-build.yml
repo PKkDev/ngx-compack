@@ -32,11 +32,6 @@ jobs:
       - name: Run ci
         run: npm ci
 
-      - name: status
-        run: git status --porcelain
-      - name: ttas
-        run: if [[ $(git status --porcelain) ]]; then echo "changes" else echo "No changes!" fi
-
       - name: Run tests
         run: npm run test:prod
 
@@ -59,10 +54,7 @@ jobs:
 
       - name: Run publish pages
         run: |
-            if [[ `git status --porcelain` ]]; then
-              COMMIT_MESSAGE="Update pages on $(date +'%Y-%m-%d %H:%M:%S')"
-              echo $COMMIT_MESSAGE
-              git commit -m "${COMMIT_MESSAGE}"
-              git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_ACTOR}/${GITHUB_ACTOR}.github.io.git master
-            else
-              echo "No changes!"
+            COMMIT_MESSAGE="Update pages on $(date +'%Y-%m-%d %H:%M:%S')"
+            echo $COMMIT_MESSAGE
+            git commit -m "${COMMIT_MESSAGE}"
+            git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_ACTOR}/${GITHUB_ACTOR}.github.io.git master

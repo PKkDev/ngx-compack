@@ -63,4 +63,5 @@ jobs:
             COMMIT_MESSAGE="Update pages on $(date +'%Y-%m-%d %H:%M:%S')"
             echo $COMMIT_MESSAGE
             git commit -m "${COMMIT_MESSAGE}"
-            git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_ACTOR}/${GITHUB_ACTOR}.ngx-compack.git master
+            git push
+#            git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_ACTOR}/${GITHUB_ACTOR}.ngx-compack.git master

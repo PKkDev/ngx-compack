@@ -58,7 +58,7 @@ jobs:
             git commit -m "${COMMIT_MESSAGE}"
             git push
 
-  pages:
+  jekyll:
     uses: PKkDev/ngx-compack/.github/workflows/jekyll.yml@main
     with:
       branch: pages

@@ -22,21 +22,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Setup Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+      - name: Init
+        uses: ./.github/actions/ui-init
         with:
-          node-version: ${{ matrix.node-version }}
-          cache: "npm"
-          cache-dependency-path: "./package-lock.json"
+          node_version: ${{ matrix.node-version }}
 
-      - name: Run ci
-        run: npm ci
-
-      - name: Tests
-        run: npm run test:prod
-
-      - name: Lint
-        run: npm run lint:prod
+      - name: Check
+        uses: ./.github/actions/ui-check
 
       - name: Build lib
         run: npm run build:lib:prod

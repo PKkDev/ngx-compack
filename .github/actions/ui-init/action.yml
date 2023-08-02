@@ -1,0 +1,21 @@
+name: Init angular project
+description: "Init angular project"
+
+inputs:
+  node_version:
+    required: true
+    description: "The node version"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Node.js ${{ inputs.node_version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ inputs.node_version }}
+        cache: "npm"
+        cache-dependency-path: "./package-lock.json"
+
+    - name: Run ci
+      run: npm ci
+      shell: bash

@@ -1,0 +1,13 @@
+name: Check angular app
+description: "Check angular app"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Tests
+      run: npm run test:prod
+      shell: bash
+
+    - name: Lint
+      run: npm run lint:prod
+      shell: bash

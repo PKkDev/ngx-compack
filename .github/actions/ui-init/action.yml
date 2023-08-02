@@ -19,11 +19,3 @@ runs:
     - name: Run ci
       run: npm ci
       shell: bash
-
-    - name: Tests
-      run: npm run test:prod
-      shell: bash
-
-    - name: Lint
-      run: npm run lint:prod
-      shell: bash

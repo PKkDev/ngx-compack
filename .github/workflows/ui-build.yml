@@ -27,6 +27,9 @@ jobs:
         with:
           node_version: ${{ matrix.node-version }}
 
+      - name: Check
+        uses: ./.github/actions/ui-check
+
       - name: Build lib
         run: npm run build:lib:prod
 

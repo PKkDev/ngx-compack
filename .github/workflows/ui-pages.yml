@@ -70,13 +70,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build]
     steps:
-      - name: Sleep
-        run: |
-            echo "sleep 10"
-            sleep 20
-            echo "continue"
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          ref: 'pages'
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Build with Jekyll

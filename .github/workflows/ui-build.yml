@@ -22,21 +22,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Setup Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+      - name: Init
+        uses: PKkDev/ngx-compack/.github/workflows/ui-init.yml@main
         with:
-          node-version: ${{ matrix.node-version }}
-          cache: "npm"
-          cache-dependency-path: "./package-lock.json"
-
-      - name: Run ci
-        run: npm ci
-
-      - name: Tests
-        run: npm run test:prod
-
-      - name: Lint
-        run: npm run lint:prod
+          node_version: ${{ matrix.node-version }}
 
       - name: Build lib
         run: npm run build:lib:prod

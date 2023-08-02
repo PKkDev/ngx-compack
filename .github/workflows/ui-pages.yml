@@ -59,6 +59,7 @@ jobs:
             git push
 
   jekyll:
+    needs: [build]
     uses: PKkDev/ngx-compack/.github/workflows/jekyll.yml@main
     with:
       branch: pages

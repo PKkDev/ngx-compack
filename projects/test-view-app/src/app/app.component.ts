@@ -1,6 +1,6 @@
-import { AfterViewInit, ChangeDetectorRef, Component, TemplateRef, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, TemplateRef, ViewChild } from '@angular/core';
 
-export enum TypeViewComponent {
+enum TypeViewComponent {
   PickerRange = 0,
   Picker = 1,
   DateFormat = 2,
@@ -16,12 +16,12 @@ export enum TypeViewComponent {
 export class AppComponent implements AfterViewInit {
 
   public viewComponent = TypeViewComponent.Picker;
-  selectedTemplate: TemplateRef<any> | null = null;
-  @ViewChild('pickerRange') pickerRange: TemplateRef<any> | undefined;
-  @ViewChild('picker') picker: TemplateRef<any> | undefined;
-  @ViewChild('toast') toast: TemplateRef<any> | undefined;
-  @ViewChild('banner') banner: TemplateRef<any> | undefined;
-  @ViewChild('dateFormat') dateFormat: TemplateRef<any> | undefined;
+  selectedTemplate: TemplateRef<ElementRef> | null = null;
+  @ViewChild('pickerRange') pickerRange: TemplateRef<ElementRef> | undefined;
+  @ViewChild('picker') picker: TemplateRef<ElementRef> | undefined;
+  @ViewChild('toast') toast: TemplateRef<ElementRef> | undefined;
+  @ViewChild('banner') banner: TemplateRef<ElementRef> | undefined;
+  @ViewChild('dateFormat') dateFormat: TemplateRef<ElementRef> | undefined;
 
   constructor(private cdr: ChangeDetectorRef) { }
 
@@ -41,7 +41,6 @@ export class AppComponent implements AfterViewInit {
       case TypeViewComponent.Banner: this.selectedTemplate = this.banner ?? null; break;
       default: this.selectedTemplate = this.picker ?? null; break;
     }
-    this.cdr.detectChanges();
   }
 
 

@@ -4,6 +4,13 @@
 
     <div class="view_col_item">
 
+      <div class="code-toolbar" codeSnippet [snippets]="snippet2222"></div>
+      <button (click)="onTest()">test</button>
+
+    </div>
+
+    <div class="view_col_item">
+
       <div class="code-toolbar" codeSnippet [snippets]="snippet1"></div>
 
       <compack-date-picker [rangeMode]="rangeMode" [disabled]="disabled" [setDateEvent]="setDateEvent"
@@ -14,9 +21,15 @@
 
     </div>
 
-    <div class="view_col_item">
+    <div class="view_col_item" #test>
 
       <div class="code-toolbar" codeSnippet [snippets]="snippet2"></div>
+
+      <div>
+        <hr>
+      </div>
+
+      <hr>
 
       <input compackDatePickerHost style="margin: 10px 0 ;" placeholder="click me" [rangeMode]="rangeMode"
         [disabled]="disabled" [setDateEvent]="setDateEvent" [viewFieldSelectedDate]="viewFieldSelectedDate"

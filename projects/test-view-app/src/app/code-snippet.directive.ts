@@ -1,4 +1,4 @@
-import { AfterViewInit, Directive, ElementRef, Input, OnDestroy, OnInit, Renderer2 } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, Input, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChanges } from '@angular/core';
 
 export class CompackCodeSnippetModel {
   public title: string;
@@ -27,7 +27,7 @@ export class CompackCodeSnippetInnerModel {
 @Directive({
   selector: '[codeSnippet]'
 })
-export class CodeSnippetDirective implements OnInit, AfterViewInit, OnDestroy {
+export class CodeSnippetDirective implements OnInit, AfterViewInit, OnDestroy, OnChanges {
 
   @Input() snippets: CompackCodeSnippetModel[] = [];
   private innerSnippets: CompackCodeSnippetInnerModel[] = [];
@@ -47,7 +47,7 @@ export class CodeSnippetDirective implements OnInit, AfterViewInit, OnDestroy {
     private el: ElementRef) { }
 
   ngOnInit() {
-    this.snippets.map((value, index) => this.innerSnippets.push(new CompackCodeSnippetInnerModel(index, value.title, value.code)));
+    this.snippets.map((value, index) => this.innerSnippets.push(new CompackCodeSnippetInnerModel(index, value.title, this.format(value.code))));
   }
 
   ngOnDestroy() {
@@ -57,12 +57,149 @@ export class CodeSnippetDirective implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
+    this.viewTabs();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['snippets']) {
+      if (!changes['snippets'].firstChange) {
+        this.removeView();
+        this.innerSnippets = [];
+        this.snippets.map((value, index) => this.innerSnippets.push(new CompackCodeSnippetInnerModel(index, value.title, this.format(value.code))));
+        this.viewTabs();
+      }
+    }
+  }
+
+  private toLine(html: string): string {
+    return html.replace(/(\r\n|\n|\r)/gm, "").replace(/\n/g, '').replace(/\t/g, '').replace(/\s+/g, ' ').trim();
+  }
+
+  private format(html: string): string {
+
+    if (html == '') return '';
+
+    html = this.toLine(html);
+    console.log('line', html);
+
+    const tab = '\t';
+    let result = '';
+    let indent = '';
+    const selfClosingTag: string[] = ['<area', '<base', '<br', '<col', '<command', '<embed', '<hr', '<img', '<input', '<keygen', '<link', '<menuitem', '<meta', '<param', '<source', '<track', '<wbr', '<path'];
+
+    html = html.replace('&gt;', '>');
+    html = html.replace('&lt;', '<');
+
+    console.log(html.split(/(?=<)|(?<=>)/));
+    html.split(/(?=<)|(?<=>)/).forEach(x => console.log(x.trim().length));
+
+    html.split(/(?=<)|(?<=>)/)
+      .filter(x => x.trim().length != 0)
+      .forEach((element) => {
+        if (element.match(/^<\/\w/)) {
+          indent = indent.substring(tab.length);
+        }
+
+        console.log('element', element);
+
+        const pos = element.indexOf(" ");
+        const tag = pos != -1 ? element.substring(0, pos) : element;
+        console.log('tag', tag);
+
+        const attributes: string[] = [];
+        const regex = new RegExp(/[A-Za-z0-9-_\[\]\(\)]*=\".*?\"|[A-Za-z0-9-_]*/gm);
+        let m;
+        while ((m = regex.exec(element)) !== null) {
+          if (m.index === regex.lastIndex)
+            regex.lastIndex++;
+          m.forEach((match) => {
+            if (match)
+              attributes.push(match.trim());
+          }
+          );
+        }
+        attributes.shift();
+        console.log('attributes', attributes);
+
+        // result += indent  + element + '\r\n';
+
+        let indentClone = indent.slice();
+        result += indent + tag + this.mapAtr(attributes, indentClone + ' '.repeat(tag.length + 1));
+        if (tag.startsWith('<') && !tag.endsWith('>')) {
+          result += '>' + '\r\n';
+        } else {
+          result += '\r\n';
+        }
+
+        // result += indent + tag + ((tag.startsWith('<') && !tag.endsWith('>')) ? '>' : '') + '\r\n';
+
+
+        // if (element.match(/^<?\w[^>]*[^\/]$/) && !element.startsWith("input")) {
+        //   indent += tab;
+        // }
+
+        if (element.match(/^<\w/) && selfClosingTag.find(x => element.startsWith(x)) == null) {
+          indent += tab;
+        }
+
+      });
+
+    // return result.substring(1, result.length - 3);
+    // return result.substring(0, result.length - 3);
+    return result;
+  }
+
+  private mapAtr(attributes: string[], space: string, rowElements: number = 2): string {
+
+    if (attributes.length == 1)
+      return ' ' + attributes[0];
+
+    let result = '';
+    attributes.forEach((item, index) => {
+
+      console.log(index % 3);
+
+      if (index == 0) {
+        result += ' ' + item
+      } else {
+        if (index % rowElements != 0) {
+          result += ' ' + item
+        } else {
+          result += '\r\n' + space + item
+        }
+      }
+
+      // if (index == 0) {
+      //   result += ' ' + item + '\r\n'
+      // } else {
+      //   if (index == attributes.length - 1) {
+      //     result += space + item
+      //   } else {
+      //     result += space + item + '\r\n'
+      //   }
+      // }
+
+    });
+    return result;
+  }
+
+  private viewTabs() {
     this.renderer.setStyle(this.el.nativeElement, 'border', '1px solid #e0e0e0');
     this.createToolBar();
     this.createTabs();
     this.createCopyButton();
     if (this.innerSnippets.length > 0)
       this.innerSnippets[0].tabTemplate.click();
+  }
+
+  private removeView() {
+    this.renderer.removeChild(this.el.nativeElement, this.toolBarTemplate);
+    this.renderer.removeChild(this.el.nativeElement, this.preTemplate);
+
+    this.preTemplate = null;
+    this.codeTemplate = null;
+    this.toolBarTemplate = null;
+    this.spanContainerTemplate = null;
   }
 
   private createToolBar() {
@@ -165,6 +302,7 @@ export class CodeSnippetDirective implements OnInit, AfterViewInit, OnDestroy {
     this.codeTemplate = this.renderer.createElement('code');
     this.renderer.setStyle(this.codeTemplate, 'line-height', '20px');
     this.renderer.setStyle(this.codeTemplate, 'position', 'relative');
+    this.renderer.setStyle(this.codeTemplate, 'tab-size', '10px');
     this.renderer.appendChild(this.preTemplate, this.codeTemplate);
   }
   private createSpanContainerTemplateBlock() {
@@ -233,7 +371,7 @@ export function fallbackCopyTextToClipboard(text: string) {
     const msg = successful ? 'successful' : 'unsuccessful';
     console.log('Copying text command was ' + msg);
   } catch (err) {
-    console.log('Oops, unable to copy');
+    console.error('unable to copy', err);
   }
 
   document.body.removeChild(textArea);

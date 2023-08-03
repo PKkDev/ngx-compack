@@ -38,7 +38,7 @@ export class CompackCodeSnippetInnerModel {
 export class CodeSnippetDirective implements OnInit, AfterViewInit, OnDestroy, OnChanges {
 
   @Input() snippets: CompackCodeSnippetModel[] = [];
-  @Input() rowAttributes: number = 2;
+  @Input() rowAttributes = 2;
 
   private innerSnippets: CompackCodeSnippetInnerModel[] = [];
   private nowCode: string | undefined = undefined;
@@ -67,12 +67,6 @@ export class CodeSnippetDirective implements OnInit, AfterViewInit, OnDestroy, O
     });
   }
 
-  ngOnDestroy() {
-    if (this.onCopyClickEv) this.onCopyClickEv();
-    for (const snippet of this.innerSnippets)
-      if (snippet.onClickEv) snippet.onClickEv();
-  }
-
   ngAfterViewInit() {
     this.viewTabs();
   }
@@ -93,6 +87,12 @@ export class CodeSnippetDirective implements OnInit, AfterViewInit, OnDestroy, O
         this.viewTabs();
       }
     }
+  }
+
+  ngOnDestroy() {
+    if (this.onCopyClickEv) this.onCopyClickEv();
+    for (const snippet of this.innerSnippets)
+      if (snippet.onClickEv) snippet.onClickEv();
   }
 
   private formatText(type: SnippetCodeType, code: string): string {
@@ -140,7 +140,8 @@ export class CodeSnippetDirective implements OnInit, AfterViewInit, OnDestroy, O
           const pos = element.indexOf(" ");
           tag = pos != -1 ? element.substring(0, pos) : element;
 
-          const regex = new RegExp(/[A-Za-z0-9-_\[\]\(\)]*=\".*?\"|[A-Za-z0-9-_]*/gm);
+          // const regex = new RegExp(/[A-Za-z0-9-_\[\]\(\)]*=\".*?\"|[A-Za-z0-9-_]*/gm);
+          const regex = new RegExp(/[A-Za-z0-9-_[\]()]*=".*?"|[A-Za-z0-9-_]*/gm);
           let m;
           while ((m = regex.exec(element)) !== null) {
             if (m.index === regex.lastIndex)
@@ -160,7 +161,7 @@ export class CodeSnippetDirective implements OnInit, AfterViewInit, OnDestroy, O
 
         // result += indent  + element + '\r\n';
 
-        let indentClone = indent.slice();
+        const indentClone = indent.slice();
         result += indent + tag + this.mapAtr(attributes, indentClone + ' '.repeat(tag.length + 1), this.rowAttributes);
         if (tag.startsWith('<') && !tag.endsWith('>')) {
           result += '>' + '\r\n';
@@ -198,8 +199,6 @@ export class CodeSnippetDirective implements OnInit, AfterViewInit, OnDestroy, O
     let result = '';
     attributes.forEach((item, index) => {
 
-      console.log(index % 3);
-
       if (index == 0) {
         result += ' ' + item
       } else {
@@ -209,16 +208,6 @@ export class CodeSnippetDirective implements OnInit, AfterViewInit, OnDestroy, O
           result += '\r\n' + space + item
         }
       }
-
-      // if (index == 0) {
-      //   result += ' ' + item + '\r\n'
-      // } else {
-      //   if (index == attributes.length - 1) {
-      //     result += space + item
-      //   } else {
-      //     result += space + item + '\r\n'
-      //   }
-      // }
 
     });
     return result;

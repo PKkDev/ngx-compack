@@ -97,7 +97,7 @@ export class DisplayDpComponent {
     console.log('outerHTML', this.test?.nativeElement.innerHTML);
 
 
-    let html = this.test?.nativeElement.innerHTML!;
+    const html = this.test?.nativeElement.innerHTML;
 
     // html = html.replace(/(\r\n|\n|\r)/gm, "").replace(/\n/g, '').replace(/\t/g, '').replace(/\s+/g, ' ').trim();
     // console.log(html);

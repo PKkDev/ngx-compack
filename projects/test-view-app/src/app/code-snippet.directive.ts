@@ -1,21 +1,29 @@
 import { AfterViewInit, Directive, ElementRef, Input, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChanges } from '@angular/core';
 
+export type SnippetCodeType = 'html' | 'ts' | 'other';
+
 export class CompackCodeSnippetModel {
+  public type: SnippetCodeType;
   public title: string;
   public code: string;
-  constructor(title: string, code: string) {
-    this.title = title,
-      this.code = code;
+
+  constructor(type: SnippetCodeType, title: string, code: string) {
+    this.type = type;
+    this.title = title;
+    this.code = code;
   }
 }
 
 export class CompackCodeSnippetInnerModel {
+  public type: SnippetCodeType;
   public id: number;
   public title: string;
   public code: string;
   public tabTemplate: any | undefined;
   public onClickEv: (() => void) | undefined;
-  constructor(id: number, title: string, code: string) {
+
+  constructor(type: SnippetCodeType, id: number, title: string, code: string) {
+    this.type = type;
     this.id = id;
     this.title = title;
     this.code = code;
@@ -30,6 +38,8 @@ export class CompackCodeSnippetInnerModel {
 export class CodeSnippetDirective implements OnInit, AfterViewInit, OnDestroy, OnChanges {
 
   @Input() snippets: CompackCodeSnippetModel[] = [];
+  @Input() rowAttributes: number = 2;
+
   private innerSnippets: CompackCodeSnippetInnerModel[] = [];
   private nowCode: string | undefined = undefined;
 
@@ -47,7 +57,14 @@ export class CodeSnippetDirective implements OnInit, AfterViewInit, OnDestroy, O
     private el: ElementRef) { }
 
   ngOnInit() {
-    this.snippets.map((value, index) => this.innerSnippets.push(new CompackCodeSnippetInnerModel(index, value.title, this.format(value.code))));
+    this.snippets.map((value, index) => {
+      this.innerSnippets.push(
+        new CompackCodeSnippetInnerModel(
+          value.type,
+          index,
+          value.title,
+          this.formatText(value.type, value.code)))
+    });
   }
 
   ngOnDestroy() {
@@ -65,21 +82,33 @@ export class CodeSnippetDirective implements OnInit, AfterViewInit, OnDestroy, O
       if (!changes['snippets'].firstChange) {
         this.removeView();
         this.innerSnippets = [];
-        this.snippets.map((value, index) => this.innerSnippets.push(new CompackCodeSnippetInnerModel(index, value.title, this.format(value.code))));
+        this.snippets.map((value, index) => {
+          this.innerSnippets.push(
+            new CompackCodeSnippetInnerModel(
+              value.type,
+              index,
+              value.title,
+              this.formatText(value.type, value.code)))
+        });
         this.viewTabs();
       }
     }
   }
 
-  private toLine(html: string): string {
-    return html.replace(/(\r\n|\n|\r)/gm, "").replace(/\n/g, '').replace(/\t/g, '').replace(/\s+/g, ' ').trim();
+  private formatText(type: SnippetCodeType, code: string): string {
+    switch (type) {
+      case 'html':
+        return this.formatHtml(code)
+      default:
+        return code;
+    }
   }
 
-  private format(html: string): string {
+  private formatHtml(html: string): string {
 
     if (html == '') return '';
 
-    html = this.toLine(html);
+    html = this.htmlToLine(html);
     console.log('line', html);
 
     const tab = '\t';
@@ -95,6 +124,7 @@ export class CodeSnippetDirective implements OnInit, AfterViewInit, OnDestroy, O
 
     html.split(/(?=<)|(?<=>)/)
       .filter(x => x.trim().length != 0)
+      .map(x => x.trim())
       .forEach((element) => {
         if (element.match(/^<\/\w/)) {
           indent = indent.substring(tab.length);
@@ -102,29 +132,36 @@ export class CodeSnippetDirective implements OnInit, AfterViewInit, OnDestroy, O
 
         console.log('element', element);
 
-        const pos = element.indexOf(" ");
-        const tag = pos != -1 ? element.substring(0, pos) : element;
-        console.log('tag', tag);
-
+        let tag = element;
         const attributes: string[] = [];
-        const regex = new RegExp(/[A-Za-z0-9-_\[\]\(\)]*=\".*?\"|[A-Za-z0-9-_]*/gm);
-        let m;
-        while ((m = regex.exec(element)) !== null) {
-          if (m.index === regex.lastIndex)
-            regex.lastIndex++;
-          m.forEach((match) => {
-            if (match)
-              attributes.push(match.trim());
+
+        if (element.startsWith('<')) {
+
+          const pos = element.indexOf(" ");
+          tag = pos != -1 ? element.substring(0, pos) : element;
+
+          const regex = new RegExp(/[A-Za-z0-9-_\[\]\(\)]*=\".*?\"|[A-Za-z0-9-_]*/gm);
+          let m;
+          while ((m = regex.exec(element)) !== null) {
+            if (m.index === regex.lastIndex)
+              regex.lastIndex++;
+            m.forEach((match) => {
+              if (match)
+                attributes.push(match.trim());
+            }
+            );
           }
-          );
+          attributes.shift();
+
         }
-        attributes.shift();
+
+        console.log('tag', tag);
         console.log('attributes', attributes);
 
         // result += indent  + element + '\r\n';
 
         let indentClone = indent.slice();
-        result += indent + tag + this.mapAtr(attributes, indentClone + ' '.repeat(tag.length + 1));
+        result += indent + tag + this.mapAtr(attributes, indentClone + ' '.repeat(tag.length + 1), this.rowAttributes);
         if (tag.startsWith('<') && !tag.endsWith('>')) {
           result += '>' + '\r\n';
         } else {
@@ -149,7 +186,11 @@ export class CodeSnippetDirective implements OnInit, AfterViewInit, OnDestroy, O
     return result;
   }
 
-  private mapAtr(attributes: string[], space: string, rowElements: number = 2): string {
+  private htmlToLine(html: string): string {
+    return html.replace(/(\r\n|\n|\r)/gm, "").replace(/\n/g, '').replace(/\t/g, '').replace(/\s+/g, ' ').trim();
+  }
+
+  private mapAtr(attributes: string[], space: string, rowElements: number): string {
 
     if (attributes.length == 1)
       return ' ' + attributes[0];

@@ -20,3 +20,6 @@ export * from './lib/compack-datepicker/directive/date-mask.directive';
 export * from './lib/compack-datepicker/directive/time-mask.directive';
 export * from './lib/compack-datepicker/model/compack-relative-date-model';
 export * from './lib/compack-datepicker/compack-date-format.service';
+
+export * from './lib/compack-button/compack-button.module';
+export * from './lib/compack-button/cmp-button.directive';

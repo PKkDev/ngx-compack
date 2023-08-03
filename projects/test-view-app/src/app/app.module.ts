@@ -11,7 +11,7 @@ import { DisplayDprComponent } from './display/display-dpr/display-dpr.component
 import { DisplayTComponent } from './display/display-t/display-t.component';
 import { DisplayDfsComponent } from './display/display-dfs/display-dfs.component';
 // compack
-import { CompackBannerModule, CompackToastModule, CompackDatepickerModule } from 'ngx-compack';
+import { CompackBannerModule, CompackToastModule, CompackDatepickerModule, CompackButtonModule } from 'ngx-compack';
 import { CodeSnippetDirective } from './code-snippet.directive';
 
 @NgModule({
@@ -28,9 +28,11 @@ import { CodeSnippetDirective } from './code-snippet.directive';
     BrowserModule,
     FormsModule,
     BrowserAnimationsModule,
+    // compack
     CompackToastModule,
     CompackBannerModule,
-    CompackDatepickerModule
+    CompackDatepickerModule,
+    CompackButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

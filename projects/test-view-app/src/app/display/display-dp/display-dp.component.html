@@ -5,7 +5,10 @@
     <div class="view_col_item">
 
       <div class="code-toolbar" codeSnippet [snippets]="snippet2222" [rowAttributes]="2"></div>
-      <button (click)="onTest()">test</button>
+      <button cmp-button btnType="default" (click)="onTest()">test</button>
+      <button cmp-button btnType="primary" (click)="onTest()">test</button>
+      <button cmp-button btnType="dangerous" (click)="onTest()">test</button>
+      <button cmp-button btnType="mode" (click)="onTest()">test</button>
 
     </div>
 

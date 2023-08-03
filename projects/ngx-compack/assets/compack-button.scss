@@ -1,0 +1,88 @@
+.cmp-btn {
+    line-height: 1.5715;
+    position: relative;
+    display: inline-block;
+    font-weight: 400;
+    font-size: 14px;
+    white-space: nowrap;
+    text-align: center;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    // border-radius: 0.25rem;
+    border-color: #d9d9d9;
+    box-shadow: 0 2px #00000004;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: manipulation;
+    height: 32px;
+    padding: 4px 15px;   
+    color: #000000d9;
+    background: #fff;
+
+    .span-icon {
+        display: inline-block;
+        color: inherit;
+        font-style: normal;
+        line-height: 0;
+        text-align: center;
+        text-transform: none;
+        vertical-align: -0.125em;
+        text-rendering: optimizelegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    &:not(:disabled):hover {
+        color: var(--ant-primary-color);
+        border-color: var(--ant-primary-color);
+    }
+}
+
+.cmp-btn-primary {
+    color: #fff !important;
+    border-color: var(--ant-primary-color);
+    background: var(--ant-primary-color);
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
+    box-shadow: 0 2px #0000000b;
+
+    &:not(:disabled):hover {
+        border-color: var(--ant-primary-color-hover);
+        background: var(--ant-primary-color-hover);
+    }
+}
+
+.cmp-btn-dangerous {
+    color: #fff;
+    border-color: var(--ant-error-color);
+    background: var(--ant-error-color);
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
+    box-shadow: 0 2px #0000000b;
+
+    &:not(:disabled):hover {
+        color: #fff;
+        border-color: var(--ant-error-color-hover);
+        background: var(--ant-error-color-hover);
+    }
+}
+
+.cmp-btn-mode {
+    color: #fff;
+    border-color: var(--ant-mode-color);
+    background:  var(--ant-mode-color);
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
+    box-shadow: 0 2px #0000000b;
+
+    &:not(:disabled):hover {
+        color: #fff;
+        border-color:  var(--ant-mode-color-hover);
+        background:  var(--ant-mode-color-hover);
+    }
+}

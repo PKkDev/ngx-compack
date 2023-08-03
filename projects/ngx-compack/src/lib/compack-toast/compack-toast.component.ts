@@ -79,10 +79,8 @@ export class CompackToastComponent implements OnInit, OnDestroy {
   private autoRemoveLastMessage(index: number) {
     if (this.listMessages.length !== 0) {
       const res = this.listMessages.findIndex(x => x.index === index);
-      if (res !== -1) {
-        if (this.listMessages[res].file == null)
-          this.listMessages.splice(res, 1);
-      }
+      if (res !== -1)
+        this.listMessages.splice(res, 1);
     }
   }
 

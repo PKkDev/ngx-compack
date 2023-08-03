@@ -48,8 +48,7 @@ export class CompackToastMergeService {
 
     result.message = toastConfig.message;
     result.title = toastConfig.title;
-    result.type = toastConfig.type;
-    result.file = toastConfig.file;
+    result.type = toastConfig.type; 
     result.index = newIndex;
     result.timeToDel = this.timeToDel;
 

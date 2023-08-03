@@ -11,8 +11,11 @@ import { DisplayDprComponent } from './display/display-dpr/display-dpr.component
 import { DisplayTComponent } from './display/display-t/display-t.component';
 import { DisplayDfsComponent } from './display/display-dfs/display-dfs.component';
 // compack
-import { CompackBannerModule, CompackToastModule, CompackDatepickerModule } from 'ngx-compack';
+import { CompackBannerModule, CompackToastModule, CompackDatepickerModule, CompackButtonModule } from 'ngx-compack';
 import { CodeSnippetDirective } from './code-snippet.directive';
+
+
+import { CompackSideBarModule } from 'projects/ngx-compack/src/lib/compack-side-bar/compack-side-bar.module';
 
 @NgModule({
   declarations: [
@@ -28,9 +31,12 @@ import { CodeSnippetDirective } from './code-snippet.directive';
     BrowserModule,
     FormsModule,
     BrowserAnimationsModule,
+    CompackSideBarModule,
+    // compack
     CompackToastModule,
     CompackBannerModule,
-    CompackDatepickerModule
+    CompackDatepickerModule,
+    CompackButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

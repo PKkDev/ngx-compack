@@ -3,8 +3,7 @@
   'notification-container-top-right': placeToast === 0,
   'notification-container-bottom-left': placeToast === 1
 }">
-  <!-- [@flyInOut] -->
-  <div *ngFor="let mess of listMessages; let i = index">
+  <div [@flyInOut] *ngFor="let mess of listMessages; let i = index">
     <ng-template [ngTemplateOutlet]="loadTemplate(mess)" [ngTemplateOutletContext]="{ $implicit: mess}">
     </ng-template>
   </div>

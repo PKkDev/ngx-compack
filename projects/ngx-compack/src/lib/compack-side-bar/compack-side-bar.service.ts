@@ -21,14 +21,14 @@ export class CompackSideBarService {
   }
 
   ngOnDestroy() {
-    for (const sideBar of this.openedDialogs) {
+    this.openedDialogs.map(x => {
       this.closeActiveSideBar();
-    }
+    });
   }
 
   public openSideBar(
-    component: Type<any>, 
-    sideBarConfig: SideBarConfig | null = null, 
+    component: Type<any>,
+    sideBarConfig: SideBarConfig | null = null,
     dialogData: any | null = null): Observable<any> {
 
     const outerDiv = this.renderer.createElement('div');
@@ -39,7 +39,7 @@ export class CompackSideBarService {
     const innerDiv = this.renderer.createElement('div');
     this.renderer.addClass(innerDiv, 'side-bar-content');
     this.renderer.addClass(innerDiv, 'side-bar-content-left');
-    let width = sideBarConfig?.dialogWidth ? sideBarConfig.dialogWidth : '50%'
+    const width = sideBarConfig?.dialogWidth ? sideBarConfig.dialogWidth : '50%'
     this.renderer.setStyle(innerDiv, 'width', width);
     this.renderer.setStyle(innerDiv, 'z-index', (1000 + this.openedDialogs.length + 1).toString());
 

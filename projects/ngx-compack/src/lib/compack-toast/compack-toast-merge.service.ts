@@ -6,7 +6,7 @@ import { ToastConfig } from './model/toast-config';
 @Injectable()
 export class CompackToastMergeService {
 
-  private timeToDel = 15;
+  private timeToDel = 8;
 
   public viewNotification$: ReplaySubject<ToastConfig> = new ReplaySubject<ToastConfig>(30);
 
@@ -14,7 +14,7 @@ export class CompackToastMergeService {
     if (+time >= 0)
       this.timeToDel = time;
     else
-      this.timeToDel = 15;
+      this.timeToDel = 8;
   }
 
   public mergeToastConfig(toastConfig: ToastConfig, newIndex: number): Toast | null {

@@ -11,7 +11,7 @@ export class DisplayTComponent {
   public type = TypeToast.Error;
   public title: string | undefined;
   public text: string | undefined;
-  public timeToDel = 15;
+  public timeToDel = 8;
 
   constructor(private cts: CompackToastService) { }
 

@@ -223,8 +223,10 @@ export class CodeSnippetDirective implements OnInit, AfterViewInit, OnDestroy, O
   }
 
   private removeView() {
-    this.renderer.removeChild(this.el.nativeElement, this.toolBarTemplate);
-    this.renderer.removeChild(this.el.nativeElement, this.preTemplate);
+    if (this.toolBarTemplate)
+      this.renderer.removeChild(this.el.nativeElement, this.toolBarTemplate);
+    if (this.preTemplate)
+      this.renderer.removeChild(this.el.nativeElement, this.preTemplate);
 
     this.preTemplate = null;
     this.codeTemplate = null;

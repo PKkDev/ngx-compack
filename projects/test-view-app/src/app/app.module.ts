@@ -10,6 +10,9 @@ import { DisplayDpComponent } from './display/display-dp/display-dp.component';
 import { DisplayDprComponent } from './display/display-dpr/display-dpr.component';
 import { DisplayTComponent } from './display/display-t/display-t.component';
 import { DisplayDfsComponent } from './display/display-dfs/display-dfs.component';
+import { DisplayBtnComponent } from './display/display-btn/display-btn.component';
+import { DisplaySideBarComponent } from './display/display-side-bar/display-side-bar.component';
+import { DisplaySnippetComponent } from './display/display-snippet/display-snippet.component';
 // compack
 import { CompackBannerModule, CompackToastModule, CompackDatepickerModule, CompackButtonModule, CompackSideBarModule } from 'ngx-compack';
 import { CodeSnippetDirective } from './code-snippet.directive';
@@ -22,7 +25,10 @@ import { CodeSnippetDirective } from './code-snippet.directive';
     DisplayDpComponent,
     DisplayDprComponent,
     DisplayTComponent,
-    DisplayDfsComponent
+    DisplayDfsComponent,
+    DisplayBtnComponent,
+    DisplaySideBarComponent,
+    DisplaySnippetComponent
   ],
   imports: [
     BrowserModule,

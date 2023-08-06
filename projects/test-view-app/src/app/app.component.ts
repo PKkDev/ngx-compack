@@ -25,6 +25,9 @@ export class AppComponent implements AfterViewInit {
   @ViewChild('toast') toast: TemplateRef<ElementRef> | undefined;
   @ViewChild('banner') banner: TemplateRef<ElementRef> | undefined;
   @ViewChild('dateFormat') dateFormat: TemplateRef<ElementRef> | undefined;
+  @ViewChild('btn') btn: TemplateRef<ElementRef> | undefined;
+  @ViewChild('sideBar') sideBar: TemplateRef<ElementRef> | undefined;
+  @ViewChild('snippet') snippet: TemplateRef<ElementRef> | undefined;
 
   constructor(private cdr: ChangeDetectorRef) { }
 
@@ -42,20 +45,11 @@ export class AppComponent implements AfterViewInit {
       case TypeViewComponent.DateFormat: this.selectedTemplate = this.dateFormat ?? null; break;
       case TypeViewComponent.Toast: this.selectedTemplate = this.toast ?? null; break;
       case TypeViewComponent.Banner: this.selectedTemplate = this.banner ?? null; break;
+      case TypeViewComponent.Button: this.selectedTemplate = this.btn ?? null; break;
+      case TypeViewComponent.SideBar: this.selectedTemplate = this.sideBar ?? null; break;
+      case TypeViewComponent.CodeSnippet: this.selectedTemplate = this.snippet ?? null; break;
       default: this.selectedTemplate = this.picker ?? null; break;
     }
-
-    // private cm: CompackSideBarService
-    // this.cm.openSideBar(
-    //   DisplayBComponent,
-    //   {
-    //     title: 'sds',
-    //     dialogWidth: '500px',
-    //     viewCloseBtn: true
-    //   },
-    //   {
-    //     test: 'dasd'
-    //   })
 
   }
 

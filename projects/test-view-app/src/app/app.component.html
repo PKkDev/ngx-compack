@@ -16,13 +16,13 @@
     <button class="btn" cmp-button btnType="mode" (click)="loadTemplate(4)" [class.active]="viewComponent===4">
       Banner
     </button>
-    <button class="btn" cmp-button [disabled]="true" (click)="loadTemplate(5)" [class.active]="viewComponent===5">
+    <button class="btn" cmp-button btnType="mode" (click)="loadTemplate(5)" [class.active]="viewComponent===5">
       Button
     </button>
-    <button class="btn" cmp-button [disabled]="true" (click)="loadTemplate(6)" [class.active]="viewComponent===6">
+    <button class="btn" cmp-button btnType="mode" (click)="loadTemplate(6)" [class.active]="viewComponent===6">
       Side Bar
     </button>
-    <button class="btn" cmp-button [disabled]="true" (click)="loadTemplate(7)" [class.active]="viewComponent===7">
+    <button class="btn" cmp-button btnType="mode" (click)="loadTemplate(7)" [class.active]="viewComponent===7">
       Code snippet
     </button>
   </div>
@@ -49,6 +49,18 @@
 
   <ng-template #banner>
     <app-display-b></app-display-b>
+  </ng-template>
+
+  <ng-template #btn>
+    <app-display-btn></app-display-btn>
+  </ng-template>
+
+  <ng-template #sideBar>
+    <app-display-side-bar></app-display-side-bar>
+  </ng-template>
+
+  <ng-template #snippet>
+    <app-display-snippet></app-display-snippet>
   </ng-template>
 
 </div>

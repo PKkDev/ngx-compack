@@ -23,3 +23,6 @@ export * from './lib/compack-datepicker/compack-date-format.service';
 
 export * from './lib/compack-button/compack-button.module';
 export * from './lib/compack-button/cmp-button.directive';
+
+export * from './lib/compack-side-bar/compack-side-bar.module';
+export * from './lib/compack-side-bar/compack-side-bar.service';

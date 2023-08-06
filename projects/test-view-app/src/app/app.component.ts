@@ -2,7 +2,7 @@ import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, TemplateRef, V
 import { CompackSideBarService } from 'projects/ngx-compack/src/lib/compack-side-bar/compack-side-bar.service';
 import { DisplayBComponent } from './display/display-b/display-b.component';
 
-enum TypeViewComponent {
+export enum TypeViewComponent {
   PickerRange = 0,
   Picker = 1,
   DateFormat = 2,

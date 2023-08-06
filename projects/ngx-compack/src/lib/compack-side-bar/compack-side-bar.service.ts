@@ -26,8 +26,10 @@ export class CompackSideBarService {
     }
   }
 
-  // componentOrTemplateRef: ComponentType<T> | TemplateRef<T>
-  public openSideBar(component: Type<any>, sideBarConfig: SideBarConfig | null = null, dialogData: any | null = null): Observable<any> {
+  public openSideBar(
+    component: Type<any>, 
+    sideBarConfig: SideBarConfig | null = null, 
+    dialogData: any | null = null): Observable<any> {
 
     const outerDiv = this.renderer.createElement('div');
     this.renderer.addClass(outerDiv, 'side-bar-shadow');

@@ -29,8 +29,8 @@ export class AppComponent implements AfterViewInit {
   constructor(private cdr: ChangeDetectorRef) { }
 
   ngAfterViewInit() {
-    this.viewComponent = TypeViewComponent.Picker;
-    this.selectedTemplate = this.picker ?? null;
+    this.viewComponent = TypeViewComponent.Toast;
+    this.loadTemplate(this.viewComponent);
     this.cdr.detectChanges();
   }
 

@@ -8,41 +8,22 @@ import { CompackToastService, TypeToast } from 'ngx-compack';
 })
 export class DisplayTComponent {
 
-  public toastType = 0;
-  public toastTitle = '';
-  public toastText = '';
-  public toastTimeToDel = 15;
-  public toastErrorColor = '#ff5252';
-  public toastInfoColor = '#2196f3';
-  public toastSuccessColor = '#4caf50';
+  public type = TypeToast.Error;
+  public title: string | undefined;
+  public text: string | undefined;
+  public timeToDel = 15;
 
   constructor(private cts: CompackToastService) { }
 
-  public setToastErrorColor() {
-    if (!this.toastErrorColor.includes('#'))
-      this.toastErrorColor = `#${this.toastErrorColor}`;
-    this.cts.setErrorColor(this.toastErrorColor);
-  }
-
-  public setToastInfoColor() {
-    if (!this.toastInfoColor.includes('#'))
-      this.toastInfoColor = `#${this.toastInfoColor}`;
-    this.cts.setInfoColor(this.toastInfoColor);
-  }
-
-  public setToastSuccessColor() {
-    if (!this.toastSuccessColor.includes('#'))
-      this.toastSuccessColor = `#${this.toastSuccessColor}`;
-    this.cts.setSuccessColor(this.toastSuccessColor);
-  }
-
   public setToastTimeToDel() {
-    this.cts.setTimeToAutoRemove(this.toastTimeToDel);
+    this.cts.setTimeToAutoRemove(this.timeToDel);
   }
-  
+
   public viewToast() {
-    const type: TypeToast = (+this.toastType) as TypeToast;
-    this.cts.emitNotife(type, this.toastTitle, this.toastText);
+    if (this.title) {
+      const type = (+this.type) as TypeToast;
+      this.cts.view(type, this.title, this.text);
+    }
   }
 
 }

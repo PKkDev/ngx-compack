@@ -4,7 +4,7 @@
 
     <div class="field_group">
       typeToast:
-      <select [(ngModel)]="toastType">
+      <select [(ngModel)]="type">
         <option [value]="0">Error</option>
         <option [value]="1">Info</option>
         <option [value]="2">Success</option>
@@ -13,36 +13,21 @@
 
     <div class="field_group col_view">
       title:
-      <input [(ngModel)]="toastTitle">
+      <input [(ngModel)]="title">
     </div>
 
     <div class="field_group col_view">
       text:
-      <textarea [(ngModel)]="toastText"></textarea>
+      <textarea [(ngModel)]="text"></textarea>
     </div>
 
     <div class="field_group">
       view time:
-      <input [(ngModel)]="toastTimeToDel" (ngModelChange)="setToastTimeToDel()" type="number">
-    </div>
-
-    <div class="field_group color">
-      error Color:
-      <input type="color" [(ngModel)]="toastErrorColor" (ngModelChange)="setToastErrorColor()">
-    </div>
-
-    <div class="field_group color">
-      info Color:
-      <input type="color" [(ngModel)]="toastInfoColor" (ngModelChange)="setToastInfoColor()">
-    </div>
-
-    <div class="field_group color">
-      success Color:
-      <input type="color" [(ngModel)]="toastSuccessColor" (ngModelChange)="setToastSuccessColor()">
+      <input [(ngModel)]="timeToDel" (ngModelChange)="setToastTimeToDel()" type="number">
     </div>
 
     <div class="field_group">
-      <button class="btn" (click)="viewToast()">View</button>
+      <button cmp-button btnType="primary" (click)="viewToast()">View</button>
     </div>
 
   </div>

@@ -1,8 +1,9 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { CompackToastMergeService } from './compack-toast-merge.service';
 import { Toast } from './model/toast';
 import { ToastConfig } from './model/toast-config';
+import { PlaceToast } from './model/place-toast';
 
 @Component({
   selector: 'compack-toast',
@@ -24,6 +25,12 @@ export class CompackToastComponent implements OnInit, OnDestroy {
   // data
   public listMessages: Toast[] = [];
 
+  // config
+  public placeToast: PlaceToast = PlaceToast.TopRight;
+
+  // container
+  @ViewChild('notificationContainer', { static: false }) notificationContainer!: ElementRef<any>;
+
   // type template
   @ViewChild('messageWithFileTemplate', { static: false }) messageWithFileTemplate!: TemplateRef<any>;
   @ViewChild('messageOnlyTextTemplate', { static: false }) messageOnlyTextTemplate!: TemplateRef<any>;
@@ -34,18 +41,24 @@ export class CompackToastComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.ctms.notifEmite$
+    this.ctms.viewNotification$
       .subscribe((next: ToastConfig) => {
         if (next !== null) {
           const newIndex = +(new Date());
           const newToast = this.ctms.mergeToastConfig(next, newIndex);
           if (newToast != null) {
+
+            if (this.listMessages.length > 5) {
+              this.removeMessage(this.listMessages[0].index);
+            }
+
             this.listMessages.push(newToast);
             this.setTimerToDel(newIndex, newToast.timeToDel);
             setTimeout(() => {
-              const container = document.getElementById('notif-container');
-              if (container != null)
+              if (this.notificationContainer) {
+                const container = this.notificationContainer.nativeElement;
                 container.scrollTop = container.scrollHeight - container.clientHeight;
+              }
             }, 1000);
           }
           this.cdr.detectChanges();
@@ -60,16 +73,6 @@ export class CompackToastComponent implements OnInit, OnDestroy {
 
   public loadTemplate(mess: Toast) {
     return this.messageOnlyTextTemplate;
-    // if (mess.file !== undefined) {
-    //   return this.messageWithFileTemplate;
-    // } else {
-    //   return this.messageOnlyTextTemplate;
-    // }
-  }
-
-  public downloadFile(blob: Blob, fileName: string) {
-    // console.log(blob, fileName);
-    // saveAs(blob, fileName);
   }
 
   private setTimerToDel(index: number, interval: number) {

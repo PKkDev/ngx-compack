@@ -1,22 +1,18 @@
-// @import "../font/font-one-level.scss";
-
 .empty-container {
     visibility: hidden;
 }
 
-.notif-container {
-    // font-family: "Roboto";
+.notification-container {
     font-family: "Nunito";
 
     width: 330px;
     max-height: 500px;
     position: absolute;
-    bottom: 5px;
-    left: 0;
     z-index: 1001;
     padding: 5px 5px 0 10px;
-    overflow-y: auto;
-    overflow-x: hidden;
+
+    // overflow-y: auto;
+    // overflow-x: hidden;
 
     &::-webkit-scrollbar {
         width: 0.4em;
@@ -81,15 +77,24 @@
         height: fit-content;
         position: relative;
         transition: all 1s;
-        padding: 10px;
+        padding: 16px 24px;
         margin-bottom: 15px;
         opacity: 1;
         color: #000000;
         line-height: 1.3;
         box-sizing: border-box;
 
-        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-        border-radius: 6px;
+        // box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+        // border-radius: 6px;
+
+        background: #fff;
+        border-radius: 2px;
+        // box-shadow:
+        //     0 3px 6px -4px #0000001f,
+        //     0 6px 16px #00000014,
+        //     0 9px 28px 8px #0000000d;
+
+        box-shadow: 0px 0px 10px 0px rgba(34, 60, 80, 0.2);
 
         .close {
             display: flex;
@@ -111,14 +116,14 @@
                 transform: scale(1.2);
 
                 svg {
-                    fill: black;
+                    fill: #453f3f;
                 }
             }
 
             svg {
-                width: 60%;
-                height: 60%;
-                fill: black;
+                width: 50%;
+                height: 50%;
+                fill: #453f3f;
             }
         }
 
@@ -133,11 +138,11 @@
                 align-items: center;
                 display: flex;
                 justify-content: center;
-                margin-right: 5px;
+                margin-right: 10px;
 
                 svg {
-                    height: 30px;
-                    width: 30px;
+                    height: 22px;
+                    width: 22px;
                 }
             }
 
@@ -158,4 +163,14 @@
             font-size: 15px;
         }
     }
+}
+
+.notification-container-top-right {
+    top: 5px;
+    right: 0;
+}
+
+.notification-container-bottom-left {
+    bottom: 5px;
+    left: 0;
 }

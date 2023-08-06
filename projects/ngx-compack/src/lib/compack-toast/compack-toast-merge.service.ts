@@ -2,34 +2,13 @@ import { Injectable } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
 import { Toast } from './model/toast';
 import { ToastConfig } from './model/toast-config';
-import { TypeToast } from './model/type-toast';
-
-const mapColor: Map<string, string> = new Map<string, string>()
-  .set('info', '#2196f3')
-  .set('error', '#ff5252')
-  .set('success', '#4caf50');
 
 @Injectable()
 export class CompackToastMergeService {
 
   private timeToDel = 15;
 
-  public notifEmite$: ReplaySubject<ToastConfig> = new ReplaySubject<ToastConfig>(30);
-
-  public setInfoColor(newInfoColor: string) {
-    if (mapColor.has('info'))
-      mapColor.set('info', newInfoColor);
-  }
-
-  public setErrorColor(newErrorColor: string) {
-    if (mapColor.has('error'))
-      mapColor.set('error', newErrorColor);
-  }
-
-  public setSuccessColor(newSuccessColor: string) {
-    if (mapColor.has('success'))
-      mapColor.set('success', newSuccessColor);
-  }
+  public viewNotification$: ReplaySubject<ToastConfig> = new ReplaySubject<ToastConfig>(30);
 
   public setTimeToAutoRemove(time: number) {
     if (+time >= 0)
@@ -39,7 +18,7 @@ export class CompackToastMergeService {
   }
 
   public mergeToastConfig(toastConfig: ToastConfig, newIndex: number): Toast | null {
-    // console.log('messageConfig', toastConfig);
+    // console.log('toastConfig', toastConfig);
 
     if (toastConfig == null)
       return null;
@@ -48,43 +27,11 @@ export class CompackToastMergeService {
 
     result.message = toastConfig.message;
     result.title = toastConfig.title;
-    result.type = toastConfig.type; 
+    result.type = toastConfig.type;
     result.index = newIndex;
     result.timeToDel = this.timeToDel;
 
-    switch (toastConfig.type) {
-      case TypeToast.Error: {
-        if (mapColor.has('error')) {
-          const color = mapColor.get('error');
-          result.color = color ? color : '#fff';
-        }
-        break;
-      }
-      case TypeToast.Info: {
-        if (mapColor.has('info')) {
-          const color = mapColor.get('info');
-          result.color = color ? color : '#fff';
-        }
-        break;
-      }
-      case TypeToast.Success: {
-        if (mapColor.has('success')) {
-          const color = mapColor.get('success');
-          result.color = color ? color : '#fff';
-        }
-        break;
-      }
-      default: {
-        if (mapColor.has('error')) {
-          const color = mapColor.get('error');
-          result.color = color ? color : '#fff';
-        }
-        break;
-      }
-    }
-
     return result;
   }
-
 
 }

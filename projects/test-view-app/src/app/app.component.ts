@@ -1,13 +1,14 @@
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, TemplateRef, ViewChild } from '@angular/core';
-import { CompackSideBarService } from 'projects/ngx-compack/src/lib/compack-side-bar/compack-side-bar.service';
-import { DisplayBComponent } from './display/display-b/display-b.component';
 
 export enum TypeViewComponent {
   PickerRange = 0,
   Picker = 1,
   DateFormat = 2,
   Toast = 3,
-  Banner = 4
+  Banner = 4,
+  Button = 5,
+  SideBar = 6,
+  CodeSnippet = 7
 }
 
 @Component({
@@ -25,7 +26,7 @@ export class AppComponent implements AfterViewInit {
   @ViewChild('banner') banner: TemplateRef<ElementRef> | undefined;
   @ViewChild('dateFormat') dateFormat: TemplateRef<ElementRef> | undefined;
 
-  constructor(private cdr: ChangeDetectorRef, private cm: CompackSideBarService) { }
+  constructor(private cdr: ChangeDetectorRef) { }
 
   ngAfterViewInit() {
     this.viewComponent = TypeViewComponent.Picker;
@@ -44,23 +45,18 @@ export class AppComponent implements AfterViewInit {
       default: this.selectedTemplate = this.picker ?? null; break;
     }
 
-    this.cm.openSideBar(
-      DisplayBComponent,
-      {
-        title: 'sds',
-        dialogWidth: '500px',
-        viewCloseBtn: true
-      },
-      {
-        test: 'dasd'
-      })
+    // private cm: CompackSideBarService
+    // this.cm.openSideBar(
+    //   DisplayBComponent,
+    //   {
+    //     title: 'sds',
+    //     dialogWidth: '500px',
+    //     viewCloseBtn: true
+    //   },
+    //   {
+    //     test: 'dasd'
+    //   })
 
   }
-
-
-
-
-
-
 
 }

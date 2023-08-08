@@ -30,7 +30,7 @@ import { SideBarExampleComponent } from './display/display-side-bar/side-bar-exa
     DisplayBtnComponent,
     DisplaySideBarComponent,
     DisplaySnippetComponent,
-    SideBarExampleComponent
+    SideBarExampleComponent,
   ],
   imports: [
     BrowserModule,

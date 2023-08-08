@@ -13,10 +13,10 @@ export class DisplayBtnComponent {
     type: 'html',
     code:
       `
-      <button cmp-button btnType="default">default</button>
+      <button cmp-button btnType="default" [loading]="true">default</button>
       <button cmp-button btnType="primary">primary</button>
       <button cmp-button btnType="dangerous">dangerous</button>
-      <button cmp-button btnType="mode">mode</button>
+      <button cmp-button btnType="mode" [loading]="true">mode</button>
     `
   }];
 

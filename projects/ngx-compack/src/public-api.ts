@@ -26,3 +26,6 @@ export * from './lib/compack-button/cmp-button.directive';
 
 export * from './lib/compack-side-bar/compack-side-bar.module';
 export * from './lib/compack-side-bar/compack-side-bar.service';
+export * from './lib/compack-side-bar/model/construct-dialog';
+export * from './lib/compack-side-bar/model/side-bar-config';
+export * from './lib/compack-side-bar/model/side-bar-data';

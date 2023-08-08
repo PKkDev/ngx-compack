@@ -1,7 +1,9 @@
 import { DOCUMENT } from '@angular/common';
 import { ApplicationRef, EventEmitter, Inject, Injectable, Injector, Renderer2, RendererFactory2, Type, createComponent, EnvironmentInjector } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ConstructDialog, SIDE_BAR_DATA, SideBarConfig } from './compack-side-bar-settings';
+import { ConstructDialog } from './model/construct-dialog';
+import { SideBarConfig } from './model/side-bar-config';
+import { SIDE_BAR_DATA } from './model/side-bar-data';
 
 @Injectable({
   providedIn: 'root'

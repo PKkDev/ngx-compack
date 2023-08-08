@@ -16,6 +16,7 @@ import { DisplaySnippetComponent } from './display/display-snippet/display-snipp
 // compack
 import { CompackBannerModule, CompackToastModule, CompackDatepickerModule, CompackButtonModule, CompackSideBarModule } from 'ngx-compack';
 import { CodeSnippetDirective } from './code-snippet.directive';
+import { SideBarExampleComponent } from './display/display-side-bar/side-bar-example/side-bar-example.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { CodeSnippetDirective } from './code-snippet.directive';
     DisplayDfsComponent,
     DisplayBtnComponent,
     DisplaySideBarComponent,
-    DisplaySnippetComponent
+    DisplaySnippetComponent,
+    SideBarExampleComponent
   ],
   imports: [
     BrowserModule,

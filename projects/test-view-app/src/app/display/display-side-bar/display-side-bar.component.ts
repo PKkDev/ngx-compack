@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { CompackSideBarService } from 'ngx-compack';
+import { CompackSideBarService, SideBarConfig } from 'ngx-compack';
+import { SideBarExampleComponent } from './side-bar-example/side-bar-example.component';
+import { CompackCodeSnippetModel } from '../../code-snippet.directive';
 
 @Component({
   selector: 'app-display-side-bar',
@@ -8,20 +10,51 @@ import { CompackSideBarService } from 'ngx-compack';
 })
 export class DisplaySideBarComponent {
 
-  constructor(private cm: CompackSideBarService) { }
+  public title: string | undefined = 'Test Title';
+  public viewCloseBtn = true;
+  public dialogWidth: string | undefined = '700px';
+  public dialogData: Record<string, string> = {
+    test: 'test data'
+  }
+
+  public snippet: CompackCodeSnippetModel[] = [{
+    title: 'ts',
+    type: 'other',
+    code:
+      `
+public dialogData: Record<string, string> = {
+  test: 'test data'
+}
+
+constructor(private csbs: CompackSideBarService) { }
+
+const config: SideBarConfig = {
+  title: this.title,
+  dialogWidth: this.dialogWidth,
+  viewCloseBtn: this.viewCloseBtn
+}
+  
+this.csbs.openSideBar(
+  SideBarExampleComponent,
+  config,
+  this.dialogData);
+  `
+  }];
+
+  constructor(private csbs: CompackSideBarService) { }
 
   public onOpen() {
 
-    this.cm.openSideBar(
-      DisplaySideBarComponent,
-      {
-        title: 'test title',
-        dialogWidth: '500px',
-        viewCloseBtn: true
-      },
-      {
-        test: 'test data'
-      });
+    const config: SideBarConfig = {
+      title: this.title,
+      dialogWidth: this.dialogWidth,
+      viewCloseBtn: this.viewCloseBtn
+    }
+
+    this.csbs.openSideBar(
+      SideBarExampleComponent,
+      config,
+      this.dialogData);
   }
 
 }

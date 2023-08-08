@@ -1,12 +1,4 @@
-import { ComponentRef, EventEmitter, InjectionToken } from "@angular/core";
-
-export const SIDE_BAR_DATA: InjectionToken<any> = new InjectionToken<any>('SideBarData');
-
-export class SideBarConfig {
-    public title?: string | undefined | null = null;
-    public viewCloseBtn?: boolean | undefined | null = null;
-    public dialogWidth?: string | null = '50%';
-}
+import { ComponentRef, EventEmitter } from "@angular/core";
 
 export class ConstructDialog {
     public outerDiv: any;

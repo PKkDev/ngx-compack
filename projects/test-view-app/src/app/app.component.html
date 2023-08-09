@@ -22,7 +22,8 @@
     <button class="btn" cmp-button btnType="mode" (click)="loadTemplate(6)" [class.active]="viewComponent===6">
       Side Bar
     </button>
-    <button class="btn" cmp-button btnType="mode" (click)="loadTemplate(7)" [class.active]="viewComponent===7">
+    <button class="btn" cmp-button btnType="mode" [disabled]="true" (click)="loadTemplate(7)"
+      [class.active]="viewComponent===7">
       Code snippet
     </button>
   </div>

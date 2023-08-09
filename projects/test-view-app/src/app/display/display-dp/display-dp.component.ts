@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, ViewChild } from '@angular/core';
+import { Component, EventEmitter } from '@angular/core';
 import { CompackCodeSnippetModel } from '../../code-snippet.directive';
 
 @Component({
@@ -87,26 +87,4 @@ export class DisplayDpComponent {
   public selectMaxDateEvent(selected: string[]) {
     this.max = new Date(selected[0]);
   }
-
-  public snippet2222: CompackCodeSnippetModel[] = [new CompackCodeSnippetModel('html', 'html', '')];
-  @ViewChild('test') test: ElementRef | undefined;
-
-  public onTest() {
-    console.log(this.test);
-    console.log(this.test?.nativeElement.toString());
-    console.log('outerHTML', this.test?.nativeElement.innerHTML);
-
-
-    const html = this.test?.nativeElement.innerHTML;
-
-    // html = html.replace(/(\r\n|\n|\r)/gm, "").replace(/\n/g, '').replace(/\t/g, '').replace(/\s+/g, ' ').trim();
-    // console.log(html);
-
-
-    this.snippet2222 = [new CompackCodeSnippetModel('html', 'html2', html)]
-  }
-
-
-
-
 }

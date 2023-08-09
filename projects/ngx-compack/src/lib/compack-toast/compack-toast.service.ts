@@ -1,4 +1,4 @@
-import { ApplicationRef, createComponent, EnvironmentInjector, Inject, Injectable, Injector } from '@angular/core';
+import { ApplicationRef, createComponent, EnvironmentInjector, Inject, Injectable } from '@angular/core';
 import { CompackToastMergeService } from './compack-toast-merge.service';
 import { CompackToastComponent } from './compack-toast.component';
 import { TypeToast } from './model/type-toast';
@@ -9,7 +9,6 @@ export class CompackToastService {
 
   constructor(
     private applicationRef: ApplicationRef,
-    private injector: Injector,
     private ctms: CompackToastMergeService,
     @Inject(DOCUMENT) private document: Document,
     private environmentInjector: EnvironmentInjector) {

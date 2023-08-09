@@ -3,14 +3,6 @@
   <div class="settings">
 
     <div class="field_group">
-      type Banner:
-      <select [(ngModel)]="bannerType">
-        <option [value]="0">Info</option>
-        <option [value]="1">Error</option>
-      </select>
-    </div>
-
-    <div class="field_group">
       position Banner:
       <select [(ngModel)]="bannerPosition">
         <option [value]="0">Top</option>
@@ -36,16 +28,6 @@
     <div class="field_group">
       view time:
       <input [(ngModel)]="bannerViewTime" type="number">
-    </div>
-
-    <div class="field_group color">
-      error Color:
-      <input type="color" [(ngModel)]="bannerErrorColor" (ngModelChange)="setBannerErrorColor()">
-    </div>
-
-    <div class="field_group color">
-      info Color:
-      <input type="color" [(ngModel)]="bannerInfoColor" (ngModelChange)="setBannerInfoColor()">
     </div>
 
     <div class="field_group">

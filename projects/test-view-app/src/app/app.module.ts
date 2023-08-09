@@ -14,7 +14,7 @@ import { DisplayBtnComponent } from './display/display-btn/display-btn.component
 import { DisplaySideBarComponent } from './display/display-side-bar/display-side-bar.component';
 import { DisplaySnippetComponent } from './display/display-snippet/display-snippet.component';
 // compack
-import { CompackBannerModule, CompackToastModule, CompackDatepickerModule, CompackButtonModule, CompackSideBarModule } from 'ngx-compack';
+import { CompackToastModule, CompackDatepickerModule, CompackButtonModule, CompackSideBarModule, CompackBannerModule } from 'ngx-compack';
 import { CodeSnippetDirective } from './code-snippet.directive';
 import { SideBarExampleComponent } from './display/display-side-bar/side-bar-example/side-bar-example.component';
 

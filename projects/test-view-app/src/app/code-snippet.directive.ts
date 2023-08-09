@@ -238,7 +238,7 @@ export class CodeSnippetDirective implements OnInit, AfterViewInit, OnDestroy, O
     this.toolBarTemplate = this.renderer.createElement('div');
     this.renderer.setStyle(this.toolBarTemplate, 'display', 'flex');
     this.renderer.setStyle(this.toolBarTemplate, 'justify-content', 'space-between');
-    this.renderer.setStyle(this.toolBarTemplate, 'padding', '.6rem');
+    this.renderer.setStyle(this.toolBarTemplate, 'padding', '.4rem');
     this.renderer.setStyle(this.toolBarTemplate, 'border-bottom', '1px solid #e0e0e0');
     this.renderer.appendChild(this.el.nativeElement, this.toolBarTemplate);
   }
@@ -249,14 +249,15 @@ export class CodeSnippetDirective implements OnInit, AfterViewInit, OnDestroy, O
     for (const snippet of this.innerSnippets) {
       const button = this.renderer.createElement('button');
       this.renderer.setStyle(button, 'background-color', '#616161');
-      this.renderer.setStyle(button, 'padding', '10px 20px');
+      this.renderer.setStyle(button, 'padding', '5px 15px');
       this.renderer.setStyle(button, 'margin', '0 5px');
-      this.renderer.setStyle(button, 'border-radius', '0.25rem');
-      this.renderer.setStyle(button, 'font-size', '12px');
+      this.renderer.setStyle(button, 'border-radius', '2px');
+      this.renderer.setStyle(button, 'font-size', '13px');
       this.renderer.setStyle(button, 'line-height', '.8');
       this.renderer.setStyle(button, 'font-weight', '500');
       this.renderer.setStyle(button, 'color', '#fff');
-      this.renderer.setStyle(button, 'box-shadow', '0 2px 5px 0 rgb(0 0 0 / 20%), 0 2px 10px 0 rgb(0 0 0 / 10%)');
+      // this.renderer.setStyle(button, 'box-shadow', '0 2px 5px 0 rgb(0 0 0 / 20%), 0 2px 10px 0 rgb(0 0 0 / 10%)');
+      this.renderer.setStyle(button, 'box-shadow', '0 2px #00000004');
       this.renderer.setStyle(button, 'outline', 'none');
       this.renderer.setStyle(button, 'border', 'none');
 
@@ -274,21 +275,22 @@ export class CodeSnippetDirective implements OnInit, AfterViewInit, OnDestroy, O
       });
       snippet.tabTemplate = button;
 
-      this.renderer.appendChild(button, this.renderer.createText(snippet.title.toUpperCase()));
+      this.renderer.appendChild(button, this.renderer.createText(snippet.title));
       this.renderer.appendChild(tabs, button);
     }
   }
   private createCopyButton() {
     const copyButton = this.renderer.createElement('button');
     this.renderer.setStyle(copyButton, 'background-color', '#616161');
-    this.renderer.setStyle(copyButton, 'padding', '10px 20px');
+    this.renderer.setStyle(copyButton, 'padding', '5px 15px');
     this.renderer.setStyle(copyButton, 'margin', '0 5px');
-    this.renderer.setStyle(copyButton, 'border-radius', '0.25rem');
-    this.renderer.setStyle(copyButton, 'font-size', '12px');
+    this.renderer.setStyle(copyButton, 'border-radius', '2px');
+    this.renderer.setStyle(copyButton, 'font-size', '13px');
     this.renderer.setStyle(copyButton, 'line-height', '.8');
     this.renderer.setStyle(copyButton, 'font-weight', '500');
     this.renderer.setStyle(copyButton, 'color', '#fff');
-    this.renderer.setStyle(copyButton, 'box-shadow', '0 2px 5px 0 rgb(0 0 0 / 20%), 0 2px 10px 0 rgb(0 0 0 / 10%)');
+    // this.renderer.setStyle(copyButton, 'box-shadow', '0 2px 5px 0 rgb(0 0 0 / 20%), 0 2px 10px 0 rgb(0 0 0 / 10%)');
+    this.renderer.setStyle(copyButton, 'box-shadow', '0 2px #00000004');
     this.renderer.setStyle(copyButton, 'outline', 'none');
     this.renderer.setStyle(copyButton, 'border', 'none');
     this.renderer.setStyle(copyButton, 'cursor', 'pointer');

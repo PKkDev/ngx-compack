@@ -5,6 +5,4 @@ import { Component } from '@angular/core';
   templateUrl: './compack-card.component.html',
   styleUrls: ['./compack-card.component.scss']
 })
-export class CompackCardComponent {
-
-}
+export class CompackCardComponent { }

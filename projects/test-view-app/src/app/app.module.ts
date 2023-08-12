@@ -15,12 +15,11 @@ import { DisplaySideBarComponent } from './display/display-side-bar/display-side
 import { DisplaySnippetComponent } from './display/display-snippet/display-snippet.component';
 import { SideBarExampleComponent } from './display/display-side-bar/side-bar-example/side-bar-example.component';
 import { DisplayAlertComponent } from './display/display-alert/display-alert.component';
-// compack
-import { CompackToastModule, CompackDatepickerModule, CompackButtonModule, CompackSideBarModule, CompackBannerModule } from 'ngx-compack';
-import { CodeSnippetDirective } from './code-snippet.directive';
 
-import { CompackCardModule } from 'projects/ngx-compack/src/lib/compack-card/compack-card.module';
-import { CompackAlertModule } from 'projects/ngx-compack/src/lib/compack-alert/compack-alert.module';
+import { CodeSnippetDirective } from './code-snippet.directive';
+// compack
+import { CompackToastModule, CompackDatepickerModule, CompackButtonModule, CompackSideBarModule, CompackBannerModule, CompackCardModule, CompackAlertModule } from 'ngx-compack';
+
 
 @NgModule({
   declarations: [
@@ -47,8 +46,6 @@ import { CompackAlertModule } from 'projects/ngx-compack/src/lib/compack-alert/c
     CompackDatepickerModule,
     CompackButtonModule,
     CompackSideBarModule,
-
-
     CompackCardModule,
     CompackAlertModule
   ],

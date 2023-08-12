@@ -27,3 +27,9 @@ export * from './lib/compack-side-bar/compack-side-bar.module';
 export * from './lib/compack-side-bar/compack-side-bar.service';
 export * from './lib/compack-side-bar/model/side-bar-config';
 export * from './lib/compack-side-bar/model/side-bar-data';
+
+export * from './lib/compack-alert/compack-alert.module';
+export * from './lib/compack-alert/compack-alert.component';
+
+export * from './lib/compack-card/compack-card.module';
+export * from './lib/compack-card/compack-card.component';

@@ -4,6 +4,10 @@ description: "Composite action - check angular app"
 runs:
   using: "composite"
   steps:
+    - name: Build lib
+      run: npm run build:lib:prod
+      shell: bash
+
     - name: Tests
       run: npm run test:prod
       shell: bash

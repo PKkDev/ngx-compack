@@ -2,7 +2,7 @@
 
 @import "./../../ngx-compack/assets/variables.scss";
 @import "./../../ngx-compack/assets/compack-button.scss";
-@import "./../../ngx-compack/assets/compack-side-bar.scss"; 
+@import "./../../ngx-compack/assets/compack-side-bar.scss";
 
 body,
 html {
@@ -12,4 +12,5 @@ html {
     margin: 0;
     padding: 0;
     overflow: hidden;
+    background: #e9e1e1;
 }

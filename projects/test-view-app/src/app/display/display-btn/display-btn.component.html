@@ -1,16 +1,12 @@
-<div class="container">
+<compack-card>
 
-    <div class="settings">
-
-        <div class="field_group">
-            <button cmp-button btnType="default" [loading]="true">default</button>
-            <button cmp-button btnType="primary">primary</button>
-            <button cmp-button btnType="dangerous">dangerous</button>
-            <button cmp-button btnType="mode" [loading]="true">mode</button>
-        </div>
-
-        <div class="code-toolbar" codeSnippet [snippets]="snippet" [rowAttributes]="3"></div>
-
+    <div class="field-group">
+        <button cmp-button btnType="default" [loading]="true">default</button>
+        <button cmp-button btnType="primary">primary</button>
+        <button cmp-button btnType="dangerous">dangerous</button>
+        <button cmp-button btnType="mode" [loading]="true">mode</button>
     </div>
 
-</div>
+    <div class="code-toolbar" codeSnippet [snippets]="snippet" [rowAttributes]="3"></div>
+
+</compack-card>

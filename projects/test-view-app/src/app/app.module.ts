@@ -13,10 +13,12 @@ import { DisplayDfsComponent } from './display/display-dfs/display-dfs.component
 import { DisplayBtnComponent } from './display/display-btn/display-btn.component';
 import { DisplaySideBarComponent } from './display/display-side-bar/display-side-bar.component';
 import { DisplaySnippetComponent } from './display/display-snippet/display-snippet.component';
+import { SideBarExampleComponent } from './display/display-side-bar/side-bar-example/side-bar-example.component';
 // compack
 import { CompackToastModule, CompackDatepickerModule, CompackButtonModule, CompackSideBarModule, CompackBannerModule } from 'ngx-compack';
 import { CodeSnippetDirective } from './code-snippet.directive';
-import { SideBarExampleComponent } from './display/display-side-bar/side-bar-example/side-bar-example.component';
+
+import { CompackCardModule } from 'projects/ngx-compack/src/lib/compack-card/compack-card.module';
 
 @NgModule({
   declarations: [
@@ -41,7 +43,10 @@ import { SideBarExampleComponent } from './display/display-side-bar/side-bar-exa
     CompackBannerModule,
     CompackDatepickerModule,
     CompackButtonModule,
-    CompackSideBarModule
+    CompackSideBarModule,
+
+
+    CompackCardModule
   ],
   providers: [],
   bootstrap: [AppComponent]

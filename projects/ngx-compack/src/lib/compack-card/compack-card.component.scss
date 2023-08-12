@@ -1,0 +1,19 @@
+:host {
+    display: block;
+
+    box-sizing: border-box;
+    margin: 0;
+    padding: 15px;
+    color: #000000d9;
+    line-height: 1.5715;
+    list-style: none;
+    position: relative;
+    background: #fff;
+    border-radius: 2px;
+
+    font-size: 14px;
+    font-variant: tabular-nums;
+    font-feature-settings: "tnum";
+
+    box-shadow: 0px 0px 10px 0px rgba(34, 60, 80, 0.2);
+}

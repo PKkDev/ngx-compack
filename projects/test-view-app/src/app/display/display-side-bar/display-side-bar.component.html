@@ -1,33 +1,29 @@
-<div class="container">
+<compack-card>
 
-    <div class="settings">
-
-        <div class="field_group">
-            <label>Title</label>
-            <input [(ngModel)]="title">
-        </div>
-
-        <div class="field_group">
-            <label>Clos btn</label>
-            <input type="checkbox" [(ngModel)]="viewCloseBtn">
-        </div>
-
-        <div class="field_group">
-            <label>Dialog width</label>
-            <input [(ngModel)]="dialogWidth">
-        </div>
-
-        <div class="field_group">
-            <label>Dialog data</label>
-            {{dialogData | json}}
-        </div>
-
-        <div class="field_group">
-            <button cmp-button btnType="primary" (click)="onOpen()">Open dialog</button>
-        </div>
-
-        <div codeSnippet [snippets]="snippet"></div>
-
+    <div class="field-group">
+        <label>Title</label>
+        <input [(ngModel)]="title">
     </div>
 
-</div>
+    <div class="field-group">
+        <label>Clos btn</label>
+        <input type="checkbox" [(ngModel)]="viewCloseBtn">
+    </div>
+
+    <div class="field-group">
+        <label>Dialog width</label>
+        <input [(ngModel)]="dialogWidth">
+    </div>
+
+    <div class="field-group">
+        <label>Dialog data</label>
+        {{dialogData | json}}
+    </div>
+
+    <div class="field-group">
+        <button cmp-button btnType="primary" (click)="onOpen()">Open dialog</button>
+    </div>
+
+    <div codeSnippet [snippets]="snippet"></div>
+
+</compack-card>

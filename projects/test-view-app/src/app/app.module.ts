@@ -14,11 +14,13 @@ import { DisplayBtnComponent } from './display/display-btn/display-btn.component
 import { DisplaySideBarComponent } from './display/display-side-bar/display-side-bar.component';
 import { DisplaySnippetComponent } from './display/display-snippet/display-snippet.component';
 import { SideBarExampleComponent } from './display/display-side-bar/side-bar-example/side-bar-example.component';
+import { DisplayAlertComponent } from './display/display-alert/display-alert.component';
 // compack
 import { CompackToastModule, CompackDatepickerModule, CompackButtonModule, CompackSideBarModule, CompackBannerModule } from 'ngx-compack';
 import { CodeSnippetDirective } from './code-snippet.directive';
 
 import { CompackCardModule } from 'projects/ngx-compack/src/lib/compack-card/compack-card.module';
+import { CompackAlertModule } from 'projects/ngx-compack/src/lib/compack-alert/compack-alert.module';
 
 @NgModule({
   declarations: [
@@ -33,6 +35,7 @@ import { CompackCardModule } from 'projects/ngx-compack/src/lib/compack-card/com
     DisplaySideBarComponent,
     DisplaySnippetComponent,
     SideBarExampleComponent,
+    DisplayAlertComponent,
   ],
   imports: [
     BrowserModule,
@@ -46,7 +49,8 @@ import { CompackCardModule } from 'projects/ngx-compack/src/lib/compack-card/com
     CompackSideBarModule,
 
 
-    CompackCardModule
+    CompackCardModule,
+    CompackAlertModule
   ],
   providers: [],
   bootstrap: [AppComponent]

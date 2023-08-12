@@ -8,7 +8,8 @@ export enum TypeViewComponent {
   Banner = 4,
   Button = 5,
   SideBar = 6,
-  CodeSnippet = 7
+  CodeSnippet = 7,
+  Alert = 8
 }
 
 @Component({
@@ -28,6 +29,7 @@ export class AppComponent implements AfterViewInit {
   @ViewChild('btn') btn: TemplateRef<ElementRef> | undefined;
   @ViewChild('sideBar') sideBar: TemplateRef<ElementRef> | undefined;
   @ViewChild('snippet') snippet: TemplateRef<ElementRef> | undefined;
+  @ViewChild('alert') alert: TemplateRef<ElementRef> | undefined;
 
   constructor(private cdr: ChangeDetectorRef) { }
 
@@ -48,6 +50,7 @@ export class AppComponent implements AfterViewInit {
       case TypeViewComponent.Button: this.selectedTemplate = this.btn ?? null; break;
       case TypeViewComponent.SideBar: this.selectedTemplate = this.sideBar ?? null; break;
       case TypeViewComponent.CodeSnippet: this.selectedTemplate = this.snippet ?? null; break;
+      case TypeViewComponent.Alert: this.selectedTemplate = this.alert ?? null; break;
       default: this.selectedTemplate = this.picker ?? null; break;
     }
 

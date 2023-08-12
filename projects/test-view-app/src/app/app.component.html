@@ -26,6 +26,9 @@
       [class.active]="viewComponent===7">
       Code snippet
     </button>
+    <button class="btn" cmp-button btnType="mode" (click)="loadTemplate(8)" [class.active]="viewComponent===8">
+      Alert
+    </button>
   </div>
 
   <div class="view_container">
@@ -62,6 +65,10 @@
 
   <ng-template #snippet>
     <app-display-snippet></app-display-snippet>
+  </ng-template>
+
+  <ng-template #alert>
+    <app-display-alert></app-display-alert>
   </ng-template>
 
 </div>

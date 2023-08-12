@@ -45,48 +45,48 @@
     }
 
     &:not(:disabled):hover {
-        color: var(--ant-primary-color);
-        border-color: var(--ant-primary-color);
+        color: var(--cmp-primary-color);
+        border-color: var(--cmp-primary-color);
     }
 }
 
 .cmp-btn-primary {
     color: #fff !important;
-    border-color: var(--ant-primary-color);
-    background: var(--ant-primary-color);
+    border-color: var(--cmp-primary-color);
+    background: var(--cmp-primary-color);
     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
     box-shadow: 0 2px #0000000b;
 
     &:not(:disabled):hover {
-        border-color: var(--ant-primary-color-hover);
-        background: var(--ant-primary-color-hover);
+        border-color: var(--cmp-primary-color-hover);
+        background: var(--cmp-primary-color-hover);
     }
 }
 
 .cmp-btn-dangerous {
     color: #fff;
-    border-color: var(--ant-error-color);
-    background: var(--ant-error-color);
+    border-color: var(--cmp-error-color);
+    background: var(--cmp-error-color);
     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
     box-shadow: 0 2px #0000000b;
 
     &:not(:disabled):hover {
         color: #fff;
-        border-color: var(--ant-error-color-hover);
-        background: var(--ant-error-color-hover);
+        border-color: var(--cmp-error-color-hover);
+        background: var(--cmp-error-color-hover);
     }
 }
 
 .cmp-btn-mode {
     color: #fff;
-    border-color: var(--ant-mode-color);
-    background: var(--ant-mode-color);
+    border-color: var(--cmp-mode-color);
+    background: var(--cmp-mode-color);
     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
     box-shadow: 0 2px #0000000b;
 
     &:not(:disabled):hover {
         color: #fff;
-        border-color: var(--ant-mode-color-hover);
-        background: var(--ant-mode-color-hover);
+        border-color: var(--cmp-mode-color-hover);
+        background: var(--cmp-mode-color-hover);
     }
 }

@@ -1,7 +1,7 @@
 {
   "name": "ngx-compack",
   "description": "some components/services/directives for angular project",
-  "version": "2.0.5",
+  "version": "16.0.0",
   "license": "MIT",
   "author": {
     "name": "Kirill",

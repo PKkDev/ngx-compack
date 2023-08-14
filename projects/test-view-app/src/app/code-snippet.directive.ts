@@ -1,4 +1,5 @@
 import { AfterViewInit, Directive, ElementRef, Input, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChanges } from '@angular/core';
+import { formatHtml } from './html-format-utils';
 
 export type SnippetCodeType = 'html' | 'ts' | 'other';
 
@@ -39,6 +40,7 @@ export class CodeSnippetDirective implements OnInit, AfterViewInit, OnDestroy, O
 
   @Input() snippets: CompackCodeSnippetModel[] = [];
   @Input() rowAttributes = 2;
+  @Input() viewHeader = true;
 
   private innerSnippets: CompackCodeSnippetInnerModel[] = [];
   private nowCode: string | undefined = undefined;
@@ -98,128 +100,28 @@ export class CodeSnippetDirective implements OnInit, AfterViewInit, OnDestroy, O
   private formatText(type: SnippetCodeType, code: string): string {
     switch (type) {
       case 'html':
-        return this.formatHtml(code)
+        return formatHtml(code, this.rowAttributes)
       default:
         return code;
     }
   }
 
-  private formatHtml(html: string): string {
-
-    if (html == '') return '';
-
-    html = this.htmlToLine(html);
-    console.log('line', html);
-
-    const tab = '\t';
-    let result = '';
-    let indent = '';
-    const selfClosingTag: string[] = ['<area', '<base', '<br', '<col', '<command', '<embed', '<hr', '<img', '<input', '<keygen', '<link', '<menuitem', '<meta', '<param', '<source', '<track', '<wbr', '<path'];
-
-    html = html.replace('&gt;', '>');
-    html = html.replace('&lt;', '<');
-
-    console.log(html.split(/(?=<)|(?<=>)/));
-    html.split(/(?=<)|(?<=>)/).forEach(x => console.log(x.trim().length));
-
-    html.split(/(?=<)|(?<=>)/)
-      .filter(x => x.trim().length != 0)
-      .map(x => x.trim())
-      .forEach((element) => {
-        if (element.match(/^<\/\w/)) {
-          indent = indent.substring(tab.length);
-        }
-
-        console.log('element', element);
-
-        let tag = element;
-        const attributes: string[] = [];
-
-        if (element.startsWith('<')) {
-
-          const pos = element.indexOf(" ");
-          tag = pos != -1 ? element.substring(0, pos) : element;
-
-          // const regex = new RegExp(/[A-Za-z0-9-_\[\]\(\)]*=\".*?\"|[A-Za-z0-9-_]*/gm);
-          const regex = new RegExp(/[A-Za-z0-9-_[\]()]*=".*?"|[A-Za-z0-9-_]*/gm);
-          let m;
-          while ((m = regex.exec(element)) !== null) {
-            if (m.index === regex.lastIndex)
-              regex.lastIndex++;
-            m.forEach((match) => {
-              if (match)
-                attributes.push(match.trim());
-            }
-            );
-          }
-          attributes.shift();
-
-        }
-
-        console.log('tag', tag);
-        console.log('attributes', attributes);
-
-        // result += indent  + element + '\r\n';
-
-        const indentClone = indent.slice();
-        result += indent + tag + this.mapAtr(attributes, indentClone + ' '.repeat(tag.length + 1), this.rowAttributes);
-        if (tag.startsWith('<') && !tag.endsWith('>')) {
-          result += '>' + '\r\n';
-        } else {
-          result += '\r\n';
-        }
-
-        // result += indent + tag + ((tag.startsWith('<') && !tag.endsWith('>')) ? '>' : '') + '\r\n';
-
-
-        // if (element.match(/^<?\w[^>]*[^\/]$/) && !element.startsWith("input")) {
-        //   indent += tab;
-        // }
-
-        if (element.match(/^<\w/) && selfClosingTag.find(x => element.startsWith(x)) == null) {
-          indent += tab;
-        }
-
-      });
-
-    // return result.substring(1, result.length - 3);
-    // return result.substring(0, result.length - 3);
-    return result;
-  }
-
-  private htmlToLine(html: string): string {
-    return html.replace(/(\r\n|\n|\r)/gm, "").replace(/\n/g, '').replace(/\t/g, '').replace(/\s+/g, ' ').trim();
-  }
-
-  private mapAtr(attributes: string[], space: string, rowElements: number): string {
-
-    if (attributes.length == 1)
-      return ' ' + attributes[0];
-
-    let result = '';
-    attributes.forEach((item, index) => {
-
-      if (index == 0) {
-        result += ' ' + item
-      } else {
-        if (index % rowElements != 0) {
-          result += ' ' + item
-        } else {
-          result += '\r\n' + space + item
-        }
-      }
-
-    });
-    return result;
-  }
-
   private viewTabs() {
     this.renderer.setStyle(this.el.nativeElement, 'border', '1px solid #e0e0e0');
-    this.createToolBar();
-    this.createTabs();
-    this.createCopyButton();
-    if (this.innerSnippets.length > 0)
-      this.innerSnippets[0].tabTemplate.click();
+
+    if (this.viewHeader) {
+      this.createToolBar();
+      this.createTabs();
+      this.createCopyButton();
+    }
+
+    if (this.innerSnippets.length > 0) {
+      if (this.viewHeader) {
+        this.innerSnippets[0].tabTemplate.click();
+      } else {
+        this.createCodeBlockFromModel(this.innerSnippets[0]);
+      }
+    }
   }
 
   private removeView() {
@@ -249,10 +151,10 @@ export class CodeSnippetDirective implements OnInit, AfterViewInit, OnDestroy, O
     for (const snippet of this.innerSnippets) {
       const button = this.renderer.createElement('button');
       this.renderer.setStyle(button, 'background-color', '#616161');
-      this.renderer.setStyle(button, 'padding', '5px 15px');
+      this.renderer.setStyle(button, 'padding', '8px 15px');
       this.renderer.setStyle(button, 'margin', '0 5px');
       this.renderer.setStyle(button, 'border-radius', '2px');
-      this.renderer.setStyle(button, 'font-size', '13px');
+      this.renderer.setStyle(button, 'font-size', '14px');
       this.renderer.setStyle(button, 'line-height', '.8');
       this.renderer.setStyle(button, 'font-weight', '500');
       this.renderer.setStyle(button, 'color', '#fff');
@@ -282,10 +184,10 @@ export class CodeSnippetDirective implements OnInit, AfterViewInit, OnDestroy, O
   private createCopyButton() {
     const copyButton = this.renderer.createElement('button');
     this.renderer.setStyle(copyButton, 'background-color', '#616161');
-    this.renderer.setStyle(copyButton, 'padding', '5px 15px');
+    this.renderer.setStyle(copyButton, 'padding', '8px 15px');
     this.renderer.setStyle(copyButton, 'margin', '0 5px');
     this.renderer.setStyle(copyButton, 'border-radius', '2px');
-    this.renderer.setStyle(copyButton, 'font-size', '13px');
+    this.renderer.setStyle(copyButton, 'font-size', '14px');
     this.renderer.setStyle(copyButton, 'line-height', '.8');
     this.renderer.setStyle(copyButton, 'font-weight', '500');
     this.renderer.setStyle(copyButton, 'color', '#fff');
@@ -330,6 +232,7 @@ export class CodeSnippetDirective implements OnInit, AfterViewInit, OnDestroy, O
     this.renderer.setStyle(this.preTemplate, 'background', '#f5f2f0');
     this.renderer.setStyle(this.preTemplate, 'margin', '0');
     this.renderer.setStyle(this.preTemplate, 'overflow', 'auto');
+    this.renderer.setStyle(this.preTemplate, 'font-family', 'inherit');
     this.renderer.appendChild(this.el.nativeElement, this.preTemplate);
   }
   private creteCodeBlock() {
@@ -337,6 +240,7 @@ export class CodeSnippetDirective implements OnInit, AfterViewInit, OnDestroy, O
     this.renderer.setStyle(this.codeTemplate, 'line-height', '20px');
     this.renderer.setStyle(this.codeTemplate, 'position', 'relative');
     this.renderer.setStyle(this.codeTemplate, 'tab-size', '10px');
+    this.renderer.setStyle(this.codeTemplate, 'font-family', 'inherit');
     this.renderer.appendChild(this.preTemplate, this.codeTemplate);
   }
   private createSpanContainerTemplateBlock() {

@@ -1,3 +1,5 @@
+@import "../../../assets/cmp-span-icon.scss";
+
 .cmp-alert-body {
     box-sizing: border-box;
     margin: 0;
@@ -37,17 +39,4 @@
 .ngc-alert-info {
     background-color: var(--ngc-info-color-deprecated-bg);
     border: 1px solid var(--ngc-info-color-deprecated-border);
-}
-
-.cmp-span-icon {
-    display: inline-block;
-    color: inherit;
-    font-style: normal;
-    line-height: 0;
-    text-align: center;
-    text-transform: none;
-    vertical-align: -0.125em;
-    text-rendering: optimizelegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
 }

@@ -1,4 +1,5 @@
-@import "../../ngx-compack/assets/utils.scss";
+@import "./utils.scss";
+@import "./cmp-span-icon.scss";
 
 .cmp-btn {
     line-height: 1.5715;
@@ -11,7 +12,6 @@
     background-image: none;
     border: 1px solid transparent;
     border-radius: 2px;
-    // border-radius: 0.25rem;
     border-color: #d9d9d9;
     box-shadow: 0 2px #00000004;
     cursor: pointer;
@@ -25,17 +25,6 @@
     background: #fff;
 
     .cmp-span-icon {
-        display: inline-block;
-        color: inherit;
-        font-style: normal;
-        line-height: 0;
-        text-align: center;
-        text-transform: none;
-        vertical-align: -0.125em;
-        text-rendering: optimizelegibility;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-
         margin-left: 5px;
     }
 
@@ -51,7 +40,7 @@
 }
 
 .cmp-btn-primary {
-    color: #fff !important;
+    color: #fff;
     border-color: var(--cmp-primary-color);
     background: var(--cmp-primary-color);
     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);

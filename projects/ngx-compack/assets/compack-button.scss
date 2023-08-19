@@ -41,7 +41,7 @@
 }
 
 .cmp-btn-primary {
-    color: #fff;
+    color: #fff !important;
     border-color: var(--cmp-primary-color);
     background: var(--cmp-primary-color);
     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);

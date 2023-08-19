@@ -6,4 +6,12 @@ compack-card {
     display: flex;
     flex-direction: column;
     justify-content: center;
+
+    .btn-group {
+        button {
+            margin: 5px;
+        }
+
+        flex-wrap: wrap;
+    }
 }

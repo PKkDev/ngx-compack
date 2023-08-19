@@ -18,7 +18,10 @@ import { DisplayAlertComponent } from './display/display-alert/display-alert.com
 
 import { CodeSnippetDirective } from './code-snippet.directive';
 // compack
-import { CompackToastModule, CompackDatepickerModule, CompackButtonModule, CompackSideBarModule, CompackBannerModule, CompackCardModule, CompackAlertModule } from 'ngx-compack';
+import { CompackToastModule, CompackDatepickerModule, CompackSideBarModule, CompackBannerModule, CompackCardModule, CompackAlertModule } from 'ngx-compack';
+
+import { CompackButtonModule } from 'projects/ngx-compack/src/lib/compack-button/compack-button.module';
+import { CompackIconModule } from 'projects/ngx-compack/src/lib/compack-icon/compack-icon.module';
 
 
 @NgModule({
@@ -45,6 +48,7 @@ import { CompackToastModule, CompackDatepickerModule, CompackButtonModule, Compa
     CompackBannerModule,
     CompackDatepickerModule,
     CompackButtonModule,
+    CompackIconModule,
     CompackSideBarModule,
     CompackCardModule,
     CompackAlertModule

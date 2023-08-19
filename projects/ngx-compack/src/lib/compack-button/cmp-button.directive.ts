@@ -1,4 +1,5 @@
-import { Directive, ElementRef, Input, Renderer2, SimpleChanges } from '@angular/core';
+import { ContentChild, Directive, ElementRef, Input, Renderer2, SimpleChanges } from '@angular/core';
+import { CompackIconDirective } from '../compack-icon/compack-icon.directive';
 
 export type NgcButtonType = 'default' | 'primary' | 'dangerous' | 'mode';
 
@@ -9,6 +10,8 @@ export class CmpButtonDirective {
 
   @Input() btnType: NgcButtonType = 'default';
   @Input() loading = false;
+
+  @ContentChild(CompackIconDirective) ngcIcon: CompackIconDirective | undefined;
 
   private loadingSpan: HTMLElement | undefined;
   private loadingSvg =
@@ -42,27 +45,29 @@ export class CmpButtonDirective {
       if (this.loading) {
         this.renderer2.setProperty(this.el.nativeElement, 'disabled', true);
 
-        if (!this.loadingSpan) {
-          const span = this.renderer2.createElement('span');
-          this.renderer2.addClass(span, 'cmp-span-icon');
-          this.renderer2.addClass(span, 'cmp-loading');
-          span.innerHTML = this.loadingSvg
-          this.loadingSpan = span;
+        if (this.ngcIcon) {
+          this.ngcIcon.setLoading();
+        } else {
+          if (!this.loadingSpan) {
+            const span = this.renderer2.createElement('span');
+            this.renderer2.addClass(span, 'cmp-span-icon');
+            this.renderer2.addClass(span, 'cmp-loading');
+            span.innerHTML = this.loadingSvg
+            this.loadingSpan = span;
+          }
+          this.renderer2.appendChild(this.el.nativeElement, this.loadingSpan);
         }
-        this.renderer2.appendChild(this.el.nativeElement, this.loadingSpan);
-
       }
       else {
         this.renderer2.setProperty(this.el.nativeElement, 'disabled', false);
 
-        if (this.loadingSpan)
-          this.renderer2.removeChild(this.el.nativeElement, this.loadingSpan);
+        if (this.ngcIcon) {
+          this.ngcIcon.unsetLoading();
+        } else {
+          if (this.loadingSpan)
+            this.renderer2.removeChild(this.el.nativeElement, this.loadingSpan);
+        }
       }
-
-      // if (this.ngcIcon) {
-      //   if (this.loading) this.ngcIcon.setLoading();
-      //   else this.ngcIcon.unsetLoading();
-      // }
     }
   }
 

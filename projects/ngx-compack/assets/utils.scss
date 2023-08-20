@@ -1,0 +1,9 @@
+.cmp-loading {
+    animation: ngcLoadingCircle 1s infinite linear;
+}
+
+@keyframes ngcLoadingCircle {
+    to {
+        transform: rotate(360deg);
+    }
+}

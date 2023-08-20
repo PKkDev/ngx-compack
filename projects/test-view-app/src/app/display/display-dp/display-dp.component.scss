@@ -30,6 +30,8 @@
 
             .code-toolbar {
                 margin-right: 10px;
+                overflow: auto;
+                max-width: 500px;
             }
         }
     }

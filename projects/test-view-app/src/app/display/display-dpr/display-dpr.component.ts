@@ -9,18 +9,18 @@ import { CompackCodeSnippetModel } from '../../code-snippet.directive';
 })
 export class DisplayDprComponent {
 
-  public snippet1: CompackCodeSnippetModel[] = [new CompackCodeSnippetModel('html',
+  public snippet1: CompackCodeSnippetModel[] = [new CompackCodeSnippetModel('html', 'html',
     `<compack-date-picker-range 
     [locale]="locale" [disabled]="disabled"
     [formatOutputDate]="format" 
     (selectLastDateEvent)="selectDateEvent($event)">
 </compack-date-picker-range>`)];
-  public snippet2: CompackCodeSnippetModel[] = [new CompackCodeSnippetModel('html',
+  public snippet2: CompackCodeSnippetModel[] = [new CompackCodeSnippetModel('html', 'html',
     `<input compackDatePickerRangeHost placeholder="click me" 
     style="margin: 10px 0 ;" [disabled]="disabled"
     [locale]="locale" [formatOutputDate]="format"
     (selectLastDateEvent)="selectDateEvent($event)"/>`)];
-  public snippet3: CompackCodeSnippetModel[] = [new CompackCodeSnippetModel('html',
+  public snippet3: CompackCodeSnippetModel[] = [new CompackCodeSnippetModel('html', 'html',
     `<div style="border: thin solid black; border-radius: 6px;" 
     compackDatePickerRangeHost 
     [locale]="locale" [formatOutputDate]="format" 
@@ -28,7 +28,7 @@ export class DisplayDprComponent {
     (selectLastDateEvent)="selectDateEvent($event)" >
     click me
 </div>`)];
-  public snippet4: CompackCodeSnippetModel[] = [new CompackCodeSnippetModel('html',
+  public snippet4: CompackCodeSnippetModel[] = [new CompackCodeSnippetModel('html', 'html',
     `<svg style="margin: 10px 0;width: 30px;height: 30px;" 
     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
     compackDatePickerRangeHost [locale]="locale" [disabled]="disabled"

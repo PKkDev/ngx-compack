@@ -39,8 +39,8 @@ constructor(private cdfs: CompackDateFormatService) { }
       
 this.cdfs.dateFormat(new Date(), 'yyyy-mm-dd')`;
   public snippetModel: CompackCodeSnippetModel[] = [
-    new CompackCodeSnippetModel('app.module.ts', this.snippet1),
-    new CompackCodeSnippetModel('component.ts', this.snippet2)
+    new CompackCodeSnippetModel('ts', 'app.module.ts', this.snippet1),
+    new CompackCodeSnippetModel('ts', 'component.ts', this.snippet2)
   ]
 
   public maskDescription: MaskDescription[] = [

@@ -27,11 +27,8 @@ jobs:
         with:
           node_version: ${{ matrix.node-version }}
 
-      - name: Check
-        uses: ./.github/actions/ui-check
-
       - name: Build lib
         run: npm run build:lib:prod
 
-      - name: Build pages app
-        run: npm run build:test-view-app:ghpages           
+      - name: Check
+        uses: ./.github/actions/ui-check         

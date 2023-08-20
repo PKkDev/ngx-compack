@@ -1,13 +1,34 @@
 <div class="container">
 
-aaass
-
   <div class="menu">
-    <button class="btn" (click)="loadTemplate(0)" [class.active]="viewComponent===0">picker range</button>
-    <button class="btn" (click)="loadTemplate(1)" [class.active]="viewComponent===1">picker</button>
-    <button class="btn" (click)="loadTemplate(2)" [class.active]="viewComponent===2">date format</button>
-    <button class="btn" (click)="loadTemplate(3)" [class.active]="viewComponent===3">Toast</button>
-    <button class="btn" (click)="loadTemplate(4)" [class.active]="viewComponent===4">Banner</button>
+    <button class="btn" cmp-button btnType="mode" (click)="loadTemplate(0)" [class.active]="viewComponent===0">
+      Picker range
+    </button>
+    <button class="btn" cmp-button btnType="mode" (click)="loadTemplate(1)" [class.active]="viewComponent===1">
+      Picker
+    </button>
+    <button class="btn" cmp-button btnType="mode" (click)="loadTemplate(2)" [class.active]="viewComponent===2">
+      Date format
+    </button>
+    <button class="btn" cmp-button btnType="mode" (click)="loadTemplate(3)" [class.active]="viewComponent===3">
+      Toast
+    </button>
+    <button class="btn" cmp-button btnType="mode" (click)="loadTemplate(4)" [class.active]="viewComponent===4">
+      Banner
+    </button>
+    <button class="btn" cmp-button btnType="mode" (click)="loadTemplate(5)" [class.active]="viewComponent===5">
+      Button
+    </button>
+    <button class="btn" cmp-button btnType="mode" (click)="loadTemplate(6)" [class.active]="viewComponent===6">
+      Side Bar
+    </button>
+    <button class="btn" cmp-button btnType="mode" [disabled]="true" (click)="loadTemplate(7)"
+      [class.active]="viewComponent===7">
+      Code snippet
+    </button>
+    <button class="btn" cmp-button btnType="mode" (click)="loadTemplate(8)" [class.active]="viewComponent===8">
+      Alert
+    </button>
   </div>
 
   <div class="view_container">
@@ -32,6 +53,22 @@ aaass
 
   <ng-template #banner>
     <app-display-b></app-display-b>
+  </ng-template>
+
+  <ng-template #btn>
+    <app-display-btn></app-display-btn>
+  </ng-template>
+
+  <ng-template #sideBar>
+    <app-display-side-bar></app-display-side-bar>
+  </ng-template>
+
+  <ng-template #snippet>
+    <app-display-snippet></app-display-snippet>
+  </ng-template>
+
+  <ng-template #alert>
+    <app-display-alert></app-display-alert>
   </ng-template>
 
 </div>

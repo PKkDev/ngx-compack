@@ -1,12 +1,13 @@
-// @import "../../font/font-two-level.scss";
-
 .dialog {
     z-index: 1000;
     position: fixed !important;
     margin: 5px;
-    box-shadow: 0px 4px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 6px;
+    // box-shadow: 0px 4px 4px 4px rgba(0, 0, 0, 0.25);
+    // border-radius: 6px;
     background-color: #fff;
+
+    border-radius: 2px;
+    box-shadow: 0px 0px 10px 0px rgba(34, 60, 80, 0.2);
 
     .calendar {
         border: none !important;
@@ -41,8 +42,11 @@
     .calendar {
         font-size: 15px;
         width: 19.5em;
-        border-radius: 7px;
-        border: thin solid darkgray;
+        // border-radius: 7px;
+        // border: thin solid darkgray;
+
+        border-radius: 2px;
+        box-shadow: 0px 0px 10px 0px rgba(34, 60, 80, 0.2);
 
         .title {
             color: #737576;
@@ -96,9 +100,12 @@
                 border: thin solid #a9a9a9;
                 box-sizing: border-box;
                 padding: 0.4em;
-                border-radius: 6px;
+                // border-radius: 6px;
                 height: 7em;
                 overflow: hidden;
+
+                border-radius: 2px;
+                box-shadow: 0px 0px 10px 0px rgba(34, 60, 80, 0.2);
 
                 .month {
                     display: flex;
@@ -198,9 +205,11 @@
                         padding: 0;
                         text-align: center;
                         border: thin solid #d3d3d3;
-                        border-radius: 5px;
+                        // border-radius: 5px;
                         font-size: 0.97em;
                         padding: 0.5em 0.5em;
+
+                        border-radius: 2px;
                     }
 
                     .time {

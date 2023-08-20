@@ -1,5 +1,5 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { CompackBannerMergeService } from './compack-banner-merge.service';
 import { DisplayMessage } from './model/display-message';
 import { DisplayMessageConfig } from './model/display-message-config';
@@ -12,7 +12,7 @@ import { DisplayMessageConfig } from './model/display-message-config';
     trigger('flyInOut', [
       transition(':enter', [
         style({ opacity: 0 }),
-        animate(500, style({ opacity: 1, boxShadow: '0px 4px 4px 0px rgba(0, 0, 0, 0.25)' }))
+        animate(500, style({ opacity: 1, boxShadow: '0px 0px 10px 0px rgba(34, 60, 80, 0.2)' }))
       ]),
       transition(':leave', [
         animate(500, style({ opacity: 0, boxShadow: 'none' }))
@@ -29,6 +29,8 @@ export class CompackBannerComponent implements OnInit, OnDestroy {
   private timeOutView: any;
   private intervalView: any;
   public counterClose = -1;
+
+  public viewIndicatorWidth = '0';
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -70,16 +72,25 @@ export class CompackBannerComponent implements OnInit, OnDestroy {
   public removeMessage() {
     this.displayMessage = null;
     this.destroyTimer();
+    this.viewIndicatorWidth = '0';
   }
 
   private setIntervalAutoClose() {
-    this.intervalView = setInterval(() => { this.counterClose--; }, 1000);
+    this.intervalView = setInterval(() => {
+      this.counterClose--;
+
+      if (this.displayMessage && this.displayMessage.intervalView) {
+        this.viewIndicatorWidth = `${100 - (this.counterClose / this.displayMessage.intervalView * 100)}%`;
+      }
+
+    }, 1000);
   }
 
   private setTimerView(interval: number) {
     this.timeOutView = setTimeout(() => {
       this.displayMessage = null;
-    }, 1000 * interval)
+      this.viewIndicatorWidth = '0';
+    }, 1000 * (interval + 1))
   }
 
   private destroyTimer() {

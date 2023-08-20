@@ -1,21 +1,30 @@
-import { AfterViewInit, Directive, ElementRef, Input, OnDestroy, OnInit, Renderer2 } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, Input, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChanges } from '@angular/core';
+import { formatHtml } from './html-format-utils';
+
+export type SnippetCodeType = 'html' | 'ts' | 'other';
 
 export class CompackCodeSnippetModel {
+  public type: SnippetCodeType;
   public title: string;
   public code: string;
-  constructor(title: string, code: string) {
-    this.title = title,
-      this.code = code;
+
+  constructor(type: SnippetCodeType, title: string, code: string) {
+    this.type = type;
+    this.title = title;
+    this.code = code;
   }
 }
 
 export class CompackCodeSnippetInnerModel {
+  public type: SnippetCodeType;
   public id: number;
   public title: string;
   public code: string;
   public tabTemplate: any | undefined;
   public onClickEv: (() => void) | undefined;
-  constructor(id: number, title: string, code: string) {
+
+  constructor(type: SnippetCodeType, id: number, title: string, code: string) {
+    this.type = type;
     this.id = id;
     this.title = title;
     this.code = code;
@@ -27,9 +36,12 @@ export class CompackCodeSnippetInnerModel {
 @Directive({
   selector: '[codeSnippet]'
 })
-export class CodeSnippetDirective implements OnInit, AfterViewInit, OnDestroy {
+export class CodeSnippetDirective implements OnInit, AfterViewInit, OnDestroy, OnChanges {
 
   @Input() snippets: CompackCodeSnippetModel[] = [];
+  @Input() rowAttributes = 2;
+  @Input() viewHeader = true;
+
   private innerSnippets: CompackCodeSnippetInnerModel[] = [];
   private nowCode: string | undefined = undefined;
 
@@ -47,7 +59,36 @@ export class CodeSnippetDirective implements OnInit, AfterViewInit, OnDestroy {
     private el: ElementRef) { }
 
   ngOnInit() {
-    this.snippets.map((value, index) => this.innerSnippets.push(new CompackCodeSnippetInnerModel(index, value.title, value.code)));
+    this.snippets.map((value, index) => {
+      this.innerSnippets.push(
+        new CompackCodeSnippetInnerModel(
+          value.type,
+          index,
+          value.title,
+          this.formatText(value.type, value.code)))
+    });
+  }
+
+  ngAfterViewInit() {
+    this.viewTabs();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['snippets']) {
+      if (!changes['snippets'].firstChange) {
+        this.removeView();
+        this.innerSnippets = [];
+        this.snippets.map((value, index) => {
+          this.innerSnippets.push(
+            new CompackCodeSnippetInnerModel(
+              value.type,
+              index,
+              value.title,
+              this.formatText(value.type, value.code)))
+        });
+        this.viewTabs();
+      }
+    }
   }
 
   ngOnDestroy() {
@@ -56,20 +97,50 @@ export class CodeSnippetDirective implements OnInit, AfterViewInit, OnDestroy {
       if (snippet.onClickEv) snippet.onClickEv();
   }
 
-  ngAfterViewInit() {
+  private formatText(type: SnippetCodeType, code: string): string {
+    switch (type) {
+      case 'html':
+        return formatHtml(code, this.rowAttributes)
+      default:
+        return code;
+    }
+  }
+
+  private viewTabs() {
     this.renderer.setStyle(this.el.nativeElement, 'border', '1px solid #e0e0e0');
-    this.createToolBar();
-    this.createTabs();
-    this.createCopyButton();
-    if (this.innerSnippets.length > 0)
-      this.innerSnippets[0].tabTemplate.click();
+
+    if (this.viewHeader) {
+      this.createToolBar();
+      this.createTabs();
+      this.createCopyButton();
+    }
+
+    if (this.innerSnippets.length > 0) {
+      if (this.viewHeader) {
+        this.innerSnippets[0].tabTemplate.click();
+      } else {
+        this.createCodeBlockFromModel(this.innerSnippets[0]);
+      }
+    }
+  }
+
+  private removeView() {
+    if (this.toolBarTemplate)
+      this.renderer.removeChild(this.el.nativeElement, this.toolBarTemplate);
+    if (this.preTemplate)
+      this.renderer.removeChild(this.el.nativeElement, this.preTemplate);
+
+    this.preTemplate = null;
+    this.codeTemplate = null;
+    this.toolBarTemplate = null;
+    this.spanContainerTemplate = null;
   }
 
   private createToolBar() {
     this.toolBarTemplate = this.renderer.createElement('div');
     this.renderer.setStyle(this.toolBarTemplate, 'display', 'flex');
     this.renderer.setStyle(this.toolBarTemplate, 'justify-content', 'space-between');
-    this.renderer.setStyle(this.toolBarTemplate, 'padding', '.6rem');
+    this.renderer.setStyle(this.toolBarTemplate, 'padding', '.4rem');
     this.renderer.setStyle(this.toolBarTemplate, 'border-bottom', '1px solid #e0e0e0');
     this.renderer.appendChild(this.el.nativeElement, this.toolBarTemplate);
   }
@@ -80,14 +151,15 @@ export class CodeSnippetDirective implements OnInit, AfterViewInit, OnDestroy {
     for (const snippet of this.innerSnippets) {
       const button = this.renderer.createElement('button');
       this.renderer.setStyle(button, 'background-color', '#616161');
-      this.renderer.setStyle(button, 'padding', '10px 20px');
+      this.renderer.setStyle(button, 'padding', '8px 15px');
       this.renderer.setStyle(button, 'margin', '0 5px');
-      this.renderer.setStyle(button, 'border-radius', '0.25rem');
-      this.renderer.setStyle(button, 'font-size', '12px');
+      this.renderer.setStyle(button, 'border-radius', '2px');
+      this.renderer.setStyle(button, 'font-size', '14px');
       this.renderer.setStyle(button, 'line-height', '.8');
       this.renderer.setStyle(button, 'font-weight', '500');
       this.renderer.setStyle(button, 'color', '#fff');
-      this.renderer.setStyle(button, 'box-shadow', '0 2px 5px 0 rgb(0 0 0 / 20%), 0 2px 10px 0 rgb(0 0 0 / 10%)');
+      // this.renderer.setStyle(button, 'box-shadow', '0 2px 5px 0 rgb(0 0 0 / 20%), 0 2px 10px 0 rgb(0 0 0 / 10%)');
+      this.renderer.setStyle(button, 'box-shadow', '0 2px #00000004');
       this.renderer.setStyle(button, 'outline', 'none');
       this.renderer.setStyle(button, 'border', 'none');
 
@@ -105,21 +177,22 @@ export class CodeSnippetDirective implements OnInit, AfterViewInit, OnDestroy {
       });
       snippet.tabTemplate = button;
 
-      this.renderer.appendChild(button, this.renderer.createText(snippet.title.toUpperCase()));
+      this.renderer.appendChild(button, this.renderer.createText(snippet.title));
       this.renderer.appendChild(tabs, button);
     }
   }
   private createCopyButton() {
     const copyButton = this.renderer.createElement('button');
     this.renderer.setStyle(copyButton, 'background-color', '#616161');
-    this.renderer.setStyle(copyButton, 'padding', '10px 20px');
+    this.renderer.setStyle(copyButton, 'padding', '8px 15px');
     this.renderer.setStyle(copyButton, 'margin', '0 5px');
-    this.renderer.setStyle(copyButton, 'border-radius', '0.25rem');
-    this.renderer.setStyle(copyButton, 'font-size', '12px');
+    this.renderer.setStyle(copyButton, 'border-radius', '2px');
+    this.renderer.setStyle(copyButton, 'font-size', '14px');
     this.renderer.setStyle(copyButton, 'line-height', '.8');
     this.renderer.setStyle(copyButton, 'font-weight', '500');
     this.renderer.setStyle(copyButton, 'color', '#fff');
-    this.renderer.setStyle(copyButton, 'box-shadow', '0 2px 5px 0 rgb(0 0 0 / 20%), 0 2px 10px 0 rgb(0 0 0 / 10%)');
+    // this.renderer.setStyle(copyButton, 'box-shadow', '0 2px 5px 0 rgb(0 0 0 / 20%), 0 2px 10px 0 rgb(0 0 0 / 10%)');
+    this.renderer.setStyle(copyButton, 'box-shadow', '0 2px #00000004');
     this.renderer.setStyle(copyButton, 'outline', 'none');
     this.renderer.setStyle(copyButton, 'border', 'none');
     this.renderer.setStyle(copyButton, 'cursor', 'pointer');
@@ -159,12 +232,15 @@ export class CodeSnippetDirective implements OnInit, AfterViewInit, OnDestroy {
     this.renderer.setStyle(this.preTemplate, 'background', '#f5f2f0');
     this.renderer.setStyle(this.preTemplate, 'margin', '0');
     this.renderer.setStyle(this.preTemplate, 'overflow', 'auto');
+    this.renderer.setStyle(this.preTemplate, 'font-family', 'inherit');
     this.renderer.appendChild(this.el.nativeElement, this.preTemplate);
   }
   private creteCodeBlock() {
     this.codeTemplate = this.renderer.createElement('code');
     this.renderer.setStyle(this.codeTemplate, 'line-height', '20px');
     this.renderer.setStyle(this.codeTemplate, 'position', 'relative');
+    this.renderer.setStyle(this.codeTemplate, 'tab-size', '10px');
+    this.renderer.setStyle(this.codeTemplate, 'font-family', 'inherit');
     this.renderer.appendChild(this.preTemplate, this.codeTemplate);
   }
   private createSpanContainerTemplateBlock() {
@@ -233,7 +309,7 @@ export function fallbackCopyTextToClipboard(text: string) {
     const msg = successful ? 'successful' : 'unsuccessful';
     console.log('Copying text command was ' + msg);
   } catch (err) {
-    console.log('Oops, unable to copy');
+    console.error('unable to copy', err);
   }
 
   document.body.removeChild(textArea);

@@ -32,6 +32,15 @@ jobs:
       - name: Check
         uses: ./.github/actions/ui-check
 
+      - name: Set registry
+        run: npm config set registry https://registry.npmjs.org/
+
+      - name: Set token
+        run: npm config set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
+
+      - name: Check user
+        run: npm whoami
+
       - name: GoTo lib output
         run: cd dist/ngx-compack
 

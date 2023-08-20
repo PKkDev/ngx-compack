@@ -1,0 +1,42 @@
+@import "../../../assets/cmp-span-icon.scss";
+
+.cmp-alert-body {
+    box-sizing: border-box;
+    margin: 0;
+    color: #000000d9;
+    line-height: 1.5715;
+    list-style: none;
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 8px 15px;
+    word-wrap: break-word;
+    border-radius: 2px;
+    font-size: 14px;
+
+    .icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+    }
+
+    .text {
+        white-space: pre-line;
+    }
+}
+
+.ngc-alert-error {
+    background-color: var(--ngc-error-color-deprecated-bg);
+    border: 1px solid var(--ngc-error-color-deprecated-border);
+}
+
+.ngc-alert-success {
+    background-color: var(--ngc-success-color-deprecated-bg);
+    border: 1px solid var(--ngc-success-color-deprecated-border);
+}
+
+.ngc-alert-info {
+    background-color: var(--ngc-info-color-deprecated-bg);
+    border: 1px solid var(--ngc-info-color-deprecated-border);
+}

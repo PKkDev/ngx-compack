@@ -1,0 +1,33 @@
+.field-group {
+    display: flex;
+    justify-content: space-between;
+    margin: 8px 0;
+    font-size: 15px;
+    width: 100%;
+    text-align: left;
+
+    label,
+    select,
+    input {
+        width: 50%;
+    }
+
+    textarea {
+        width: 100%;
+        resize: vertical;
+    }
+
+    button {
+        margin: 5px;
+    }
+}
+
+.field-group-col-view {
+    flex-direction: column;
+
+    label,
+    select,
+    input {
+        width: 100%;
+    }
+}

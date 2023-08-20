@@ -1,59 +1,37 @@
-<div class="container">
+<compack-card>
 
-  <div class="settings">
-
-    <div class="field_group">
-      type Banner:
-      <select [(ngModel)]="bannerType">
-        <option [value]="0">Info</option>
-        <option [value]="1">Error</option>
-      </select>
-    </div>
-
-    <div class="field_group">
-      position Banner:
-      <select [(ngModel)]="bannerPosition">
-        <option [value]="0">Top</option>
-        <option [value]="1">TopLeft</option>
-        <option [value]="2">TopRight</option>
-        <option [value]="3">Middle</option>
-        <option [value]="4">Bottom</option>
-        <option [value]="5">BottomLeft</option>
-        <option [value]="6">BottomRight</option>
-      </select>
-    </div>
-
-    <div class="field_group col_view">
-      title:
-      <input [(ngModel)]="bannerTitle">
-    </div>
-
-    <div class="field_group col_view">
-      text:
-      <textarea [(ngModel)]="bannerMessage"></textarea>
-    </div>
-
-    <div class="field_group">
-      view time:
-      <input [(ngModel)]="bannerViewTime" type="number">
-    </div>
-
-    <div class="field_group color">
-      error Color:
-      <input type="color" [(ngModel)]="bannerErrorColor" (ngModelChange)="setBannerErrorColor()">
-    </div>
-
-    <div class="field_group color">
-      info Color:
-      <input type="color" [(ngModel)]="bannerInfoColor" (ngModelChange)="setBannerInfoColor()">
-    </div>
-
-    <div class="field_group">
-      <button class="btn" (click)="viewBanner()">View</button>
-
-      <button class="btn" (click)="removeBanner()">Remove</button>
-    </div>
-
+  <div class="field-group">
+    position Banner:
+    <select [(ngModel)]="bannerPosition">
+      <option [value]="0">Top</option>
+      <option [value]="1">TopLeft</option>
+      <option [value]="2">TopRight</option>
+      <option [value]="3">Middle</option>
+      <option [value]="4">Bottom</option>
+      <option [value]="5">BottomLeft</option>
+      <option [value]="6">BottomRight</option>
+    </select>
   </div>
 
-</div>
+  <div class="field-group field-group-col-view">
+    title:
+    <input [(ngModel)]="bannerTitle">
+  </div>
+
+  <div class="field-group field-group-col-view">
+    text:
+    <textarea [(ngModel)]="bannerMessage"></textarea>
+  </div>
+
+  <div class="field-group">
+    view time:
+    <input [(ngModel)]="bannerViewTime" type="number">
+  </div>
+
+  <div class="field-group">
+    <button cmp-button btnType="primary" (click)="viewBanner()">View</button>
+
+    <button cmp-button btnType="dangerous" (click)="removeBanner()">Remove</button>
+  </div>
+
+</compack-card>

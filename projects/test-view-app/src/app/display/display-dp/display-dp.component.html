@@ -4,7 +4,7 @@
 
     <div class="view_col_item">
 
-      <div class="code-toolbar" codeSnippet [snippets]="snippet1"></div>
+      <div class="code-toolbar" codeSnippet [snippets]="snippet1" [rowAttributes]="2"></div>
 
       <compack-date-picker [rangeMode]="rangeMode" [disabled]="disabled" [setDateEvent]="setDateEvent"
         [viewFieldSelectedDate]="viewFieldSelectedDate" [formatOutputDate]="format" [useTime]="useTime"
@@ -25,7 +25,7 @@
 
     </div>
 
-    <div class="view_col_item">
+    <div class="view_col_item" #test>
 
       <div class="code-toolbar" codeSnippet [snippets]="snippet3"></div>
 

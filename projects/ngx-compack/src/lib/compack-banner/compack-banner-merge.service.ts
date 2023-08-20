@@ -3,12 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { DisplayMessage } from './model/display-message';
 import { DisplayMessageConfig } from './model/display-message-config';
-import { TypeMessage } from './model/type-message';
 import { TypePositionMessage } from './model/type-position-message';
-
-const mapColor: Map<string, string> = new Map<string, string>()
-  .set('info', '#2196f3')
-  .set('error', '#ff5252');
 
 @Injectable()
 export class CompackBannerMergeService {
@@ -16,16 +11,6 @@ export class CompackBannerMergeService {
   public newMessageEvent$: BehaviorSubject<DisplayMessageConfig | null> = new BehaviorSubject<DisplayMessageConfig | null>(null);
 
   public removeMessageEvent$: EventEmitter<boolean> = new EventEmitter();
-
-  public setInfoColor(newInfoColor: string) {
-    if (mapColor.has('info'))
-      mapColor.set('info', newInfoColor);
-  }
-
-  public setErrorColor(newErrorColor: string) {
-    if (mapColor.has('error'))
-      mapColor.set('error', newErrorColor);
-  }
 
   public mergeMessageConfig(messageConfig: DisplayMessageConfig): DisplayMessage | null {
     // console.log('messageConfig', messageConfig);
@@ -38,30 +23,6 @@ export class CompackBannerMergeService {
     result.intervalView = messageConfig.intervalView;
     result.title = messageConfig.title;
     result.message = messageConfig.message;
-
-    switch (messageConfig.typeMessage) {
-      case TypeMessage.Error: {
-        if (mapColor.has('error')) {
-          const color = mapColor.get('error');
-          result.color = color ? color : '#fff';
-        }
-        break;
-      }
-      case TypeMessage.Info: {
-        if (mapColor.has('info')) {
-          const color = mapColor.get('info');
-          result.color = color ? color : '#fff';
-        }
-        break;
-      }
-      default: {
-        if (mapColor.has('error')) {
-          const color = mapColor.get('error');
-          result.color = color ? color : '#fff';
-        }
-        break;
-      }
-    }
 
     switch (messageConfig.position) {
       case TypePositionMessage.Top:

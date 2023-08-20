@@ -1,0 +1,42 @@
+name: Test + Lint + Build + Publish on NPM
+
+on:
+  pull_request_target:
+    types: ["closed"]
+    branches: ["release"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Init
+        uses: ./.github/actions/ui-init
+        with:
+          node_version: ${{ matrix.node-version }}
+
+      - name: Build lib
+        run: npm run build:lib:prod
+
+      - name: Check
+        uses: ./.github/actions/ui-check
+
+      - name: GoTo lib output
+        run: cd dist/ngx-compack
+
+      - name: Pack
+        run: npm pack
+
+      - name: Publish
+        run: npm publish

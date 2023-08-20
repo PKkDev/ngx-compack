@@ -17,7 +17,7 @@ export class CompackIconDirective implements OnInit, AfterViewInit, OnChanges {
 
   @ContentChild('svg') svg: SVGSVGElement | null = null;
 
-  constructor(private el: ElementRef, private renderer2: Renderer2) {
+  constructor(public el: ElementRef, private renderer2: Renderer2) {
     this.renderer2.addClass(this.el.nativeElement, 'cmp-span-icon');
   }
 

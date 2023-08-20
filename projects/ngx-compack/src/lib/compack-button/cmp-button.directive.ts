@@ -42,6 +42,23 @@ export class CmpButtonDirective implements AfterViewInit, OnChanges {
 
     this.checkChangeIcon();
 
+    if (this.ngcIcon) {
+      const first = (this.el.nativeElement as HTMLElement).firstChild;
+      const last = (this.el.nativeElement as HTMLElement).lastChild;
+
+      if (last && first && first.isEqualNode(this.ngcIcon.el.nativeElement) && last.isEqualNode(this.ngcIcon.el.nativeElement)) {
+      } else {
+        if (last && last.isEqualNode(this.ngcIcon.el.nativeElement)) {
+          this.renderer2.addClass(this.el.nativeElement, 'cmp-right-icon')
+        }
+        if (first && first.isEqualNode(this.ngcIcon.el.nativeElement)) {
+          this.renderer2.addClass(this.el.nativeElement, 'cmp-left-icon')
+        }
+      }
+
+    }
+
+
     this.isAfterViewInit = true;
   }
 

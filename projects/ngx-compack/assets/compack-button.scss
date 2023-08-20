@@ -25,9 +25,7 @@
     background: #fff;
     font-family: inherit;
 
-    .cmp-span-icon {
-        margin-left: 5px;
-    }
+
 
     &:disabled {
         opacity: 0.5;
@@ -37,6 +35,18 @@
     &:not(:disabled):hover {
         color: var(--cmp-primary-color);
         border-color: var(--cmp-primary-color);
+    }
+}
+
+.cmp-left-icon {
+    .cmp-span-icon {
+        margin-right: 5px;
+    }
+}
+
+.cmp-right-icon {
+    .cmp-span-icon {
+        margin-left: 5px;
     }
 }
 

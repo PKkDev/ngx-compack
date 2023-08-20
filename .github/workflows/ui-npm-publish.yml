@@ -1,9 +1,9 @@
-name: Test + Lint + Build + Publish o NPM
+name: Test + Lint + Build + Publish on NPM
 
 on:
   pull_request_target:
     types: ["closed"]
-    branches: ["publish"]
+    branches: ["release"]
 
 jobs:
   build:

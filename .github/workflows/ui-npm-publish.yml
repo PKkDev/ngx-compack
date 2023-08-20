@@ -41,11 +41,10 @@ jobs:
       - name: Check user
         run: npm whoami
 
-      - name: GoTo lib output
-        run: cd dist/ngx-compack
-
       - name: Pack
         run: npm pack
+        working-directory: ./dist/ngx-compack
 
-      - name: Publish
-        run: npm publish
+      # - name: Publish
+      #   run: npm publish --access=public
+      #   working-directory: ./dist/ngx-compack

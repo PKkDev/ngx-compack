@@ -33,3 +33,6 @@ export * from './lib/compack-alert/compack-alert.component';
 
 export * from './lib/compack-card/compack-card.module';
 export * from './lib/compack-card/compack-card.component';
+
+export * from './lib/compack-icon/compack-icon.module';
+export * from './lib/compack-icon/compack-icon.directive';

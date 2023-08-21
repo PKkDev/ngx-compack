@@ -47,6 +47,7 @@ export class CmpButtonDirective implements AfterViewInit, OnChanges {
       const last = (this.el.nativeElement as HTMLElement).lastChild;
 
       if (last && first && first.isEqualNode(this.ngcIcon.el.nativeElement) && last.isEqualNode(this.ngcIcon.el.nativeElement)) {
+        this.renderer2.addClass(this.el.nativeElement, 'cmp-only-icon')
       } else {
         if (last && last.isEqualNode(this.ngcIcon.el.nativeElement)) {
           this.renderer2.addClass(this.el.nativeElement, 'cmp-right-icon')
@@ -57,7 +58,6 @@ export class CmpButtonDirective implements AfterViewInit, OnChanges {
       }
 
     }
-
 
     this.isAfterViewInit = true;
   }
@@ -71,6 +71,8 @@ export class CmpButtonDirective implements AfterViewInit, OnChanges {
   }
 
   private checkChangeIcon() {
+    console.log('asd');
+    
     if (this.loading) {
       this.renderer2.setProperty(this.el.nativeElement, 'disabled', true);
 
@@ -81,6 +83,7 @@ export class CmpButtonDirective implements AfterViewInit, OnChanges {
           const span = this.renderer2.createElement('span');
           this.renderer2.addClass(span, 'cmp-span-icon');
           this.renderer2.addClass(span, 'cmp-loading');
+          this.renderer2.setStyle(span, 'margin-left', '5px');
           span.innerHTML = this.loadingSvg
           this.loadingSpan = span;
         }

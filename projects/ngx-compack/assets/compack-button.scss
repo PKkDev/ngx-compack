@@ -6,7 +6,7 @@
     position: relative;
     display: inline-block;
     font-weight: 400;
-    font-size: 14px;
+    font-size: 15px;
     white-space: nowrap;
     text-align: center;
     background-image: none;
@@ -19,11 +19,15 @@
     -webkit-user-select: none;
     user-select: none;
     touch-action: manipulation;
-    height: 32px;
+    height: 35px;
     padding: 4px 15px;
     color: #000000d9;
     background: #fff;
     font-family: inherit;
+
+    // display: inline-flex;
+    // align-items: center;
+    // justify-content: center;
 
 
 
@@ -48,6 +52,10 @@
     .cmp-span-icon {
         margin-left: 5px;
     }
+}
+
+.cmp-only-icon {
+    padding: 5px 10px;
 }
 
 .cmp-btn-primary {

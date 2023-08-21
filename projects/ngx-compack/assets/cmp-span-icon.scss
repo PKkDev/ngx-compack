@@ -1,14 +1,20 @@
 .cmp-span-icon {
-    display: inline-block;
+   display: inline-block;
     color: inherit;
-    font-style: normal;
     line-height: 0;
+    font-size: inherit;
+    font-style: normal;
     text-align: center;
     text-transform: none;
     vertical-align: -0.125em;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+
+    vertical-align: sub;
+
+    // display: flex;
+    // align-items: center;
 }
 
 // .cmp-span-icon-container {
@@ -20,7 +26,7 @@
 //     background: #fff;
 //     box-sizing: border-box;
 //     padding: 0 5px;
-   
+
 
 //     .span-icon {
 //         font-size: 20px;

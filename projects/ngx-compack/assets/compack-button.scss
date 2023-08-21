@@ -6,7 +6,7 @@
     position: relative;
     display: inline-block;
     font-weight: 400;
-    font-size: 14px;
+    font-size: 15px;
     white-space: nowrap;
     text-align: center;
     background-image: none;
@@ -19,15 +19,17 @@
     -webkit-user-select: none;
     user-select: none;
     touch-action: manipulation;
-    height: 32px;
+    height: 35px;
     padding: 4px 15px;
     color: #000000d9;
     background: #fff;
     font-family: inherit;
 
-    .cmp-span-icon {
-        margin-left: 5px;
-    }
+    // display: inline-flex;
+    // align-items: center;
+    // justify-content: center;
+
+
 
     &:disabled {
         opacity: 0.5;
@@ -38,6 +40,22 @@
         color: var(--cmp-primary-color);
         border-color: var(--cmp-primary-color);
     }
+}
+
+.cmp-left-icon {
+    .cmp-span-icon {
+        margin-right: 5px;
+    }
+}
+
+.cmp-right-icon {
+    .cmp-span-icon {
+        margin-left: 5px;
+    }
+}
+
+.cmp-only-icon {
+    padding: 5px 10px;
 }
 
 .cmp-btn-primary {

@@ -1,9 +1,9 @@
-name: Test + Lint + Build + Publish o NPM
+name: Test + Lint + Build + Publish on NPM
 
 on:
   pull_request_target:
     types: ["closed"]
-    branches: ["publish"]
+    branches: ["release"]
 
 jobs:
   build:
@@ -32,11 +32,19 @@ jobs:
       - name: Check
         uses: ./.github/actions/ui-check
 
-      - name: GoTo lib output
-        run: cd dist/ngx-compack
+      - name: Set registry
+        run: npm config set registry https://registry.npmjs.org/
+
+      - name: Set token
+        run: npm config set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
+
+      - name: Check user
+        run: npm whoami
 
       - name: Pack
         run: npm pack
+        working-directory: ./dist/ngx-compack
 
       - name: Publish
-        run: npm publish
+        run: npm publish --access=public
+        working-directory: ./dist/ngx-compack

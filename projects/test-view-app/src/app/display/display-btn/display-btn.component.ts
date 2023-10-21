@@ -8,6 +8,9 @@ import { CompackCodeSnippetModel } from '../../code-snippet.directive';
 })
 export class DisplayBtnComponent {
 
+  public disabled1 = false;
+  public loading1 = false;
+
   public snippet: CompackCodeSnippetModel[] = [{
     title: 'html',
     type: 'html',

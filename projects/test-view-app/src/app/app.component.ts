@@ -34,7 +34,7 @@ export class AppComponent implements AfterViewInit {
   constructor(private cdr: ChangeDetectorRef) { }
 
   ngAfterViewInit() {
-    this.viewComponent = TypeViewComponent.Toast;
+    this.viewComponent = TypeViewComponent.Button;
     this.loadTemplate(this.viewComponent);
     this.cdr.detectChanges();
   }

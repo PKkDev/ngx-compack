@@ -76,3 +76,19 @@
     <div class="code-toolbar" codeSnippet [snippets]="snippet" [rowAttributes]="3" [viewHeader]="false"></div>
 
 </compack-card>
+
+<compack-card>
+
+    <div class="line">
+
+        <button cmp-button btnType="mode" [disabled]="disabled1" [loading]="loading1">mode</button>
+
+        <label>disabled</label>
+        <input type="checkbox" [(ngModel)]="disabled1">
+
+        <label>loading</label>
+        <input type="checkbox" [(ngModel)]="loading1">
+
+    </div>
+
+</compack-card>

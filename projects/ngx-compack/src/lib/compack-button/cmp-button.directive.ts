@@ -40,7 +40,9 @@ export class CmpButtonDirective implements AfterViewInit, OnChanges {
         break;
     }
 
-    this.checkChangeIcon();
+    if (this.loading) {
+      this.checkChangeIcon();
+    }
 
     if (this.ngcIcon) {
       const first = (this.el.nativeElement as HTMLElement).firstChild;
@@ -71,8 +73,7 @@ export class CmpButtonDirective implements AfterViewInit, OnChanges {
   }
 
   private checkChangeIcon() {
-    console.log('asd');
-    
+
     if (this.loading) {
       this.renderer2.setProperty(this.el.nativeElement, 'disabled', true);
 
